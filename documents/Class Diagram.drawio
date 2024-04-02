@@ -1,11 +1,16 @@
-<mxfile host="app.diagrams.net" modified="2024-04-02T21:24:40.507Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" etag="TxvtwE3bFMaekL4QULNz" version="24.2.1" type="device">
+<mxfile host="app.diagrams.net" modified="2024-04-02T21:29:11.368Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" etag="2sT_JWUsa7iav5ELwwtQ" version="24.2.1" type="device">
   <diagram name="Page-1" id="peT0Tku6k0CXOl4bbgea">
-    <mxGraphModel dx="1674" dy="1186" grid="0" gridSize="10" guides="0" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1654" pageHeight="1169" background="#000000" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="1186" grid="1" gridSize="10" guides="0" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1654" pageHeight="1169" background="#000000" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="ILToKURg6AyfO6B2Wtye-4" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;MenuManager&lt;/b&gt;&lt;/p&gt;&lt;hr style=&quot;border-style:solid;&quot; size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;hr style=&quot;border-style:solid;&quot; size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;labelBackgroundColor=none;fillColor=none;fontColor=#FFFFFF;strokeColor=#FFFFFF;strokeWidth=2;" parent="1" vertex="1">
-          <mxGeometry x="840" y="-160" width="240" height="120" as="geometry" />
+        <mxCell id="YYHcGzh3mQ78TLflmlGY-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FFFFFF;" edge="1" parent="1" source="ILToKURg6AyfO6B2Wtye-4" target="fj_ThK01r2m-MzO2AXcp-57">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1188" y="-155" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ILToKURg6AyfO6B2Wtye-4" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;MainWindow&lt;/b&gt;&lt;/p&gt;&lt;hr style=&quot;border-style:solid;&quot; size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;hr style=&quot;border-style:solid;&quot; size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;labelBackgroundColor=none;fillColor=none;fontColor=#FFFFFF;strokeColor=#FFFFFF;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="841" y="-200" width="240" height="120" as="geometry" />
         </mxCell>
         <mxCell id="ILToKURg6AyfO6B2Wtye-16" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;abstract&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;TowerType&lt;/b&gt;&lt;/p&gt;&lt;hr style=&quot;border-style:solid;&quot; size=&quot;1&quot;&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px;&quot;&gt;- resourceAmount: int&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px;&quot;&gt;- reloadSpeed: int&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 4px;&quot;&gt;- resourceType: ResourceType&lt;/p&gt;&lt;hr style=&quot;border-style:solid;&quot; size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ getResourceAmount(): int&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ getReloadSpeed(): int&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ getResourceType: ResourceType&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;labelBackgroundColor=none;fillColor=none;fontColor=#FFFFFF;strokeColor=#FFFFFF;strokeWidth=2;" parent="1" vertex="1">
           <mxGeometry x="1309" y="553" width="200" height="200" as="geometry" />
@@ -112,10 +117,10 @@
           <mxGeometry x="680" width="240" height="80" as="geometry" />
         </mxCell>
         <mxCell id="fj_ThK01r2m-MzO2AXcp-57" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;MainMenuController&lt;/b&gt;&lt;/p&gt;&lt;hr style=&quot;border-style:solid;&quot; size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;hr style=&quot;border-style:solid;&quot; size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;labelBackgroundColor=none;fillColor=none;fontColor=#FFFFFF;strokeColor=#FFFFFF;strokeWidth=2;" parent="1" vertex="1">
-          <mxGeometry x="360" width="240" height="80" as="geometry" />
+          <mxGeometry x="1240" y="-200" width="240" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="fj_ThK01r2m-MzO2AXcp-58" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;App&lt;/b&gt;&lt;/p&gt;&lt;hr style=&quot;border-style:solid;&quot; size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- window: JFrame&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- menuManager&lt;/p&gt;&lt;hr style=&quot;border-style:solid;&quot; size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;labelBackgroundColor=none;fillColor=none;fontColor=#FFFFFF;strokeColor=#FFFFFF;strokeWidth=2;" parent="1" vertex="1">
-          <mxGeometry x="840" y="-320" width="240" height="120" as="geometry" />
+        <mxCell id="fj_ThK01r2m-MzO2AXcp-58" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;App&lt;/b&gt;&lt;/p&gt;&lt;hr style=&quot;border-style:solid;&quot; size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ main(String[]): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;labelBackgroundColor=none;fillColor=none;fontColor=#FFFFFF;strokeColor=#FFFFFF;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="840" y="-360" width="240" height="80" as="geometry" />
         </mxCell>
         <mxCell id="fj_ThK01r2m-MzO2AXcp-61" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;MainGameController&lt;/b&gt;&lt;/p&gt;&lt;hr style=&quot;border-style:solid;&quot; size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;hr style=&quot;border-style:solid;&quot; size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;labelBackgroundColor=none;fillColor=none;fontColor=#FFFFFF;strokeColor=#FFFFFF;strokeWidth=2;" parent="1" vertex="1">
           <mxGeometry x="1000" width="240" height="80" as="geometry" />
@@ -217,6 +222,12 @@
           <mxGeometry width="160" relative="1" as="geometry">
             <mxPoint x="337" y="592" as="sourcePoint" />
             <mxPoint x="360" y="490" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="YYHcGzh3mQ78TLflmlGY-1" value="" style="endArrow=open;endFill=1;endSize=12;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#FFFFFF;" edge="1" parent="1" source="fj_ThK01r2m-MzO2AXcp-58" target="ILToKURg6AyfO6B2Wtye-4">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="933" y="-36" as="sourcePoint" />
+            <mxPoint x="1093" y="-36" as="targetPoint" />
           </mxGeometry>
         </mxCell>
       </root>
