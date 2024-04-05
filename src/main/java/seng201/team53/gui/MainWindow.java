@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import seng201.team53.App;
 
 import java.io.IOException;
 
@@ -15,20 +16,21 @@ import java.io.IOException;
 public class MainWindow extends Application {
 
     /**
-     * Opens the gui with the fxml content specified in resources/fxml/main.fxml
+     * Opens the gui with the fxml content specified in resources/fxml/main_old.fxml
      * @param primaryStage The current fxml stage, handled by javaFX Application class
      * @throws IOException if there is an issue loading fxml file
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
+        App.getApp().setPrimaryStage(primaryStage);
         FXMLLoader baseLoader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
         Parent root = baseLoader.load();
 
         MainController baseController = baseLoader.getController();
-        baseController.init(primaryStage);
+        baseController.init();
+        primaryStage.setTitle("ResourceRush");
 
-        primaryStage.setTitle("SENG201 Example App");
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 800, 640);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
