@@ -4,8 +4,11 @@ import seng201.team53.items.ResourceType;
 
 public class QuarryTower extends Tower {
 
-    QuarryTower(String name, ResourceType resourceType) {
-        super(name, resourceType);
+    public QuarryTower() {
+        super(
+                "Quarry",
+                "/assets/wood_tower.png",
+                ResourceType.ORE);
     }
 
     @Override

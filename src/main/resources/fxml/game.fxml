@@ -130,7 +130,18 @@
                   <Font name="Expo M" size="36.0" />
                </font>
             </Text>
-            <ScrollPane layoutX="16.0" layoutY="69.0" opacity="0.5" prefHeight="388.0" prefWidth="119.0" />
+            <ScrollPane layoutX="16.0" layoutY="69.0" opacity="0.5" prefHeight="388.0" prefWidth="119.0">
+               <content>
+                  <Button fx:id="createWoodTowerButton" mnemonicParsing="false" onMouseClicked="#onCreateWoodTowerBtnClick" text="Wood Tower">
+                     <graphic>
+                        <ImageView fx:id="createWoodTowerImageView" fitHeight="80.0" fitWidth="82.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/wood_tower.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </content></ScrollPane>
             <Button fx:id="pauseButton" layoutX="16.0" layoutY="477.0" mnemonicParsing="false" onMouseClicked="#onPauseButtonMouseClick" prefHeight="51.0" prefWidth="119.0" style="-fx-background-color: #e09860; -fx-border-color: #8a5c38; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Pause">
                <font>
                   <Font name="Expo M" size="24.0" />

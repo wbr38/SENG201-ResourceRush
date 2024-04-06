@@ -5,8 +5,8 @@ import seng201.team53.gui.GameController;
 import seng201.team53.gui.GameWindow;
 
 public class GameEnvironment {
-    private final GameWindow gameWindow = new GameWindow();
-    private final MapLoader mapLoader = new MapLoader();
+    public final GameWindow gameWindow = new GameWindow();
+    public final MapLoader mapLoader = new MapLoader();
     private final String playerName;
     private GameDifficulty difficulty;
     private final int rounds;

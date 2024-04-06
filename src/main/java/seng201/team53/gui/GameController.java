@@ -8,6 +8,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import seng201.team53.App;
+import seng201.team53.game.map.Map;
+import seng201.team53.game.map.MapLoader;
+import seng201.team53.items.towers.LumberMillTower;
 
 public class GameController {
     @FXML
@@ -23,7 +26,14 @@ public class GameController {
     private Button startButton;
 
     @FXML
+    private Button placeTowersButton;
+
+    @FXML
     private Text roundCounterLabel;
+
+    // Shop Controller
+    @FXML
+    private Button createWoodTowerButton;
 
     @FXML
     void onPauseButtonMouseClick(MouseEvent event) {
@@ -34,6 +44,15 @@ public class GameController {
         startButton.setVisible(true);
         pauseButton.setDisable(true);
         pauseButton.setVisible(false);
+    }
+
+    @FXML
+    void onCreateWoodTowerBtnClick(MouseEvent event) {
+        MapLoader mapLoader = App.getApp().getGameEnvironment().mapLoader;
+        Map map = mapLoader.getMap("default");
+
+        LumberMillTower tower = new LumberMillTower();
+        map.startPlacingTower(tower);
     }
 
     @FXML

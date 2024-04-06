@@ -4,8 +4,11 @@ import seng201.team53.items.ResourceType;
 
 public class WindMillTower extends Tower {
 
-    WindMillTower(String name, ResourceType resourceType) {
-        super(name, resourceType);
+    public WindMillTower() {
+        super(
+                "Wind Mill",
+                "/assets/wood_tower.png",
+                ResourceType.ORE);
     }
 
     @Override

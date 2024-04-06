@@ -4,8 +4,12 @@ import seng201.team53.items.ResourceType;
 
 public class LumberMillTower extends Tower {
 
-    LumberMillTower(String name, ResourceType resourceType) {
-        super(name, resourceType);
+    public LumberMillTower() {
+
+        super(
+                "Lumber Mill",
+                "/assets/wood_tower.png",
+                ResourceType.WOOD);
     }
 
     @Override
