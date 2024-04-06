@@ -21,9 +21,11 @@ public class Map {
     public String getName() {
         return name;
     }
+
     public Tile[][] getTiles() {
         return tiles;
     }
+
     public Tile getTileFromScreenPosition(int screenX, int screenY) {
         // screen x consists of 20 columns of width 40px each
         // screen y consists of 20 rows of height 40px each
@@ -38,14 +40,14 @@ public class Map {
         for (int column = 0; column < tiles.length; column++) {
             for (int row = 0; row < tiles[column].length; row++) {
                 var tile = tiles[column][row];
-                var image = tile.getImage();
-                var imageView = new ImageView(image);
+                ImageView imageView = tile.getImageView();
                 imageView.setFitWidth(40);
                 imageView.setFitHeight(40);
                 gridPane.add(imageView, row, column);
             }
         }
     }
+
     public void drawPath(Canvas canvas) { // use for debugging the path finding algorithm
         var graphics = canvas.getGraphicsContext2D();
         for (int i = 0; i < path.size(); i++) {
@@ -77,6 +79,7 @@ public class Map {
         if (!depthFirstSearch(discovered, startX, startY, endX, endY))
             throw new RuntimeException("Invalid map, does not contain a path");
     }
+
     private boolean depthFirstSearch(int[][] discovered, int x, int y, int endX, int endY) {
         discovered[x][y] = 2;
         if (x == endX && y == endY) {
@@ -95,6 +98,7 @@ public class Map {
         }
         return false;
     }
+
     private boolean isValidCell(int[][] discovered, int x, int y) {
         return x >= 0 && y >= 0 && x < tiles.length  && y < tiles[x].length && tiles[x][y].isPath() && discovered[x][y] == 0;
     }

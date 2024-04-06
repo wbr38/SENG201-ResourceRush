@@ -1,7 +1,9 @@
 package seng201.team53.game.map;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -32,7 +34,9 @@ public class MapLoader {
                     var image = assets.get(imageId);
                     if (image == null)
                         throw new RuntimeException("Missing asset for id '" + imageId + "' from map '" + name + "'.");
-                    var tile = new Tile(image, true, imageId == 1); // todo - some how add an option to make the tile buildable or not
+
+                    ImageView imageView = new ImageView(image);
+                    var tile = new Tile(imageView, true, imageId == 1, new Point(row, column)); // todo - some how add an option to make the tile buildable or not
                     map.getTiles()[row][column] = tile;
                 }
                 row++;
@@ -40,6 +44,7 @@ public class MapLoader {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+
         maps.put(name.toLowerCase(), map);
     }
     public void loadImage(int mapValue, String path) {
