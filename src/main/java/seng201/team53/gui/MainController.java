@@ -9,11 +9,12 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import seng201.team53.App;
+import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
 
 public class MainController {
     @FXML
-    private ChoiceBox<String> difficultyChoiceBox;
+    private ChoiceBox<GameDifficulty> difficultyChoiceBox;
 
     @FXML
     private TextField nameTextField;
@@ -34,15 +35,25 @@ public class MainController {
     private Text numberOfRoundsLabel;
 
     private boolean validNameChoice = false;
+    private final int MIN_NAME_LENGTH = 3;
+    private final int MAX_NAME_LENGTH = 15;
 
     @FXML
     void onNameFieldKeyPress(KeyEvent event) {
         var text = nameTextField.getText() + event.getText();
-        if ((text.length() >= 3 && text.length() <= 15 && text.matches("^[A-Za-z0-9]*$")) == !validNameChoice) {
-            validNameChoice = !validNameChoice;
-            nameRedCross.setVisible(!nameRedCross.isVisible());
-            nameGreenCheckmark.setVisible(!nameGreenCheckmark.isVisible());
-            nameNotValidLabel.setVisible(!nameNotValidLabel.isVisible());
+        
+        boolean _validName = (
+            text.length() >= MIN_NAME_LENGTH
+            && text.length() <= MAX_NAME_LENGTH
+            && text.matches("^[A-Za-z0-9]*$") // only letters or numbers
+        );
+
+        // Name became valid or invalid, toggle GUI elements 
+        if (validNameChoice != _validName) {
+            validNameChoice = _validName;
+            nameRedCross.setVisible(!validNameChoice);
+            nameNotValidLabel.setVisible(!validNameChoice);
+            nameGreenCheckmark.setVisible(validNameChoice);
         }
     }
 
@@ -58,15 +69,18 @@ public class MainController {
         }
         var name = nameTextField.getText();
         var rounds = (int) numberOfRoundsSlider.getValue();
-        var gameEnvironment = new GameEnvironment(name, rounds);
+        GameDifficulty gameDifficulty = difficultyChoiceBox.getSelectionModel().getSelectedItem();
+        var gameEnvironment = new GameEnvironment(name, rounds, gameDifficulty);
         App.getApp().setGameEnvironment(gameEnvironment);
         gameEnvironment.init();
     }
 
     public void init() {
-        var difficulties = FXCollections.observableArrayList("Easy", "Normal", "Hard");
-        difficultyChoiceBox.setValue("Normal");
+
+        // Initialise Game Difficulty selector
+        var difficulties = FXCollections.observableArrayList(GameDifficulty.values());
         difficultyChoiceBox.setItems(difficulties);
+        difficultyChoiceBox.setValue(GameDifficulty.NORMAL);
 
         numberOfRoundsSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             numberOfRoundsLabel.setText(String.valueOf(newValue.intValue()));

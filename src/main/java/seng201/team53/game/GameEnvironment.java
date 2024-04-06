@@ -7,13 +7,21 @@ import seng201.team53.gui.GameWindow;
 public class GameEnvironment {
     private final GameWindow gameWindow = new GameWindow();
     private final MapLoader mapLoader = new MapLoader();
-    private final String name;
+    private final String playerName;
+    private GameDifficulty difficulty;
     private final int rounds;
     private boolean paused = true;
 
-    public GameEnvironment(String name, int rounds)  {
-        this.name = name;
+    // TODO
+    // public Inventory inventory;
+    // public double money;
+    // public GameRound currentRound;
+    // public Shop shop;
+
+    public GameEnvironment(String playerName, int rounds, GameDifficulty difficulty) {
+        this.playerName = playerName;
         this.rounds = rounds;
+        this.difficulty = difficulty;
     }
 
     public void init() throws Exception {
@@ -33,9 +41,14 @@ public class GameEnvironment {
         map.drawPath(gameController.getOverlayCanvas());
     }
 
+    public void setDifficulty(GameDifficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
     public boolean isPaused() {
         return paused;
     }
+
     public void setPaused(boolean paused) {
         this.paused = paused;
     }

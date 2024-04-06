@@ -1,4 +1,4 @@
-package seng201.team53;
+package seng201.team53.game;
 
 public enum GameDifficulty {
 
