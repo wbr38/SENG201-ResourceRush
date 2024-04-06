@@ -29,6 +29,7 @@ public class MainWindow extends Application {
         MainController baseController = baseLoader.getController();
         baseController.init();
         primaryStage.setTitle("ResourceRush");
+        primaryStage.setResizable(false);
 
         Scene scene = new Scene(root, 800, 640);
         primaryStage.setScene(scene);
