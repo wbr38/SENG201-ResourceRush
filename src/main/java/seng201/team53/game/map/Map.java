@@ -1,11 +1,7 @@
 package seng201.team53.game.map;
 
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 import seng201.team53.App;
 import seng201.team53.items.towers.Tower;
 
@@ -30,77 +26,6 @@ public class Map {
     public Map(String name, Tile[][] tiles) {
         this.name = name;
         this.tiles = tiles;
-
-        Stage primaryStage = App.getApp().getPrimaryStage();
-        Scene scene = primaryStage.getScene();
-        scene.setOnMousePressed(this::onMousePressed);
-    }
-
-    public void setInteraction(MapInteraction interaction) {
-        currentInteraction = interaction;
-
-        // When the user is interacting with the map, scale the tiles down slightly
-        // (scuffed way to make a border/highlight on each tile)
-        if (interaction != MapInteraction.NONE) {
-            scaleTiles(0.95);
-        } else {
-            scaleTiles(1);
-        }
-    }
-
-    public void startPlacingTower(Tower tower) {
-        this.setInteraction(MapInteraction.PLACE_TOWER);
-        selectedTower = tower;
-    }
-
-    /*
-     * Handle when the user clicks their mouse. Used for when interacting with the
-     * map (placing towers, etc)
-     */
-    private void onMousePressed(MouseEvent e) {
-
-        if (e.getButton() != MouseButton.PRIMARY) {
-            return;
-        }
-
-        if (currentInteraction == MapInteraction.NONE) {
-            return;
-        }
-
-        int mouseX = (int) Math.round(e.getSceneX());
-        int mouseY = (int) Math.round(e.getSceneY());
-        Tile tile = getTileFromScreenPosition(mouseX, mouseY);
-        switch (currentInteraction) {
-            case PLACE_TOWER:
-                if (this.placeTower(selectedTower, tile)) {
-                    this.setInteraction(MapInteraction.NONE);
-                    this.selectedTower = null;
-                }
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    private boolean placeTower(Tower tower, Tile tile) {
-        if (!tile.isBuildable())
-            return false;
-        if (tile.getTower() != null)
-            return false;
-
-        var gameController = App.getApp().getGameEnvironment().getWindow().getController();
-        var gridPane = gameController.getGridPane();
-
-        ImageView imageView = tower.getImageView();
-        Point point = tile.getPoint();
-        gridPane.add(imageView, point.x, point.y);
-        towers.add(tower);
-        tile.setTower(tower);
-        // add tower to both the tile and to the maps array list
-        // makes it faster to loop through all towers
-        // or to find a tower at a given x,y
-        return true;
     }
 
     public String getName() {
@@ -115,13 +40,51 @@ public class Map {
             return tiles[tileY][tileX];
         throw new RuntimeException("Tile does not exist at x=" + tileX + ", y=" + tileY);
     }
-
     public Tile getTileFromScreenPosition(int screenX, int screenY) {
         // screen x consists of 20 columns of width 40px each
         // screen y consists of 20 rows of height 40px each
         int tileX = Math.floorDiv(screenX, TILE_WIDTH);
         int tileY = Math.floorDiv(screenY, TILE_HEIGHT);
         return getTileAt(tileX, tileY);
+    }
+
+    public MapInteraction getCurrentInteraction() {
+        return currentInteraction;
+    }
+    public void setInteraction(MapInteraction interaction) {
+        currentInteraction = interaction;
+
+        // When the user is interacting with the map, scale the tiles down slightly
+        // (scuffed way to make a border/highlight on each tile)
+        if (interaction != MapInteraction.NONE) {
+            scaleTiles(0.95);
+        } else {
+            scaleTiles(1);
+        }
+    }
+
+    public Tower getSelectedTower() {
+        return selectedTower;
+    }
+    public void startPlacingTower(Tower tower) {
+        this.setInteraction(MapInteraction.PLACE_TOWER);
+        selectedTower = tower;
+    }
+    public void stopPlacingTower() {
+        this.selectedTower = null;
+    }
+    public void placeTower(Tower tower, Tile tile) {
+        var gameController = App.getApp().getGameEnvironment().getWindow().getController();
+        var gridPane = gameController.getGridPane();
+
+        ImageView imageView = tower.getImageView();
+        Point point = tile.getPoint();
+        gridPane.add(imageView, point.x, point.y);
+        towers.add(tower);
+        tile.setTower(tower);
+        // add tower to both the tile and to the maps array list
+        // makes it faster to loop through all towers
+        // or to find a tower at a given x,y
     }
 
     public void drawPath(Canvas canvas) { // use for debugging the path finding algorithm
