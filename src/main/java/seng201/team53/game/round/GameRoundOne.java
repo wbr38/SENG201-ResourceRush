@@ -12,9 +12,18 @@ public class GameRoundOne extends GameRound {
 
     @Override
     public void init() {
-        setMap(App.getApp().getGameEnvironment().getMapLoader().loadMap("default", "/assets/maps/map_one.json"));
+        var gameEnvironment = App.getApp().getGameEnvironment();
+        gameEnvironment.getWindow().getController().updateRoundCounter(getRoundNumber());
+        setMap(gameEnvironment.getMapLoader().loadMap("default", "/assets/maps/map_one.json"));
         createCart(100, 1, EnumSet.of(ResourceType.WOOD));
         createCart(100, 1, EnumSet.of(ResourceType.ORE));
         createCart(100, 1, EnumSet.of(ResourceType.FOOD));
+    }
+    @Override
+    public GameRound getNextRound() {
+        // if we are going to use the same map for the next round
+        // then we can call new GameRoundTwo(-, -, map)
+        // then we don't have to load and re draw the map - would be pointless
+        throw new IllegalStateException("No next round");
     }
 }

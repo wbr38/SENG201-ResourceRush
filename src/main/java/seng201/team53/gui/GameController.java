@@ -10,7 +10,6 @@ import javafx.scene.text.Text;
 import seng201.team53.App;
 import seng201.team53.game.map.Map;
 import seng201.team53.game.map.MapInteraction;
-import seng201.team53.game.map.MapLoader;
 import seng201.team53.game.map.Tile;
 import seng201.team53.items.towers.LumberMillTower;
 
@@ -106,7 +105,8 @@ public class GameController {
     public void init() {
         var scene = App.getApp().getPrimaryStage().getScene();
         scene.setOnMousePressed(this::onMousePressed);
-
+    }
+    public void updateRoundCounter(int currentRound) {
         int rounds = App.getApp().getGameEnvironment().getRounds();
         roundCounterLabel.setText(1 + "/" + rounds);
     }

@@ -16,9 +16,10 @@ import java.util.*;
 /**
  * This class is responsible for loading the tile templates and game maps
  */
-public class MapLoader {
+public class AssetLoader {
     private final HashMap<Integer, TileTemplate> tileTemplates = new HashMap<>();
     private final JSONParser jsonParser = new JSONParser();
+    private Image cartImage;
 
     /**
      * Initializes the MapLoader by loading the tiles

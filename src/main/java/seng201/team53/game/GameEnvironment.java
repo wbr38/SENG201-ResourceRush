@@ -1,6 +1,6 @@
 package seng201.team53.game;
 
-import seng201.team53.game.map.MapLoader;
+import seng201.team53.game.map.AssetLoader;
 import seng201.team53.game.round.GameRound;
 import seng201.team53.game.round.GameRoundOne;
 import seng201.team53.gui.GameController;
@@ -8,7 +8,7 @@ import seng201.team53.gui.GameWindow;
 
 public class GameEnvironment {
     private final GameWindow gameWindow = new GameWindow();
-    private final MapLoader mapLoader = new MapLoader();
+    private final AssetLoader mapLoader = new AssetLoader();
     private final String playerName;
     private GameDifficulty difficulty;
     private final int rounds;
@@ -40,7 +40,7 @@ public class GameEnvironment {
     public GameWindow getWindow() {
         return gameWindow;
     }
-    public MapLoader getMapLoader() {
+    public AssetLoader getMapLoader() {
         return mapLoader;
     }
 

@@ -15,15 +15,24 @@ public abstract class GameRound implements Tickable {
     private final int roundNumber;
     private final List<Cart> carts = new ArrayList<>();
     private final double startingMoney;
+    private boolean started = false;
     private Map map;
 
     public GameRound(int roundNumber, double startingMoney) {
+        this(roundNumber, startingMoney, null);
+    }
+    public GameRound(int roundNumber, double startingMoney, Map map) {
         this.roundNumber = roundNumber;
         this.startingMoney = startingMoney;
+        this.map = map;
     }
 
     public int getRoundNumber() {
         return roundNumber;
+    }
+
+    public boolean hasStarted() {
+        return started;
     }
 
     public Map getMap() {
@@ -36,8 +45,8 @@ public abstract class GameRound implements Tickable {
     }
 
     public void start() {
-        // Spawn/populate this.carts with a number of carts, based on the GameDifficulty chosen
-        throw new UnsupportedOperationException("Unimplemented method 'start'");
+        // start the game loop
+        // draw the carts on the canvas
     }
 
     public Boolean checkWinCondition() {
@@ -51,6 +60,7 @@ public abstract class GameRound implements Tickable {
     }
 
     public abstract void init();
+    public abstract GameRound getNextRound();
 
     @Override
     public void tick() {
