@@ -18,7 +18,7 @@ import java.io.IOException;
 public class MainWindow extends Application {
 
     /**
-     * Opens the gui with the fxml content specified in resources/fxml/main_old.fxml
+     * Opens the gui with the fxml content specified in resources/fxml/main.fxml
      * @param primaryStage The current fxml stage, handled by javaFX Application class
      * @throws IOException if there is an issue loading fxml file
      */
