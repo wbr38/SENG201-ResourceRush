@@ -56,6 +56,9 @@ public class AssetLoader {
         map.drawPath(gameController.getOverlayCanvas());
         return map;
     }
+    public Image getCartImage() {
+        return cartImage;
+    }
 
     /**
      * Loads a list of tile templates from a JSON file
@@ -78,7 +81,7 @@ public class AssetLoader {
      * Loads the cart image
      */
     private void loadCartImage() throws IOException {
-        cartImage = readImage("assets/cart.png");
+        cartImage = readImage("/assets/cart.png");
     }
 
     /**
