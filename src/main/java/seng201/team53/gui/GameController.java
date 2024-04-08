@@ -50,9 +50,7 @@ public class GameController {
 
     @FXML
     void onCreateWoodTowerBtnClick(MouseEvent event) {
-        MapLoader mapLoader = App.getApp().getGameEnvironment().getMapLoader();
-        Map map = mapLoader.getMap("default");
-
+        Map map = App.getApp().getGameEnvironment().getRound().getMap();
         LumberMillTower tower = new LumberMillTower();
         map.startPlacingTower(tower);
     }
@@ -76,7 +74,7 @@ public class GameController {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
         // todo get the map from the current game round
-        var map = App.getApp().getGameEnvironment().getMapLoader().getMap("default");
+        var map = App.getApp().getGameEnvironment().getRound().getMap();
         if (map.getCurrentInteraction() == MapInteraction.NONE)
             return;
 

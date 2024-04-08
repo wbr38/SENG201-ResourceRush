@@ -17,7 +17,6 @@ import java.util.*;
  * This class is responsible for loading the tile templates and game maps
  */
 public class MapLoader {
-    private final HashMap<String, Map> maps = new HashMap<>();
     private final HashMap<Integer, TileTemplate> tileTemplates = new HashMap<>();
     private final JSONParser jsonParser = new JSONParser();
 
@@ -30,17 +29,15 @@ public class MapLoader {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        // todo - move this to game round to load maps and store them
-        loadMap("default", "/assets/maps/map_one.json");
     }
 
     /**
      * Loads a map from a JSON file
      * @param name The name of the map
      * @param path The path to the JSON file resource
+     * @return The loaded map
      */
-    public void loadMap(String name, String path) {
+    public Map loadMap(String name, String path) {
         var json = (JSONObject) readJsonResource(path);
         var startPosition = (JSONObject) json.get("start_position");
         var startPositionX = (int)(long) startPosition.get("y");
@@ -55,16 +52,7 @@ public class MapLoader {
         var map = new Map(name, tiles);
         map.findPath(startPositionX, startPositionY, endPositionX, endPositionY);
         map.drawPath(gameController.getOverlayCanvas());
-        maps.put(name.toLowerCase(), map);
-    }
-
-    /**
-     * Retrieves a map by its name
-     * @param name The name of the map
-     * @return The map object
-     */
-    public Map getMap(String name) {
-        return maps.get(name.toLowerCase());
+        return map;
     }
 
     /**

@@ -1,16 +1,20 @@
 package seng201.team53.items;
 
+import seng201.team53.game.Tickable;
+
 import java.util.EnumSet;
 
-public class Cart {
-
-    private int maxCapacity;
-    private int currentCapacity;
-    private EnumSet<ResourceType> acceptedResources;
-    private float velocity;
+public class Cart implements Tickable {
+    private final int maxCapacity;
+    private final float velocity;
+    private final EnumSet<ResourceType> acceptedResources;
     private int position;
+    private int currentCapacity;
 
-    public Cart() {
+    public Cart(int maxCapacity, float velocity, EnumSet<ResourceType> acceptedResources) {
+        this.maxCapacity = maxCapacity;
+        this.velocity = velocity;
+        this.acceptedResources = acceptedResources;
     }
 
     public int getMaxCapacity() {
@@ -34,5 +38,10 @@ public class Cart {
      */
     public int getPosition() {
         throw new UnsupportedOperationException("Unimplemented method 'getPosition'");
+    }
+
+    @Override
+    public void tick() {
+
     }
 }

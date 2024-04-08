@@ -1,6 +1,8 @@
 package seng201.team53.game;
 
 import seng201.team53.game.map.MapLoader;
+import seng201.team53.game.round.GameRound;
+import seng201.team53.game.round.GameRoundOne;
 import seng201.team53.gui.GameController;
 import seng201.team53.gui.GameWindow;
 
@@ -11,6 +13,7 @@ public class GameEnvironment {
     private GameDifficulty difficulty;
     private final int rounds;
     private boolean paused = true;
+    private GameRound gameRound;
 
     // TODO
     // public Inventory inventory;
@@ -30,6 +33,8 @@ public class GameEnvironment {
         GameController gameController = gameWindow.getController();
         gameController.init();
         mapLoader.init();
+        gameRound = new GameRoundOne();
+        gameRound.init();
     }
 
     public GameWindow getWindow() {
@@ -39,8 +44,15 @@ public class GameEnvironment {
         return mapLoader;
     }
 
+    public GameDifficulty getDifficulty() {
+        return difficulty;
+    }
     public void setDifficulty(GameDifficulty difficulty) {
         this.difficulty = difficulty;
+    }
+
+    public int getRounds() {
+        return rounds;
     }
 
     public boolean isPaused() {
@@ -51,7 +63,7 @@ public class GameEnvironment {
         this.paused = paused;
     }
 
-    public int getRounds() {
-        return rounds;
+    public GameRound getRound() {
+        return gameRound;
     }
 }
