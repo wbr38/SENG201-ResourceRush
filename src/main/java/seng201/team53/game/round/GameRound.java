@@ -1,21 +1,18 @@
-package seng201.team53.game;
+package seng201.team53.game.round;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import seng201.team53.items.Cart;
 
-public class GameRound {
-    private ArrayList<Cart> carts;
-    public final double startingMoney;
-
-    private int roundNumber;
+public abstract class GameRound {
+    private final int roundNumber;
+    private final List<Cart> carts = new ArrayList<>();
+    private final double startingMoney;
 
     GameRound(int roundNumber, int startingMoney) {
-        this.carts = new ArrayList<>();
-        this.startingMoney = startingMoney;
         this.roundNumber = roundNumber;
-
-        this.carts = new ArrayList<>();
+        this.startingMoney = startingMoney;
     }
 
     public int getRoundNumber() {
