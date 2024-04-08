@@ -6,8 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import seng201.team53.App;
-import seng201.team53.game.GameDifficulty;
-import seng201.team53.game.GameEnvironment;
 
 import java.io.IOException;
 

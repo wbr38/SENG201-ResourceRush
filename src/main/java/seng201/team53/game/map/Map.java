@@ -36,6 +36,8 @@ public class Map {
         return tiles;
     }
     public Tile getTileAt(int tileX, int tileY) {
+        // because we are using a 2D array to store tiles, we have to get the row first (y value)
+        // then get the column (x value) hence tiles[tileY][tileX]
         if (tileX >= 0 && tileX < tiles.length && tileY >= 0 && tileY < tiles[tileX].length)
             return tiles[tileY][tileX];
         throw new RuntimeException("Tile does not exist at x=" + tileX + ", y=" + tileY);
