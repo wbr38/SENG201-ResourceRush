@@ -5,8 +5,8 @@ import seng201.team53.gui.GameController;
 import seng201.team53.gui.GameWindow;
 
 public class GameEnvironment {
-    public final GameWindow gameWindow = new GameWindow();
-    public final MapLoader mapLoader = new MapLoader();
+    private final GameWindow gameWindow = new GameWindow();
+    private final MapLoader mapLoader = new MapLoader();
     private final String playerName;
     private GameDifficulty difficulty;
     private final int rounds;
@@ -27,18 +27,16 @@ public class GameEnvironment {
     public void init() throws Exception {
         gameWindow.start();
 
-        GameController gameController = gameWindow.getGameController();
+        GameController gameController = gameWindow.getController();
         gameController.init();
         mapLoader.init();
+    }
 
-        // for testing purposes
-        // todo - load all maps in init then draw them in GameRound
-        var map = mapLoader.getMap("default");
-        var gridPane = gameController.getGridPane();
-        // todo - add startX, startY, endX, endY into map txt file or auto detect for start/end
-        map.findPath(5, 0, 15, 14);
-        map.draw(gridPane);
-        map.drawPath(gameController.getOverlayCanvas());
+    public GameWindow getWindow() {
+        return gameWindow;
+    }
+    public MapLoader getMapLoader() {
+        return mapLoader;
     }
 
     public void setDifficulty(GameDifficulty difficulty) {

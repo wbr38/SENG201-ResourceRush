@@ -48,7 +48,7 @@ public class GameController {
 
     @FXML
     void onCreateWoodTowerBtnClick(MouseEvent event) {
-        MapLoader mapLoader = App.getApp().getGameEnvironment().mapLoader;
+        MapLoader mapLoader = App.getApp().getGameEnvironment().getMapLoader();
         Map map = mapLoader.getMap("default");
 
         LumberMillTower tower = new LumberMillTower();

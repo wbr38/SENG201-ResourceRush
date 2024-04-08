@@ -20,7 +20,7 @@ public class GameWindow {
         primaryStage.show();
     }
 
-    public GameController getGameController() {
+    public GameController getController() {
         return gameController;
     }
 }

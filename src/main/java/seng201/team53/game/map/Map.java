@@ -5,7 +5,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import seng201.team53.App;
 import seng201.team53.items.towers.Tower;
@@ -18,19 +17,19 @@ public class Map {
 
     public static final int TILE_HEIGHT = 40;
     public static final int TILE_WIDTH = 40;
-
     private static final int[] X_DIRECTIONS = { -1, 0, 1, 0 };
     private static final int[] Y_DIRECTIONS = { 0, 1, 0, -1 };
     private final String name;
-    private final Tile[][] tiles = new Tile[16][20];
+    private final Tile[][] tiles;
     private final Stack<Point> path = new Stack<>();
     private final ArrayList<Tower> towers = new ArrayList<>();
 
     private MapInteraction currentInteraction = MapInteraction.NONE;
     private Tower selectedTower; 
 
-    public Map(String name) {
+    public Map(String name, Tile[][] tiles) {
         this.name = name;
+        this.tiles = tiles;
 
         Stage primaryStage = App.getApp().getPrimaryStage();
         Scene scene = primaryStage.getScene();
@@ -70,14 +69,13 @@ public class Map {
 
         int mouseX = (int) Math.round(e.getSceneX());
         int mouseY = (int) Math.round(e.getSceneY());
-        Tile selectedTile = getTileFromScreenPosition(mouseX, mouseY);
-        Point point = selectedTile.getPoint();
-
+        Tile tile = getTileFromScreenPosition(mouseX, mouseY);
         switch (currentInteraction) {
             case PLACE_TOWER:
-                this.placeTower(selectedTower, point);
-                this.setInteraction(MapInteraction.NONE);
-                this.selectedTower = null;
+                if (this.placeTower(selectedTower, tile)) {
+                    this.setInteraction(MapInteraction.NONE);
+                    this.selectedTower = null;
+                }
                 break;
 
             default:
@@ -85,16 +83,24 @@ public class Map {
         }
     }
 
-    private void placeTower(Tower tower, Point point) {
-        // TODO: check if this tile is "placeable"
-        // False if the tile is already occupied, or if the tile is part of the cart path
+    private boolean placeTower(Tower tower, Tile tile) {
+        if (!tile.isBuildable())
+            return false;
+        if (tile.getTower() != null)
+            return false;
 
-        var gameController = App.getApp().getGameEnvironment().gameWindow.getGameController();
+        var gameController = App.getApp().getGameEnvironment().getWindow().getController();
         var gridPane = gameController.getGridPane();
 
         ImageView imageView = tower.getImageView();
+        Point point = tile.getPoint();
         gridPane.add(imageView, point.x, point.y);
         towers.add(tower);
+        tile.setTower(tower);
+        // add tower to both the tile and to the maps array list
+        // makes it faster to loop through all towers
+        // or to find a tower at a given x,y
+        return true;
     }
 
     public String getName() {
@@ -104,27 +110,18 @@ public class Map {
     public Tile[][] getTiles() {
         return tiles;
     }
+    public Tile getTileAt(int tileX, int tileY) {
+        if (tileX >= 0 && tileX < tiles.length && tileY >= 0 && tileY < tiles[tileX].length)
+            return tiles[tileY][tileX];
+        throw new RuntimeException("Tile does not exist at x=" + tileX + ", y=" + tileY);
+    }
 
     public Tile getTileFromScreenPosition(int screenX, int screenY) {
         // screen x consists of 20 columns of width 40px each
         // screen y consists of 20 rows of height 40px each
         int tileX = Math.floorDiv(screenX, TILE_WIDTH);
         int tileY = Math.floorDiv(screenY, TILE_HEIGHT);
-        if (tileX >= 0 && tileX < tiles.length && tileY >= 0 && tileY < tiles[tileX].length)
-            return tiles[tileX][tileY];
-        throw new RuntimeException("Click out of bounds"); // shouldn't happen but use for testing purposes
-    }
-
-    public void draw(GridPane gridPane) {
-        for (int column = 0; column < tiles.length; column++) {
-            for (int row = 0; row < tiles[column].length; row++) {
-                var tile = tiles[column][row];
-                ImageView imageView = tile.getImageView();
-                imageView.setFitWidth(TILE_WIDTH);
-                imageView.setFitHeight(TILE_HEIGHT);
-                gridPane.add(imageView, row, column);
-            }
-        }
+        return getTileAt(tileX, tileY);
     }
 
     public void drawPath(Canvas canvas) { // use for debugging the path finding algorithm

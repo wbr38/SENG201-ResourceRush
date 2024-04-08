@@ -1,0 +1,14 @@
+[
+  {
+    "tile_id": 0,
+    "buildable": true,
+    "path": false,
+    "image_path": "/assets/tiles/grass_tile.png"
+  },
+  {
+    "tile_id": 1,
+    "buildable": false,
+    "path": true,
+    "image_path": "/assets/tiles/path_tile.png"
+  }
+]
