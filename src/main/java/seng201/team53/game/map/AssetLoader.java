@@ -27,6 +27,7 @@ public class AssetLoader {
     public void init() {
         try {
             loadTiles();
+            loadCartImage();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -71,6 +72,13 @@ public class AssetLoader {
             var image = readImage(imagePath);
             tileTemplates.put(tileId, new TileTemplate(buildable, path, image));
         }
+    }
+
+    /**
+     * Loads the cart image
+     */
+    private void loadCartImage() throws IOException {
+        cartImage = readImage("assets/cart.png");
     }
 
     /**
