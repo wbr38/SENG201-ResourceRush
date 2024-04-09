@@ -1,16 +1,13 @@
 package seng201.team53.game.map;
 
-import javafx.animation.PathTransition;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Polyline;
-import javafx.util.Duration;
 import seng201.team53.App;
 import seng201.team53.items.towers.Tower;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
@@ -31,7 +28,8 @@ public class Map {
     private final int endY;
 
     private MapInteraction currentInteraction = MapInteraction.NONE;
-    private Tower selectedTower; 
+    private Tower selectedTower;
+    private ImageView selectedTowerImage;
 
     public Map(String name, Tile[][] tiles, int startX, int startY, int endX, int endY) {
         this.name = name;
@@ -66,6 +64,10 @@ public class Map {
         return getTileAt(tileX, tileY);
     }
 
+    public List<Point> getPath() {
+        return path;
+    }
+
     public Polyline getPolylinePath() {
         return polylinePath;
     }
@@ -90,10 +92,21 @@ public class Map {
     }
     public void startPlacingTower(Tower tower) {
         this.setInteraction(MapInteraction.PLACE_TOWER);
+        selectedTowerImage = tower.getImageView();
+        AnchorPane pane = App.getApp().getGameEnvironment().getWindow().getController().test;
+        pane.getChildren().add(selectedTowerImage);
+        pane.setOnMouseMoved(event -> {
+            selectedTowerImage.setX(event.getX() - 20);
+            selectedTowerImage.setY(event.getY() - 20);
+        });
         selectedTower = tower;
     }
     public void stopPlacingTower() {
+        AnchorPane pane = App.getApp().getGameEnvironment().getWindow().getController().test;
+        pane.setOnMouseMoved(null);
+        pane.getChildren().remove(selectedTowerImage);
         this.selectedTower = null;
+        selectedTowerImage = null;
     }
     public void placeTower(Tower tower, Tile tile) {
         var gameController = App.getApp().getGameEnvironment().getWindow().getController();
@@ -112,10 +125,18 @@ public class Map {
     private void generatePathPolyline() {
         if (!polylinePath.getPoints().isEmpty())
             throw new IllegalStateException("Map already has a polyline path calculated.");
+        // start off screen
+        var firstPoint = path.get(0);
+        polylinePath.getPoints().add(firstPoint.y * 40 - 20.0);
+        polylinePath.getPoints().add(firstPoint.x * 40 + 20.0);
         for (var point : path) {
             polylinePath.getPoints().add(point.y * 40 + 20.0);
             polylinePath.getPoints().add(point.x * 40 + 20.0);
         }
+        // end off screen
+        var lastPoint = path.get(path.size() - 1);
+        polylinePath.getPoints().add(lastPoint.y * 40 + 20.0);
+        polylinePath.getPoints().add(lastPoint.x * 40 + 60.0);
     }
     private void findPath() {
         if (!path.isEmpty())
