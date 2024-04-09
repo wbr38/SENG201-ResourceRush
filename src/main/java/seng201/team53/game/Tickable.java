@@ -4,7 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 public interface Tickable {
     void tick();
-    default void render() {
+    default void render(GraphicsContext graphicsContext) {
 
     }
 }

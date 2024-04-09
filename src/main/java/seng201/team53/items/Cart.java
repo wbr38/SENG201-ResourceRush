@@ -59,7 +59,10 @@ public class Cart implements Tickable {
         lifetimeTicks++;
     }
     @Override
-    public void render() {
+    public void render(GraphicsContext graphicsContext) {
+        if (imageView == null) // cart has not "spawned" yet so do not render it
+            return;
+
 
     }
 }

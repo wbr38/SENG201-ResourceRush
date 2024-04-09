@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import seng201.team53.App;
 import seng201.team53.game.GameDifficulty;
@@ -79,8 +80,8 @@ public abstract class GameRound implements Tickable {
         carts.forEach(Cart::tick);
     }
     @Override
-    public void render() {
-        carts.forEach(Cart::render);
+    public void render(GraphicsContext graphics) {
+        carts.forEach(cart -> cart.render(graphics));
     }
 
     protected void createCart(int maxCapacity, float velocity, EnumSet<ResourceType> acceptedResources, int spawnAfterTicks) {
