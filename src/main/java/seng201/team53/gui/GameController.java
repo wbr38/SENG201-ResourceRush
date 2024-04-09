@@ -40,11 +40,13 @@ public class GameController {
     void onPauseButtonMouseClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
-        App.getApp().getGameEnvironment().setPaused(false);
+        var gameEnvironment = App.getApp().getGameEnvironment();
+        gameEnvironment.setPaused(true);
         startButton.setDisable(false);
         startButton.setVisible(true);
         pauseButton.setDisable(true);
         pauseButton.setVisible(false);
+        gameEnvironment.getRound().pause();
     }
 
     @FXML
@@ -58,11 +60,16 @@ public class GameController {
     void onStartButtonMouseClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
-        App.getApp().getGameEnvironment().setPaused(true);
+        var gameEnvironment = App.getApp().getGameEnvironment();
+        gameEnvironment.setPaused(false);
         startButton.setDisable(true);
         startButton.setVisible(false);
         pauseButton.setDisable(false);
         pauseButton.setVisible(true);
+        if (!gameEnvironment.getRound().hasStarted())
+            gameEnvironment.getRound().start();
+        else
+            gameEnvironment.getRound().play();
     }
 
     /*
