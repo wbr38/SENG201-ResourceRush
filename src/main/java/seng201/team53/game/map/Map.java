@@ -1,12 +1,17 @@
 package seng201.team53.game.map;
 
+import javafx.animation.PathTransition;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Polyline;
+import javafx.util.Duration;
 import seng201.team53.App;
 import seng201.team53.items.towers.Tower;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Stack;
 
 public class Map {
@@ -18,14 +23,25 @@ public class Map {
     private final String name;
     private final Tile[][] tiles;
     private final Stack<Point> path = new Stack<>();
-    private final ArrayList<Tower> towers = new ArrayList<>();
+    private final Polyline polylinePath = new Polyline();
+    private final List<Tower> towers = new ArrayList<>();
+    private final int startX;
+    private final int startY;
+    private final int endX;
+    private final int endY;
 
     private MapInteraction currentInteraction = MapInteraction.NONE;
     private Tower selectedTower; 
 
-    public Map(String name, Tile[][] tiles) {
+    public Map(String name, Tile[][] tiles, int startX, int startY, int endX, int endY) {
         this.name = name;
         this.tiles = tiles;
+        this.startX = startX;
+        this.startY = startY;
+        this.endX = endX;
+        this.endY = endY;
+        findPath();
+        generatePathPolyline();
     }
 
     public String getName() {
@@ -48,6 +64,10 @@ public class Map {
         int tileX = Math.floorDiv(screenX, TILE_WIDTH);
         int tileY = Math.floorDiv(screenY, TILE_HEIGHT);
         return getTileAt(tileX, tileY);
+    }
+
+    public Polyline getPolylinePath() {
+        return polylinePath;
     }
 
     public MapInteraction getCurrentInteraction() {
@@ -89,38 +109,21 @@ public class Map {
         // or to find a tower at a given x,y
     }
 
-    public void drawPath(Canvas canvas) { // use for debugging the path finding algorithm
-        var graphics = canvas.getGraphicsContext2D();
-        for (int i = 0; i < path.size(); i++) {
-            var point = path.get(i);
-            int screenX = 40 * point.x;
-            int screenY = 40 * point.y;
-            if (i != path.size() - 1) { // not the last point in path
-                var nextPoint = path.get(i + 1);
-                if (point.y - nextPoint.y == 1) { // LEFT
-                    graphics.fillRect(screenY - 20, screenX + 15, 40, 10);
-                }
-                if (nextPoint.y - point.y == 1) { // RIGHT
-                    graphics.fillRect(screenY + 20, screenX + 15, 40, 10);
-                }
-                if (point.x - nextPoint.x == 1) { // UP
-                    graphics.fillRect(screenY + 15, screenX - 20, 10, 40);
-                }
-                if (nextPoint.x - point.x == 1) { // DOWN
-                    graphics.fillRect(screenY + 15, screenX + 20, 10, 40);
-                }
-            }
+    private void generatePathPolyline() {
+        if (!polylinePath.getPoints().isEmpty())
+            throw new IllegalStateException("Map already has a polyline path calculated.");
+        for (var point : path) {
+            polylinePath.getPoints().add(point.y * 40 + 20.0);
+            polylinePath.getPoints().add(point.x * 40 + 20.0);
         }
     }
-
-    public void findPath(int startX, int startY, int endX, int endY) {
+    private void findPath() {
         if (!path.isEmpty())
             throw new IllegalStateException("Map already has a path calculated.");
         int[][] discovered = new int[tiles.length][tiles[0].length];
         if (!depthFirstSearch(discovered, startX, startY, endX, endY))
             throw new RuntimeException("Invalid map, does not contain a path");
     }
-
     private boolean depthFirstSearch(int[][] discovered, int x, int y, int endX, int endY) {
         discovered[x][y] = 2;
         if (x == endX && y == endY) {
@@ -139,12 +142,10 @@ public class Map {
         }
         return false;
     }
-
     private boolean isValidCell(int[][] discovered, int x, int y) {
         return x >= 0 && y >= 0 && x < tiles.length && y < tiles[x].length && tiles[x][y].isPath()
                 && discovered[x][y] == 0;
     }
-
     private void scaleTiles(double value) {
         for (Tile[] tileRow : tiles) {
             for (Tile tile : tileRow) {

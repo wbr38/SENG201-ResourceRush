@@ -1,11 +1,11 @@
 package seng201.team53.items;
 
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.animation.Interpolator;
+import javafx.animation.PathTransition;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 import seng201.team53.App;
 import seng201.team53.game.Tickable;
-import seng201.team53.game.map.Map;
 
 import java.util.EnumSet;
 
@@ -14,10 +14,12 @@ public class Cart implements Tickable {
     private final float velocity;
     private final EnumSet<ResourceType> acceptedResources;
     private final int spawnAfterTicks; // so we can spawn them after each other - don't all render on top of each other
-    private int position;
+    private int x;
+    private int y;
     private int currentCapacity;
     private int lifetimeTicks = 0;
-    private ImageView imageView;
+    private PathTransition pathTransition;
+    private boolean completedPath = false;
 
     public Cart(int maxCapacity, float velocity, EnumSet<ResourceType> acceptedResources, int spawnAfterTicks) {
         this.maxCapacity = maxCapacity;
@@ -27,42 +29,53 @@ public class Cart implements Tickable {
     }
 
     public int getMaxCapacity() {
-        throw new UnsupportedOperationException("Unimplemented method 'getMaxCapacity'");
+        return maxCapacity;
     }
 
     public int getCapacity() {
-        throw new UnsupportedOperationException("Unimplemented method 'getCapacity'");
+        return currentCapacity;
     }
 
-    public Boolean isFull() {
+    public boolean isFull() {
         return this.getCapacity() >= this.getMaxCapacity();
     }
 
     public EnumSet<ResourceType> getAcceptedResources() {
-        throw new UnsupportedOperationException("Unimplemented method 'getAcceptedResources'");
+        return acceptedResources;
     }
 
-    /**
-     * @return The current position/progress of this cart on the track
-     */
-    public int getPosition() {
-        throw new UnsupportedOperationException("Unimplemented method 'getPosition'");
+    public PathTransition getPathTransition() {
+        return pathTransition;
+    }
+
+    public boolean isCompletedPath() {
+        return completedPath;
     }
 
     @Override
     public void tick() {
         if (spawnAfterTicks == lifetimeTicks) {
-            imageView = new ImageView(App.getApp().getGameEnvironment().getMapLoader().getCartImage());
-            imageView.setFitHeight(Map.TILE_HEIGHT);
-            imageView.setFitWidth(Map.TILE_WIDTH);
+            if (!completedPath) {
+                var gameEnvironment = App.getApp().getGameEnvironment();
+                var map = gameEnvironment.getRound().getMap();
+                var polylinePath = map.getPolylinePath();
+                var imageView = new ImageView(gameEnvironment.getMapLoader().getCartImage());
+                imageView.setX(polylinePath.getPoints().get(1));
+                imageView.setY(polylinePath.getPoints().get(0));
+                gameEnvironment.getWindow().getController().test.getChildren().add(imageView);
+                pathTransition = new PathTransition();
+                pathTransition.setNode(imageView);
+                pathTransition.setDuration(Duration.seconds(10));
+                pathTransition.setPath(polylinePath);
+                pathTransition.setInterpolator(Interpolator.LINEAR);
+                pathTransition.play();
+                pathTransition.setOnFinished(event -> {
+                    pathTransition = null;
+                    completedPath = true;
+                    gameEnvironment.getWindow().getController().test.getChildren().remove(imageView);
+                });
+            }
         }
         lifetimeTicks++;
-    }
-    @Override
-    public void render(GraphicsContext graphicsContext) {
-        if (imageView == null) // cart has not "spawned" yet so do not render it
-            return;
-
-
     }
 }

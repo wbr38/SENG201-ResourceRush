@@ -14,7 +14,7 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 /**
- * This class is responsible for loading the tile templates and game maps
+ * This class is responsible for loading the tile templates, game maps, and cart image
  */
 public class AssetLoader {
     private final HashMap<Integer, TileTemplate> tileTemplates = new HashMap<>();
@@ -51,10 +51,7 @@ public class AssetLoader {
         var gameController = App.getApp().getGameEnvironment().getWindow().getController();
         var gridPane = gameController.getGridPane();
         var tiles = readMapMatrix(mapMatrix, gridPane);
-        var map = new Map(name, tiles);
-        map.findPath(startPositionX, startPositionY, endPositionX, endPositionY);
-        map.drawPath(gameController.getOverlayCanvas());
-        return map;
+        return new Map(name, tiles, startPositionX, startPositionY, endPositionX, endPositionY);
     }
     public Image getCartImage() {
         return cartImage;
@@ -79,6 +76,7 @@ public class AssetLoader {
 
     /**
      * Loads the cart image
+     * @throws IOException If an I/O error occurs
      */
     private void loadCartImage() throws IOException {
         cartImage = readImage("/assets/cart.png");

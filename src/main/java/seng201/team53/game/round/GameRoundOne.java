@@ -15,9 +15,9 @@ public class GameRoundOne extends GameRound {
         var gameEnvironment = App.getApp().getGameEnvironment();
         gameEnvironment.getWindow().getController().updateRoundCounter(getRoundNumber());
         setMap(gameEnvironment.getMapLoader().loadMap("default", "/assets/maps/map_one.json"));
-        createCart(100, 1, EnumSet.of(ResourceType.WOOD), 0);
-        createCart(100, 1, EnumSet.of(ResourceType.ORE), 20);
-        createCart(100, 1, EnumSet.of(ResourceType.FOOD), 40);
+        createCart(50, 1, EnumSet.of(ResourceType.WOOD), 0);
+        createCart(40, 2, EnumSet.of(ResourceType.ORE), 20);
+        createCart(20, 3, EnumSet.of(ResourceType.FOOD), 40);
     }
     @Override
     public GameRound getNextRound() {

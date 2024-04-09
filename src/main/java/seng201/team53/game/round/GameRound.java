@@ -48,6 +48,10 @@ public abstract class GameRound implements Tickable {
         this.map = map;
     }
 
+    @Override
+    public void tick() {
+        carts.forEach(Cart::tick);
+    }
     public void start() {
         if (hasStarted() || gameLoop != null)
             throw new IllegalStateException("Game round has already started and we cannot have duplicate game loops");
@@ -57,9 +61,17 @@ public abstract class GameRound implements Tickable {
     }
     public void play() {
         gameLoop.start();
+        carts.forEach(cart -> {
+            if (!cart.isCompletedPath() && cart.getPathTransition() != null)
+                cart.getPathTransition().play();
+        });
     }
     public void pause() {
         gameLoop.stop();
+        carts.forEach(cart -> {
+            if (!cart.isCompletedPath() && cart.getPathTransition() != null)
+                cart.getPathTransition().pause();
+        });
     }
 
     public Boolean checkWinCondition() {
@@ -74,15 +86,6 @@ public abstract class GameRound implements Tickable {
 
     public abstract void init();
     public abstract GameRound getNextRound();
-
-    @Override
-    public void tick() {
-        carts.forEach(Cart::tick);
-    }
-    @Override
-    public void render(GraphicsContext graphics) {
-        carts.forEach(cart -> cart.render(graphics));
-    }
 
     protected void createCart(int maxCapacity, float velocity, EnumSet<ResourceType> acceptedResources, int spawnAfterTicks) {
         var difficulty = App.getApp().getGameEnvironment().getDifficulty();

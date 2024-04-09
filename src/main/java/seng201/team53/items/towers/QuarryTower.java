@@ -30,16 +30,4 @@ public class QuarryTower extends Tower {
     public Boolean isSellable() {
         return true;
     }
-
-    @Override
-    public void getUpgrades() {
-        throw new UnsupportedOperationException("Unimplemented method 'getUpgrades'");
-    }
-
-
-    @Override
-    public String getSpriteFilePath() {
-        throw new UnsupportedOperationException("Unimplemented method 'getSpriteFilePath'");
-    }
-    
 }

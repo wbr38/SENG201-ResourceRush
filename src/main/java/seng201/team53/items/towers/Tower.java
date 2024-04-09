@@ -2,12 +2,12 @@ package seng201.team53.items.towers;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import seng201.team53.game.Tickable;
 import seng201.team53.game.map.Map;
 import seng201.team53.items.Purchasable;
 import seng201.team53.items.ResourceType;
 
-public abstract class Tower implements Purchasable {
-    
+public abstract class Tower implements Purchasable, Tickable {
     private String name;
     private Image image;
     public ResourceType resourceType;
@@ -27,8 +27,10 @@ public abstract class Tower implements Purchasable {
         this.xpLevel = 0;
     }
 
-    public abstract void getUpgrades();
-    public abstract String getSpriteFilePath();
+    @Override
+    public String getName() {
+        return name;
+    }
 
     public ImageView getImageView() {
         var imageView = new ImageView(image);
@@ -38,7 +40,7 @@ public abstract class Tower implements Purchasable {
     }
 
     @Override
-    public String getName() {
-        return name;
+    public void tick() {
+
     }
 }

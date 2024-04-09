@@ -63,6 +63,7 @@
         </rowConstraints>
       </GridPane>
       <Canvas fx:id="overlayCanvas" height="640.0" style="-fx-opacity: 100%;" width="800.0" />
+      <AnchorPane fx:id="test" prefHeight="640.0" prefWidth="800.0" />
       <Pane layoutX="650.0" layoutY="55.0" prefHeight="531.0" prefWidth="150.0">
          <children>
             <ImageView fitHeight="80.0" fitWidth="75.0" layoutY="391.0">
