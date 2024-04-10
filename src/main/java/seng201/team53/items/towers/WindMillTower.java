@@ -7,7 +7,7 @@ public class WindMillTower extends Tower {
     public WindMillTower() {
         super(
                 "Wind Mill",
-                "/assets/wood_tower.png",
+                "/assets/wind_mill_tower.png",
                 ResourceType.ORE);
     }
 
