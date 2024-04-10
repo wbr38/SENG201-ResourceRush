@@ -16,9 +16,9 @@ public class GameRoundOne extends GameRound {
         gameEnvironment.getWindow().getController().updateRoundCounter(getRoundNumber());
         setMap(gameEnvironment.getMapLoader().loadMap("default", "/assets/maps/map_one.json"));
         // velocity is in tiles per second
-        createCart(50, 5, EnumSet.of(ResourceType.WOOD), 0);
-        createCart(40, 5, EnumSet.of(ResourceType.ORE), 20);
-        createCart(20, 3, EnumSet.of(ResourceType.FOOD), 40);
+        createCart(50, 10, EnumSet.of(ResourceType.WOOD), 0);
+        createCart(40, 10, EnumSet.of(ResourceType.ORE), 20);
+        createCart(20, 10, EnumSet.of(ResourceType.FOOD), 40);
     }
     @Override
     public GameRound getNextRound() {

@@ -6,6 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -193,17 +194,48 @@
                   <Font name="Expo M" size="36.0" />
                </font>
             </Text>
-            <ScrollPane layoutX="16.0" layoutY="69.0" opacity="0.5" prefHeight="388.0" prefWidth="119.0">
+            <ScrollPane hbarPolicy="NEVER" layoutX="11.0" layoutY="70.0" prefHeight="388.0" prefWidth="128.0" style="-fx-background-color: transparent;">
                <content>
-                  <Button mnemonicParsing="false" onMouseClicked="#onCreateWoodTowerBtnClick" text="Wood Tower">
-                     <graphic>
-                        <ImageView fitHeight="80.0" fitWidth="82.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../assets/wood_tower.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
+                  <FlowPane alignment="CENTER" prefHeight="384.0" prefWidth="125.0">
+                     <children>
+                        <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#onShopLumberMillTowerClick" prefHeight="96.0" prefWidth="110.0" text="Lumber Mill Tower">
+                           <graphic>
+                              <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../assets/wood_tower.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#onShopMineTowerClick" prefHeight="96.0" prefWidth="110.0" text="Mine Tower">
+                           <graphic>
+                              <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../assets/wood_tower.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#onShopQuarryTowerClick" prefHeight="96.0" prefWidth="110.0" text="Quarry Tower">
+                           <graphic>
+                              <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../assets/wood_tower.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#onShopWindMillTowerClick" prefHeight="96.0" prefWidth="110.0" text="Wind Mill Tower">
+                           <graphic>
+                              <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../assets/wood_tower.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </FlowPane>
                </content></ScrollPane>
             <Button fx:id="pauseButton" layoutX="16.0" layoutY="477.0" mnemonicParsing="false" onMouseClicked="#onPauseButtonMouseClick" prefHeight="51.0" prefWidth="119.0" style="-fx-background-color: #e09860; -fx-border-color: #8a5c38; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Pause">
                <font>
