@@ -1,0 +1,353 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": false,
+    "cutTests": false,
+    "cutClient": false,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": false,
+    "cutConstructors": false
+  },
+  "graphTraversal": {
+    "forwardDepth": 3,
+    "backwardDepth": 3,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "seng201.team53.App",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_877713989 { 
+   	label=team53
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   App2030069793[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)App</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   gameEnvironment: GameEnvironment [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   primaryStage: Stage [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ App()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getApp(): App</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getGameEnvironment(): GameEnvironment</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getPrimaryStage(): Stage</TD></TR>
+<TR><TD ALIGN="LEFT" >+ main(args: String[])</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setGameEnvironment(gameEnvironment: GameEnvironment)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setPrimaryStage(primaryStage: Stage)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+subgraph cluster_1878411912 { 
+   	label=gui
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   GameController1267471890[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)GameController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   createWoodTowerButton: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   gridPane: GridPane [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   overlayCanvas: Canvas [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   pauseButton: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   placeTowersButton: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   roundCounterLabel: Text [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   startButton: Button [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   test: AnchorPane [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getGridPane(): GridPane</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getOverlayCanvas(): Canvas</TD></TR>
+<TR><TD ALIGN="LEFT" >+ init()</TD></TR>
+<TR><TD ALIGN="LEFT" ># onCreateWoodTowerBtnClick(event: MouseEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >- onMousePressed(event: MouseEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" ># onPauseButtonMouseClick(event: MouseEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" ># onStartButtonMouseClick(event: MouseEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ updateRoundCounter(currentRound: int)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+GameWindow1267471890[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)GameWindow</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   gameController: GameController [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getController(): GameController</TD></TR>
+<TR><TD ALIGN="LEFT" >+ start()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+MainController1267471890[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)MainController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   MAX_NAME_LENGTH: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   MIN_NAME_LENGTH: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   difficultyChoiceBox: ChoiceBox&lt;GameDifficulty&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   nameGreenCheckmark: ImageView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   nameNotValidLabel: Text [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   nameRedCross: ImageView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   nameTextField: TextField [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   numberOfRoundsLabel: Text [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   numberOfRoundsSlider: Slider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   validNameChoice: boolean [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ init()</TD></TR>
+<TR><TD ALIGN="LEFT" ># onNameFieldKeyPress(event: KeyEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" ># onStartButtonMouseClick(event: MouseEvent)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+MainWindow1267471890[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)MainWindow</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ launchWrapper(args: String[])</TD></TR>
+<TR><TD ALIGN="LEFT" >+ start(primaryStage: Stage)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_1898791867 { 
+   	label=game
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   AssetLoader892579981[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)AssetLoader</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   cartImage: Image [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   jsonParser: JSONParser [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   tileTemplates: HashMap&lt;Integer, TileTemplate&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getCartImage(): Image</TD></TR>
+<TR><TD ALIGN="LEFT" >+ init()</TD></TR>
+<TR><TD ALIGN="LEFT" >- loadCartImage()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ loadMap(name: String, path: String): Map</TD></TR>
+<TR><TD ALIGN="LEFT" >- loadTiles()</TD></TR>
+<TR><TD ALIGN="LEFT" >- readImage(path: String): Image</TD></TR>
+<TR><TD ALIGN="LEFT" >- readJsonResource(path: String): Object</TD></TR>
+<TR><TD ALIGN="LEFT" >- readMapMatrix(mapMatrix: JSONArray, gridPane: GridPane): Tile[][]</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+GameDifficulty636941921[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(E)GameDifficulty</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+   EASY: GameDifficulty [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   HARD: GameDifficulty [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   NORMAL: GameDifficulty [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   cartVelocityMultiplier: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   moneyEarnMultiplier: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   name: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   startingMoney: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   towerReloadMultiplier: double [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- GameDifficulty(name: String, startingMoney: double, moneyEarnMultiplier: double, towerReloadMultiplier: double, cartVelocityMultiplier: float)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getCartVelocityMultiplier(): float</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getMoneyEarnMultiplier(): double</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getName(): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getStartingMoney(): double</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getTowerReloadMultiplier(): double</TD></TR>
+<TR><TD ALIGN="LEFT" >+ valueOf(name: String): GameDifficulty</TD></TR>
+<TR><TD ALIGN="LEFT" >+ values(): GameDifficulty[]</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#DCFBD5"
+];
+
+GameEnvironment636941921[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)GameEnvironment</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   difficulty: GameDifficulty [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   gameRound: GameRound [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   gameWindow: GameWindow [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mapLoader: AssetLoader [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   paused: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   playerName: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   rounds: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ GameEnvironment(playerName: String, rounds: int, difficulty: GameDifficulty)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getDifficulty(): GameDifficulty</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getMapLoader(): AssetLoader</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getRound(): GameRound</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getRounds(): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getWindow(): GameWindow</TD></TR>
+<TR><TD ALIGN="LEFT" >+ init()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ isPaused(): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setDifficulty(difficulty: GameDifficulty)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setPaused(paused: boolean)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+GameRound1219054465[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)GameRound</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   carts: List&lt;Cart&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   gameLoop: GameLoop [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   map: Map [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   roundNumber: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   started: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   startingMoney: double [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ GameRound(roundNumber: int, startingMoney: double)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ GameRound(roundNumber: int, startingMoney: double, map: Map)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ checkLoseCondition(): Boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ checkWinCondition(): Boolean</TD></TR>
+<TR><TD ALIGN="LEFT" ># createCart(maxCapacity: int, velocity: float, acceptedResources: EnumSet&lt;ResourceType&gt;, spawnAfterTicks: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getMap(): Map</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getNextRound(): GameRound</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getRoundNumber(): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ hasStarted(): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ init()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ pause()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ play()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setMap(map: Map)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ start()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ tick()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+GameRoundOne1219054465[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)GameRoundOne</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ GameRoundOne()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getNextRound(): GameRound</TD></TR>
+<TR><TD ALIGN="LEFT" >+ init()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+App2030069793 -> GameEnvironment636941921[label="gameEnvironment
+[0..1]"];
+App2030069793 -> MainWindow1267471890[label="main() -> launchWrapper()"];
+GameEnvironment636941921 -> AssetLoader892579981[label="mapLoader
+[0..1]"];
+GameEnvironment636941921 -> GameController1267471890[label="init() -> init()"];
+GameEnvironment636941921 -> GameDifficulty636941921[label="difficulty
+[0..1]"];
+GameEnvironment636941921 -> GameRound1219054465[label="gameRound
+[0..1]"];
+GameEnvironment636941921 -> GameRoundOne1219054465[label="init() -> GameRoundOne()"];
+GameEnvironment636941921 -> GameWindow1267471890[label="gameWindow
+[0..1]"];
+MainWindow1267471890 -> MainController1267471890[label="start() -> init()"];
+    
+}
+@enduml

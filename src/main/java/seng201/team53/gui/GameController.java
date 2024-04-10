@@ -15,30 +15,12 @@ import seng201.team53.game.map.Tile;
 import seng201.team53.items.towers.LumberMillTower;
 
 public class GameController {
-    @FXML
-    public AnchorPane test;
-
-    @FXML
-    private GridPane gridPane;
-
-    @FXML
-    private Canvas overlayCanvas;
-
-    @FXML
-    private Button pauseButton;
-
-    @FXML
-    private Button startButton;
-
-    @FXML
-    private Button placeTowersButton;
-
-    @FXML
-    private Text roundCounterLabel;
-
-    // Shop Controller
-    @FXML
-    private Button createWoodTowerButton;
+    @FXML public AnchorPane test;
+    @FXML private GridPane gridPane;
+    @FXML private AnchorPane inventoryPane;
+    @FXML private Button pauseButton;
+    @FXML private Button startButton;
+    @FXML private Text roundCounterLabel;
 
     @FXML
     void onPauseButtonMouseClick(MouseEvent event) {
@@ -78,6 +60,14 @@ public class GameController {
             gameEnvironment.getRound().play();
     }
 
+    @FXML
+    private void onInventoryButtonMouseClick(MouseEvent event) {
+        if (event.getButton() != MouseButton.PRIMARY)
+            return;
+        inventoryPane.setVisible(!inventoryPane.isVisible());
+        inventoryPane.setDisable(!inventoryPane.isDisable());
+    }
+
     /*
      * Handle when the user clicks their mouse. Used for when interacting with the
      * map (placing towers, etc)
@@ -110,16 +100,12 @@ public class GameController {
         return gridPane;
     }
 
-    public Canvas getOverlayCanvas() {
-        return overlayCanvas;
-    }
-
     public void init() {
         var scene = App.getApp().getPrimaryStage().getScene();
         scene.setOnMousePressed(this::onMousePressed);
     }
     public void updateRoundCounter(int currentRound) {
         int rounds = App.getApp().getGameEnvironment().getRounds();
-        roundCounterLabel.setText(1 + "/" + rounds);
+        roundCounterLabel.setText(currentRound + "/" + rounds);
     }
 }
