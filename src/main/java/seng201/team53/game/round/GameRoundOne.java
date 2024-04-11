@@ -24,6 +24,6 @@ public class GameRoundOne extends GameRound {
         // if we are going to use the same map for the next round
         // then we can call new GameRoundTwo(-, -, map)
         // then we don't have to load and re draw the map - would be pointless
-        throw new IllegalStateException("No next round");
+        return new GameRoundTwo(getMap());
     }
 }

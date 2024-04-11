@@ -65,11 +65,19 @@ public class GameEnvironment {
         switch (gameState) {
             case ROUND_COMPLETE -> {
                 controller.showStartButton();
+                gameRound.stop();
                 // check win or lose condition
+                gameRound = gameRound.getNextRound();
+                if (gameRound == null) { // put game into dead state for testing purposes
+                    gameState = GameState.DEAD;
+                    return;
+                }
+                gameRound.init();
             }
             case ROUND_ACTIVE -> {
                 controller.showPauseButton();
-                if (previousState == GameState.ROUND_NOT_STARTED)
+                controller.updateRoundCounter(gameRound.getRoundNumber());
+                if (previousState == GameState.ROUND_NOT_STARTED || previousState == GameState.ROUND_COMPLETE)
                     gameRound.start();
                 else
                     gameRound.play();

@@ -72,6 +72,9 @@ public abstract class GameRound implements Tickable {
                 cart.getPathTransition().pause();
         });
     }
+    public void stop() {
+        gameLoop.stop();
+    }
 
     public Boolean checkWinCondition() {
         // Check if all carts have been filled
