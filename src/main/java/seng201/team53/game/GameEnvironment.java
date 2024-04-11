@@ -10,15 +10,14 @@ public class GameEnvironment {
     private final GameWindow gameWindow = new GameWindow();
     private final AssetLoader assetLoader = new AssetLoader();
     private final String playerName;
-    private GameDifficulty difficulty;
     private final int rounds;
+    private GameDifficulty difficulty;
     private GameState gameState = GameState.ROUND_NOT_STARTED;
     private GameRound gameRound;
 
     // TODO
     // public Inventory inventory;
     // public double money;
-    // public GameRound currentRound;
     // public Shop shop;
 
     public GameEnvironment(String playerName, int rounds, GameDifficulty difficulty) {
@@ -66,6 +65,7 @@ public class GameEnvironment {
         switch (gameState) {
             case ROUND_COMPLETE -> {
                 controller.showStartButton();
+                // check win or lose condition
             }
             case ROUND_ACTIVE -> {
                 controller.showPauseButton();

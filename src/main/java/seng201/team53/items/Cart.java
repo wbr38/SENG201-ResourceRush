@@ -72,6 +72,7 @@ public class Cart implements Tickable {
                 pathTransition.setOnFinished(event -> {
                     pathTransition = null;
                     completedPath = true;
+                    gameEnvironment.getRound().addCartCompletedPath();
                     gameEnvironment.getWindow().getController().test.getChildren().remove(imageView);
                 });
             }

@@ -22,6 +22,7 @@ public abstract class GameRound implements Tickable {
     private final double startingMoney;
     private GameLoop gameLoop;
     private Map map;
+    private int cartsCompletedPath = 0;
 
     public GameRound(int roundNumber, double startingMoney) {
         this(roundNumber, startingMoney, null);
@@ -43,6 +44,12 @@ public abstract class GameRound implements Tickable {
         if (this.map != null)
             throw new IllegalStateException("Map has already been set");
         this.map = map;
+    }
+
+    public void addCartCompletedPath() {
+        cartsCompletedPath++;
+        if (cartsCompletedPath == carts.size())
+            App.getApp().getGameEnvironment().setState(GameState.ROUND_COMPLETE);
     }
 
     @Override
