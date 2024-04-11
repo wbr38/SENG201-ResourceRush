@@ -14,7 +14,7 @@ public class GameRoundOne extends GameRound {
     public void init() {
         var gameEnvironment = App.getApp().getGameEnvironment();
         gameEnvironment.getWindow().getController().updateRoundCounter(getRoundNumber());
-        setMap(gameEnvironment.getMapLoader().loadMap("default", "/assets/maps/map_one.json"));
+        setMap(gameEnvironment.getAssetLoader().loadMap("default", "/assets/maps/map_one.json"));
         // velocity is in tiles per second
         createCart(50, 10, EnumSet.of(ResourceType.WOOD), 0);
         createCart(40, 10, EnumSet.of(ResourceType.ORE), 20);

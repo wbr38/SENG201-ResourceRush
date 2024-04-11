@@ -12,7 +12,7 @@ import seng201.team53.game.map.Map;
 import seng201.team53.game.map.MapInteraction;
 import seng201.team53.game.map.Tile;
 import seng201.team53.items.towers.Tower;
-import seng201.team53.items.towers.type.TowerType;
+import seng201.team53.items.towers.TowerType;
 
 public class GameController {
     @FXML public AnchorPane test;

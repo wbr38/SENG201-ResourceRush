@@ -3,7 +3,6 @@ package seng201.team53.items;
 import javafx.animation.Interpolator;
 import javafx.animation.PathTransition;
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.Polyline;
 import javafx.util.Duration;
 import seng201.team53.App;
 import seng201.team53.game.Tickable;
@@ -60,7 +59,7 @@ public class Cart implements Tickable {
                 var gameEnvironment = App.getApp().getGameEnvironment();
                 var map = gameEnvironment.getRound().getMap();
                 var polylinePath = map.getPolylinePath();
-                var imageView = new ImageView(gameEnvironment.getMapLoader().getCartImage());
+                var imageView = new ImageView(gameEnvironment.getAssetLoader().getCartImage());
                 imageView.setX(polylinePath.getPoints().get(1));
                 imageView.setY(polylinePath.getPoints().get(0));
                 gameEnvironment.getWindow().getController().test.getChildren().add(imageView);

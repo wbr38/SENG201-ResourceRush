@@ -1,4 +1,4 @@
-package seng201.team53.items.towers.type;
+package seng201.team53.items.towers;
 
 import seng201.team53.items.towers.*;
 

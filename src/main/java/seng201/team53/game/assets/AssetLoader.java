@@ -1,4 +1,4 @@
-package seng201.team53.game.map;
+package seng201.team53.game.assets;
 
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
@@ -7,6 +7,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import seng201.team53.App;
+import seng201.team53.game.map.Map;
+import seng201.team53.game.map.Tile;
 
 import java.awt.Point;
 import java.io.IOException;
@@ -39,7 +41,7 @@ public class AssetLoader {
      * @param path The path to the JSON file resource
      * @return The loaded map
      */
-    public Map loadMap(String name, String path) {
+    public seng201.team53.game.map.Map loadMap(String name, String path) {
         var json = (JSONObject) readJsonResource(path);
         var startPosition = (JSONObject) json.get("start_position");
         var startPositionX = (int)(long) startPosition.get("y");
@@ -51,7 +53,7 @@ public class AssetLoader {
         var gameController = App.getApp().getGameEnvironment().getWindow().getController();
         var gridPane = gameController.getGridPane();
         var tiles = readMapMatrix(mapMatrix, gridPane);
-        return new Map(name, tiles, startPositionX, startPositionY, endPositionX, endPositionY);
+        return new seng201.team53.game.map.Map(name, tiles, startPositionX, startPositionY, endPositionX, endPositionY);
     }
     public Image getCartImage() {
         return cartImage;
@@ -109,7 +111,7 @@ public class AssetLoader {
                 var tile = tileTemplate.createTile(new Point(x, y));
                 var imageView = tile.getImageView();
                 tiles[y][x] = tile;
-                imageView.setFitHeight(Map.TILE_HEIGHT);
+                imageView.setFitHeight(seng201.team53.game.map.Map.TILE_HEIGHT);
                 imageView.setFitWidth(Map.TILE_WIDTH);
                 gridPane.add(imageView, x, y); // idk why it has to be backwards
             }

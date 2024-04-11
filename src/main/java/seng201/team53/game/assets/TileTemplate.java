@@ -1,7 +1,8 @@
-package seng201.team53.game.map;
+package seng201.team53.game.assets;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import seng201.team53.game.map.Tile;
 
 import java.awt.*;
 
