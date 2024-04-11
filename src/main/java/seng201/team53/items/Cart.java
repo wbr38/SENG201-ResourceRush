@@ -14,8 +14,6 @@ public class Cart implements Tickable {
     private final float velocity;
     private final EnumSet<ResourceType> acceptedResources;
     private final int spawnAfterTicks; // so we can spawn them after each other - don't all render on top of each other
-    private int x;
-    private int y;
     private int currentCapacity;
     private int lifetimeTicks = 0;
     private PathTransition pathTransition;
