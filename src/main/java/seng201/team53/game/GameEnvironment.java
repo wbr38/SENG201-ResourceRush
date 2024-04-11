@@ -12,7 +12,7 @@ public class GameEnvironment {
     private final String playerName;
     private GameDifficulty difficulty;
     private final int rounds;
-    private boolean paused = true;
+    private GameState gameState = GameState.ROUND_NOT_STARTED;
     private GameRound gameRound;
 
     // TODO
@@ -55,12 +55,30 @@ public class GameEnvironment {
         return rounds;
     }
 
-    public boolean isPaused() {
-        return paused;
+    public GameState getState() {
+        return gameState;
     }
 
-    public void setPaused(boolean paused) {
-        this.paused = paused;
+    public void setState(GameState gameState) {
+        var controller = getWindow().getController();
+        var previousState = this.gameState;
+        this.gameState = gameState;
+        switch (gameState) {
+            case ROUND_COMPLETE -> {
+                controller.showStartButton();
+            }
+            case ROUND_ACTIVE -> {
+                controller.showPauseButton();
+                if (previousState == GameState.ROUND_NOT_STARTED)
+                    gameRound.start();
+                else
+                    gameRound.play();
+            }
+            case ROUND_PAUSE -> {
+                controller.showResumeButton();
+                gameRound.pause();
+            }
+        }
     }
 
     public GameRound getRound() {

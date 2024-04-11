@@ -8,6 +8,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import seng201.team53.App;
+import seng201.team53.game.GameState;
 import seng201.team53.game.map.Map;
 import seng201.team53.game.map.MapInteraction;
 import seng201.team53.game.map.Tile;
@@ -20,6 +21,7 @@ public class GameController {
     @FXML private AnchorPane inventoryPane;
     @FXML private Button pauseButton;
     @FXML private Button startButton;
+    @FXML private Button resumeButton;
     @FXML private Text roundCounterLabel;
 
     public void init() {
@@ -31,29 +33,21 @@ public class GameController {
     private void onStartButtonMouseClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
-        var gameEnvironment = App.getApp().getGameEnvironment();
-        gameEnvironment.setPaused(false);
-        startButton.setDisable(true);
-        startButton.setVisible(false);
-        pauseButton.setDisable(false);
-        pauseButton.setVisible(true);
-        if (!gameEnvironment.getRound().hasStarted())
-            gameEnvironment.getRound().start();
-        else
-            gameEnvironment.getRound().play();
+        App.getApp().getGameEnvironment().setState(GameState.ROUND_ACTIVE);
     }
 
     @FXML
     private void onPauseButtonMouseClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
-        var gameEnvironment = App.getApp().getGameEnvironment();
-        gameEnvironment.setPaused(true);
-        startButton.setDisable(false);
-        startButton.setVisible(true);
-        pauseButton.setDisable(true);
-        pauseButton.setVisible(false);
-        gameEnvironment.getRound().pause();
+        App.getApp().getGameEnvironment().setState(GameState.ROUND_PAUSE);
+    }
+
+    @FXML
+    private void onResumeButtonMouseClick(MouseEvent event) {
+        if (event.getButton() != MouseButton.PRIMARY)
+            return;
+        App.getApp().getGameEnvironment().setState(GameState.ROUND_ACTIVE);
     }
 
     @FXML
@@ -129,5 +123,25 @@ public class GameController {
     public void updateRoundCounter(int currentRound) {
         int rounds = App.getApp().getGameEnvironment().getRounds();
         roundCounterLabel.setText(currentRound + "/" + rounds);
+    }
+
+    public void showStartButton() {
+        showButton(startButton, true);
+        showButton(pauseButton, false);
+        showButton(resumeButton, false);
+    }
+    public void showPauseButton() {
+        showButton(startButton, false);
+        showButton(pauseButton, true);
+        showButton(resumeButton, false);
+    }
+    public void showResumeButton() {
+        showButton(startButton, false);
+        showButton(pauseButton, false);
+        showButton(resumeButton, true);
+    }
+    private void showButton(Button button, boolean show) {
+        button.setVisible(show);
+        button.setDisable(!show);
     }
 }

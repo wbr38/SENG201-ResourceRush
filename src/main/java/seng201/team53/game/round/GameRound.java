@@ -9,6 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
 import seng201.team53.App;
 import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameLoop;
+import seng201.team53.game.GameState;
 import seng201.team53.game.Tickable;
 import seng201.team53.game.map.Map;
 import seng201.team53.items.Cart;
@@ -20,7 +21,6 @@ public abstract class GameRound implements Tickable {
     private final List<Cart> carts = new ArrayList<>();
     private final double startingMoney;
     private GameLoop gameLoop;
-    private boolean started = false;
     private Map map;
 
     public GameRound(int roundNumber, double startingMoney) {
@@ -34,10 +34,6 @@ public abstract class GameRound implements Tickable {
 
     public int getRoundNumber() {
         return roundNumber;
-    }
-
-    public boolean hasStarted() {
-        return started;
     }
 
     public Map getMap() {
@@ -54,10 +50,9 @@ public abstract class GameRound implements Tickable {
         carts.forEach(Cart::tick);
     }
     public void start() {
-        if (hasStarted() || gameLoop != null)
+        if (gameLoop != null)
             throw new IllegalStateException("Game round has already started and we cannot have duplicate game loops");
         gameLoop = new GameLoop();
-        started = true;
         play();
     }
     public void play() {

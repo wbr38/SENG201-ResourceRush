@@ -247,6 +247,11 @@
                   <Font name="Expo M" size="24.0" />
                </font>
             </Button>
+            <Button fx:id="resumeButton" disable="true" layoutX="16.0" layoutY="477.0" mnemonicParsing="false" onMouseClicked="#onResumeButtonMouseClick" prefHeight="51.0" prefWidth="119.0" style="-fx-background-color: #e09860; -fx-border-color: #8a5c38; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Resume" visible="false">
+               <font>
+                  <Font name="Expo M" size="21.0" />
+               </font>
+            </Button>
             <Button layoutX="16.0" layoutY="536.0" mnemonicParsing="false" onMouseClicked="#onInventoryButtonMouseClick" prefHeight="40.0" prefWidth="119.0" style="-fx-background-color: #60b3e0; -fx-border-color: #2485ba; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Inventory">
                <font>
                   <Font name="Expo M" size="18.0" />
