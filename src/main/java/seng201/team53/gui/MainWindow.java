@@ -16,7 +16,7 @@ import java.io.IOException;
 public class MainWindow extends Application {
 
     /**
-     * Opens the gui with the fxml content specified in resources/fxml/main_old.fxml
+     * Opens the gui with the fxml content specified in resources/fxml/main.fxml
      * @param primaryStage The current fxml stage, handled by javaFX Application class
      * @throws IOException if there is an issue loading fxml file
      */
@@ -34,6 +34,18 @@ public class MainWindow extends Application {
         Scene scene = new Scene(root, 800, 640);
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        // temp for bypassing the main menu screen
+//        var name = "Testing";
+//        var rounds = 3;
+//        GameDifficulty gameDifficulty = GameDifficulty.NORMAL;
+//        var gameEnvironment = new GameEnvironment(name, rounds, gameDifficulty);
+//        App.getApp().setGameEnvironment(gameEnvironment);
+//        try {
+//            gameEnvironment.init();
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//        }
     }
 
     /**

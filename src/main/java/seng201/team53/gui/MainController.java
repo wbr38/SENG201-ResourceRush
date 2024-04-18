@@ -76,7 +76,6 @@ public class MainController {
     }
 
     public void init() {
-
         // Initialise Game Difficulty selector
         var difficulties = FXCollections.observableArrayList(GameDifficulty.values());
         difficultyChoiceBox.setItems(difficulties);

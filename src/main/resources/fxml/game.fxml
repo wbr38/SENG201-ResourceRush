@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -62,8 +62,72 @@
             <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <Canvas fx:id="overlayCanvas" height="640.0" style="-fx-opacity: 100%;" width="800.0" />
-      <Pane layoutX="650.0" layoutY="55.0" prefHeight="531.0" prefWidth="150.0">
+      <AnchorPane fx:id="inventoryPane" disable="true" layoutX="160.0" layoutY="530.0" prefHeight="95.0" prefWidth="480.0" visible="false">
+         <children>
+            <ImageView fitHeight="55.0" fitWidth="80.0">
+               <image>
+                  <Image url="@../assets/wood_tile_top_left.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutY="55.0">
+               <image>
+                  <Image url="@../assets/wood_tile_bottom_left.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="80.0" layoutY="55.0">
+               <image>
+                  <Image url="@../assets/wood_tile_bottom_center.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="160.0" layoutY="55.0">
+               <image>
+                  <Image url="@../assets/wood_tile_bottom_center.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="240.0" layoutY="55.0">
+               <image>
+                  <Image url="@../assets/wood_tile_bottom_center.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="320.0" layoutY="55.0">
+               <image>
+                  <Image url="@../assets/wood_tile_bottom_center.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="400.0" layoutY="55.0">
+               <image>
+                  <Image url="@../assets/wood_tile_bottom_right.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="400.0">
+               <image>
+                  <Image url="@../assets/wood_tile_top_right.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="80.0">
+               <image>
+                  <Image url="@../assets/wood_tile_top_center.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="160.0">
+               <image>
+                  <Image url="@../assets/wood_tile_top_center.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="240.0">
+               <image>
+                  <Image url="@../assets/wood_tile_top_center.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="320.0">
+               <image>
+                  <Image url="@../assets/wood_tile_top_center.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="test" prefHeight="640.0" prefWidth="800.0" />
+      <Pane layoutX="650.0" layoutY="55.0" prefHeight="581.0" prefWidth="150.0">
          <children>
             <ImageView fitHeight="80.0" fitWidth="75.0" layoutY="391.0">
                <image>
@@ -130,7 +194,49 @@
                   <Font name="Expo M" size="36.0" />
                </font>
             </Text>
-            <ScrollPane layoutX="16.0" layoutY="69.0" opacity="0.5" prefHeight="388.0" prefWidth="119.0" />
+            <ScrollPane hbarPolicy="NEVER" layoutX="11.0" layoutY="70.0" prefHeight="388.0" prefWidth="128.0" style="-fx-background-color: transparent;">
+               <content>
+                  <FlowPane alignment="CENTER" prefHeight="384.0" prefWidth="125.0">
+                     <children>
+                        <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#onShopLumberMillTowerClick" prefHeight="96.0" prefWidth="110.0" text="Lumber Mill Tower">
+                           <graphic>
+                              <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../assets/wood_tower.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#onShopMineTowerClick" prefHeight="96.0" prefWidth="110.0" text="Mine Tower">
+                           <graphic>
+                              <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../assets/wood_tower.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#onShopQuarryTowerClick" prefHeight="96.0" prefWidth="110.0" text="Quarry Tower">
+                           <graphic>
+                              <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../assets/wood_tower.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#onShopWindMillTowerClick" prefHeight="96.0" prefWidth="110.0" text="Wind Mill Tower">
+                           <graphic>
+                              <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../assets/wind_mill_tower.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </FlowPane>
+               </content></ScrollPane>
             <Button fx:id="pauseButton" layoutX="16.0" layoutY="477.0" mnemonicParsing="false" onMouseClicked="#onPauseButtonMouseClick" prefHeight="51.0" prefWidth="119.0" style="-fx-background-color: #e09860; -fx-border-color: #8a5c38; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Pause">
                <font>
                   <Font name="Expo M" size="24.0" />
@@ -139,6 +245,16 @@
             <Button fx:id="startButton" layoutX="16.0" layoutY="477.0" mnemonicParsing="false" onMouseClicked="#onStartButtonMouseClick" prefHeight="51.0" prefWidth="119.0" style="-fx-background-color: #60b3e0; -fx-border-color: #2485ba; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Start">
                <font>
                   <Font name="Expo M" size="24.0" />
+               </font>
+            </Button>
+            <Button fx:id="resumeButton" disable="true" layoutX="16.0" layoutY="477.0" mnemonicParsing="false" onMouseClicked="#onResumeButtonMouseClick" prefHeight="51.0" prefWidth="119.0" style="-fx-background-color: #e09860; -fx-border-color: #8a5c38; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Resume" visible="false">
+               <font>
+                  <Font name="Expo M" size="21.0" />
+               </font>
+            </Button>
+            <Button layoutX="16.0" layoutY="536.0" mnemonicParsing="false" onMouseClicked="#onInventoryButtonMouseClick" prefHeight="40.0" prefWidth="119.0" style="-fx-background-color: #60b3e0; -fx-border-color: #2485ba; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Inventory">
+               <font>
+                  <Font name="Expo M" size="18.0" />
                </font>
             </Button>
          </children>

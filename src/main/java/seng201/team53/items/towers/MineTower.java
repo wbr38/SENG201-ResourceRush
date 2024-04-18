@@ -4,8 +4,11 @@ import seng201.team53.items.ResourceType;
 
 public class MineTower extends Tower {
 
-    MineTower(String name, ResourceType resourceType) {
-        super(name, resourceType);
+    public MineTower() {
+        super(
+                "Mine",
+                "/assets/wood_tower.png",
+                ResourceType.ORE);
     }
 
     @Override
@@ -26,17 +29,5 @@ public class MineTower extends Tower {
     @Override
     public Boolean isSellable() {
         return true;
-    }
-
-    @Override
-    public void getUpgrades() {
-        throw new UnsupportedOperationException("Unimplemented method 'getUpgrades'");
-    }
-
-
-    @Override
-    public String getSpriteFilePath() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSpriteFilePath'");
     }
 }

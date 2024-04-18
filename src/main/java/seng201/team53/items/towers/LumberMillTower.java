@@ -4,8 +4,12 @@ import seng201.team53.items.ResourceType;
 
 public class LumberMillTower extends Tower {
 
-    LumberMillTower(String name, ResourceType resourceType) {
-        super(name, resourceType);
+    public LumberMillTower() {
+
+        super(
+                "Lumber Mill",
+                "/assets/wood_tower.png",
+                ResourceType.WOOD);
     }
 
     @Override
@@ -26,15 +30,5 @@ public class LumberMillTower extends Tower {
     @Override
     public Boolean isSellable() {
         return true;
-    }
-
-    @Override
-    public void getUpgrades() {
-        throw new UnsupportedOperationException("Unimplemented method 'getUpgrades'");
-    }
-
-    @Override
-    public String getSpriteFilePath() {
-        throw new UnsupportedOperationException("Unimplemented method 'getSpriteFilePath'");
     }
 }

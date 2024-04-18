@@ -4,8 +4,11 @@ import seng201.team53.items.ResourceType;
 
 public class WindMillTower extends Tower {
 
-    WindMillTower(String name, ResourceType resourceType) {
-        super(name, resourceType);
+    public WindMillTower() {
+        super(
+                "Wind Mill",
+                "/assets/wind_mill_tower.png",
+                ResourceType.ORE);
     }
 
     @Override
@@ -26,15 +29,5 @@ public class WindMillTower extends Tower {
     @Override
     public Boolean isSellable() {
         return true;
-    }
-
-    @Override
-    public void getUpgrades() {
-        throw new UnsupportedOperationException("Unimplemented method 'getUpgrades'");
-    }
-
-    @Override
-    public String getSpriteFilePath() {
-        throw new UnsupportedOperationException("Unimplemented method 'getSpriteFilePath'");
     }
 }

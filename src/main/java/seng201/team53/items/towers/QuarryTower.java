@@ -4,8 +4,11 @@ import seng201.team53.items.ResourceType;
 
 public class QuarryTower extends Tower {
 
-    QuarryTower(String name, ResourceType resourceType) {
-        super(name, resourceType);
+    public QuarryTower() {
+        super(
+                "Quarry",
+                "/assets/wood_tower.png",
+                ResourceType.ORE);
     }
 
     @Override
@@ -27,16 +30,4 @@ public class QuarryTower extends Tower {
     public Boolean isSellable() {
         return true;
     }
-
-    @Override
-    public void getUpgrades() {
-        throw new UnsupportedOperationException("Unimplemented method 'getUpgrades'");
-    }
-
-
-    @Override
-    public String getSpriteFilePath() {
-        throw new UnsupportedOperationException("Unimplemented method 'getSpriteFilePath'");
-    }
-    
 }
