@@ -7,7 +7,7 @@ import java.util.EnumSet;
 
 public class GameRoundThree extends GameRound {
     public GameRoundThree(Map map) {
-        super(3, 1000, map);
+        super(3, 500, map);
     }
 
     @Override

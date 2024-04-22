@@ -4,6 +4,8 @@ import seng201.team53.items.ResourceType;
 
 public class WindMillTower extends Tower {
 
+    public static final int COST = 200;
+
     public WindMillTower() {
         super(
             "Wind Mill", "/assets/wind_mill_tower.png", ResourceType.ORE);
@@ -16,7 +18,7 @@ public class WindMillTower extends Tower {
 
     @Override
     public int getCostPrice() {
-        return 100;
+        return COST;
     }
 
     @Override

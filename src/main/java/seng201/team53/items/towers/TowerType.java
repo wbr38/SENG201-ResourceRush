@@ -1,7 +1,5 @@
 package seng201.team53.items.towers;
 
-import seng201.team53.items.towers.*;
-
 import java.util.function.Supplier;
 
 public enum TowerType {

@@ -34,6 +34,11 @@ public class GameController {
     @FXML private Text notificationLabel;
 
     // Shop
+    @FXML private Button lumberTowerButton;
+    @FXML private Button mineTowerButton;
+    @FXML private Button quarryTowerButton;
+    @FXML private Button windTowerButton;
+
     @FXML private Tooltip lumberTowerTooltip;
     @FXML private Tooltip mineTowerTooltip;
     @FXML private Tooltip quarryTowerTooltip;
@@ -47,10 +52,28 @@ public class GameController {
 
         notificationLabel.setVisible(false);
 
-        lumberTowerTooltip.setText("Cost $" + new LumberMillTower().getCostPrice());
-        mineTowerTooltip.setText("Cost $" + new MineTower().getCostPrice());
-        quarryTowerTooltip.setText("Cost $" + new QuarryTower().getCostPrice());
-        windTowerTooltip.setText("Cost $" + new WindMillTower().getCostPrice());
+        lumberTowerButton.setOnMouseClicked(e -> this.onShopTowerClick(e, TowerType.LUMBER_MILL));
+        mineTowerButton.setOnMouseClicked(e -> this.onShopTowerClick(e, TowerType.MINE));
+        quarryTowerButton.setOnMouseClicked(e -> this.onShopTowerClick(e, TowerType.QUARRY));
+        windTowerButton.setOnMouseClicked(e -> this.onShopTowerClick(e, TowerType.WIND_MILL));
+
+        lumberTowerTooltip.setText("Cost $" + LumberMillTower.COST);
+        mineTowerTooltip.setText("Cost $" + MineTower.COST);
+        quarryTowerTooltip.setText("Cost $" + QuarryTower.COST);
+        windTowerTooltip.setText("Cost $" + WindMillTower.COST);
+    }
+
+    /**
+     * Update the opacity of the shop buttons/items if the user has enough money
+     * to purchase each one
+     * 
+     * @param money
+     */
+    public void updateShopButtons(int money) {
+        lumberTowerButton.setOpacity(LumberMillTower.COST > money ? 0.5 : 1.0);
+        mineTowerButton.setOpacity(MineTower.COST > money ? 0.5 : 1.0);
+        quarryTowerButton.setOpacity(QuarryTower.COST > money ? 0.5 : 1.0);
+        windTowerButton.setOpacity(WindMillTower.COST > money ? 0.5 : 1.0);
     }
 
     @FXML
@@ -80,26 +103,6 @@ public class GameController {
             return;
         inventoryPane.setVisible(!inventoryPane.isVisible());
         inventoryPane.setDisable(!inventoryPane.isDisable());
-    }
-
-    @FXML
-    private void onShopLumberMillTowerClick(MouseEvent event) {
-        onShopTowerClick(event, TowerType.LUMBER_MILL);
-    }
-
-    @FXML
-    private void onShopMineTowerClick(MouseEvent event) {
-        onShopTowerClick(event, TowerType.MINE);
-    }
-
-    @FXML
-    private void onShopQuarryTowerClick(MouseEvent event) {
-        onShopTowerClick(event, TowerType.QUARRY);
-    }
-
-    @FXML
-    private void onShopWindMillTowerClick(MouseEvent event) {
-        onShopTowerClick(event, TowerType.WIND_MILL);
     }
 
     private void onShopTowerClick(MouseEvent event, TowerType towerType) {

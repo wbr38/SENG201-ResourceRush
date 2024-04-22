@@ -206,7 +206,7 @@
                <content>
                   <FlowPane alignment="CENTER" prefHeight="384.0" prefWidth="125.0">
                      <children>
-                        <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#onShopLumberMillTowerClick" prefHeight="96.0" prefWidth="110.0" text="Lumber Mill Tower">
+                        <Button fx:id="lumberTowerButton" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Lumber Mill Tower">
                            <graphic>
                               <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -218,7 +218,7 @@
                               <Tooltip fx:id="lumberTowerTooltip" showDelay="10ms" text="Cost: $999" />
                            </tooltip>
                         </Button>
-                        <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#onShopMineTowerClick" prefHeight="96.0" prefWidth="110.0" text="Mine Tower">
+                        <Button fx:id="mineTowerButton" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Mine Tower">
                            <graphic>
                               <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -230,7 +230,7 @@
                               <Tooltip fx:id="mineTowerTooltip" showDelay="10ms" text="Cost: $999" />
                            </tooltip>
                         </Button>
-                        <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#onShopQuarryTowerClick" prefHeight="96.0" prefWidth="110.0" text="Quarry Tower">
+                        <Button fx:id="quarryTowerButton" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Quarry Tower">
                            <graphic>
                               <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -242,7 +242,7 @@
                               <Tooltip fx:id="quarryTowerTooltip" showDelay="10ms" text="Cost: $999" />
                            </tooltip>
                         </Button>
-                        <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#onShopWindMillTowerClick" prefHeight="96.0" prefWidth="110.0" text="Wind Mill Tower">
+                        <Button fx:id="windTowerButton" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Wind Mill Tower">
                            <graphic>
                               <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

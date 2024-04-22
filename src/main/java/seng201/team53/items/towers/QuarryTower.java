@@ -4,6 +4,8 @@ import seng201.team53.items.ResourceType;
 
 public class QuarryTower extends Tower {
 
+    public static final int COST = 150;
+
     public QuarryTower() {
         super(
             "Quarry", "/assets/wood_tower.png", ResourceType.ORE);
@@ -16,7 +18,7 @@ public class QuarryTower extends Tower {
 
     @Override
     public int getCostPrice() {
-        return 100;
+        return COST;
     }
 
     @Override

@@ -52,6 +52,7 @@ public class GameEnvironment {
 
         GameController gameController = gameWindow.getController();
         gameController.updateMoneyLabel(this.shop.getMoney());
+        gameController.updateShopButtons(this.shop.getMoney());
         map.startPlacingTower(tower);
     }
 
@@ -121,6 +122,7 @@ public class GameEnvironment {
         GameController gameController = gameWindow.getController();
         gameController.updateMoneyLabel(this.shop.getMoney());
         gameController.updateRoundCounter(gameRound.getRoundNumber());
+        gameController.updateShopButtons(this.shop.getMoney());
     }
 
     public GameRound getRound() {
