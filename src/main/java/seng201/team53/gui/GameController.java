@@ -23,6 +23,7 @@ public class GameController {
     @FXML private Button startButton;
     @FXML private Button resumeButton;
     @FXML private Text roundCounterLabel;
+    @FXML private Text moneyLabel;
 
     public void init() {
         var scene = App.getApp().getPrimaryStage().getScene();
@@ -125,21 +126,28 @@ public class GameController {
         roundCounterLabel.setText(currentRound + "/" + rounds);
     }
 
+    public void updateMoneyLabel(int money) {
+        moneyLabel.setText("$" + money);
+    }
+
     public void showStartButton() {
         showButton(startButton, true);
         showButton(pauseButton, false);
         showButton(resumeButton, false);
     }
+
     public void showPauseButton() {
         showButton(startButton, false);
         showButton(pauseButton, true);
         showButton(resumeButton, false);
     }
+
     public void showResumeButton() {
         showButton(startButton, false);
         showButton(pauseButton, false);
         showButton(resumeButton, true);
     }
+
     private void showButton(Button button, boolean show) {
         button.setVisible(show);
         button.setDisable(!show);

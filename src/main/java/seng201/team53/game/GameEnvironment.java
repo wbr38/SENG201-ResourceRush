@@ -11,6 +11,7 @@ public class GameEnvironment {
     private final AssetLoader assetLoader = new AssetLoader();
     private final String playerName;
     private final int rounds;
+    private int money = 0;
     private GameDifficulty difficulty;
     private GameState gameState = GameState.ROUND_NOT_STARTED;
     private GameRound gameRound;
@@ -33,12 +34,13 @@ public class GameEnvironment {
         gameController.init();
         assetLoader.init();
         gameRound = new GameRoundOne();
-        gameRound.init();
+        this.loadRound(gameRound);
     }
 
     public GameWindow getWindow() {
         return gameWindow;
     }
+
     public AssetLoader getAssetLoader() {
         return assetLoader;
     }
@@ -46,6 +48,7 @@ public class GameEnvironment {
     public GameDifficulty getDifficulty() {
         return difficulty;
     }
+
     public void setDifficulty(GameDifficulty difficulty) {
         this.difficulty = difficulty;
     }
@@ -66,17 +69,18 @@ public class GameEnvironment {
             case ROUND_COMPLETE -> {
                 controller.showStartButton();
                 gameRound.stop();
-                // check win or lose condition
+                
                 gameRound = gameRound.getNextRound();
+                // check win or lose condition
                 if (gameRound == null) { // put game into dead state for testing purposes
                     gameState = GameState.DEAD;
                     return;
                 }
-                gameRound.init();
+
+                this.loadRound(gameRound);
             }
             case ROUND_ACTIVE -> {
                 controller.showPauseButton();
-                controller.updateRoundCounter(gameRound.getRoundNumber());
                 if (previousState == GameState.ROUND_NOT_STARTED || previousState == GameState.ROUND_COMPLETE)
                     gameRound.start();
                 else
@@ -86,7 +90,19 @@ public class GameEnvironment {
                 controller.showResumeButton();
                 gameRound.pause();
             }
+            case DEAD -> {
+                // TODO
+            }
         }
+    }
+
+    private void loadRound(GameRound gameRound) {
+        gameRound.init();
+        this.money += gameRound.startingMoney;
+
+        GameController gameController = gameWindow.getController();
+        gameController.updateMoneyLabel(money);
+        gameController.updateRoundCounter(gameRound.getRoundNumber());
     }
 
     public GameRound getRound() {
