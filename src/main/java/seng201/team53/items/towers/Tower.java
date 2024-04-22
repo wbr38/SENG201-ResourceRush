@@ -16,9 +16,9 @@ public abstract class Tower implements Purchasable, Tickable {
     public int xpLevel;
 
     Tower(
-        String name,
-        String imagePath,
-        ResourceType resourceType
+          String name,
+          String imagePath,
+          ResourceType resourceType
     ) {
         this.name = name;
         this.image = new Image(getClass().getResourceAsStream(imagePath));

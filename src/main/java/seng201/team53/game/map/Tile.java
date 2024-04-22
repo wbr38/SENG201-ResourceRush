@@ -37,6 +37,7 @@ public class Tile {
     public Tower getTower() {
         return tower;
     }
+
     public void setTower(Tower tower) {
         if (!buildable)
             throw new IllegalStateException("Tile is marked as a path tile or not buildable");

@@ -6,6 +6,7 @@ import seng201.team53.gui.MainWindow;
 
 /**
  * Default entry point class
+ * 
  * @author seng201 teaching team
  */
 public class App {
@@ -26,6 +27,7 @@ public class App {
     public Stage getPrimaryStage() {
         return primaryStage;
     }
+
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
@@ -35,6 +37,7 @@ public class App {
             throw new IllegalStateException("Game environment has not yet been created");
         return gameEnvironment;
     }
+
     public void setGameEnvironment(GameEnvironment gameEnvironment) {
         if (this.gameEnvironment != null)
             throw new IllegalStateException("Game environment has already been created");
@@ -45,6 +48,7 @@ public class App {
      * Entry point which runs the javaFX application
      * Due to how JavaFX works we must call MainWindow.launchWrapper() from here,
      * trying to run MainWindow itself will cause an error
+     * 
      * @param args program arguments from command line
      */
     public static void main(String[] args) {

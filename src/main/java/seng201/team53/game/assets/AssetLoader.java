@@ -37,40 +37,43 @@ public class AssetLoader {
 
     /**
      * Loads a map from a JSON file
+     * 
      * @param name The name of the map
      * @param path The path to the JSON file resource
      * @return The loaded map
      */
     public seng201.team53.game.map.Map loadMap(String name, String path) {
-        var json = (JSONObject) readJsonResource(path);
-        var startPosition = (JSONObject) json.get("start_position");
-        var startPositionX = (int)(long) startPosition.get("y");
-        var startPositionY = (int)(long) startPosition.get("x");
-        var endPosition = (JSONObject) json.get("end_position");
-        var endPositionX = (int)(long) endPosition.get("y");
-        var endPositionY = (int)(long) endPosition.get("x");
-        var mapMatrix = (JSONArray) json.get("map_matrix");
+        var json = (JSONObject)readJsonResource(path);
+        var startPosition = (JSONObject)json.get("start_position");
+        var startPositionX = (int)(long)startPosition.get("y");
+        var startPositionY = (int)(long)startPosition.get("x");
+        var endPosition = (JSONObject)json.get("end_position");
+        var endPositionX = (int)(long)endPosition.get("y");
+        var endPositionY = (int)(long)endPosition.get("x");
+        var mapMatrix = (JSONArray)json.get("map_matrix");
         var gameController = App.getApp().getGameEnvironment().getWindow().getController();
         var gridPane = gameController.getGridPane();
         var tiles = readMapMatrix(mapMatrix, gridPane);
         return new seng201.team53.game.map.Map(name, tiles, startPositionX, startPositionY, endPositionX, endPositionY);
     }
+
     public Image getCartImage() {
         return cartImage;
     }
 
     /**
      * Loads a list of tile templates from a JSON file
+     * 
      * @throws IOException If an I/O error occurs
      */
     private void loadTiles() throws IOException {
-        var objects = (JSONArray) readJsonResource("/assets/tiles/tiles.json");
+        var objects = (JSONArray)readJsonResource("/assets/tiles/tiles.json");
         for (var object : objects) {
-            var properties = (JSONObject) object;
-            var tileId = (int)(long) properties.get("tile_id");
-            var buildable = (boolean) properties.get("buildable");
-            var path = (boolean) properties.get("path");
-            var imagePath = (String) properties.get("image_path");
+            var properties = (JSONObject)object;
+            var tileId = (int)(long)properties.get("tile_id");
+            var buildable = (boolean)properties.get("buildable");
+            var path = (boolean)properties.get("path");
+            var imagePath = (String)properties.get("image_path");
             var image = readImage(imagePath);
             tileTemplates.put(tileId, new TileTemplate(buildable, path, image));
         }
@@ -78,6 +81,7 @@ public class AssetLoader {
 
     /**
      * Loads the cart image
+     * 
      * @throws IOException If an I/O error occurs
      */
     private void loadCartImage() throws IOException {
@@ -86,15 +90,16 @@ public class AssetLoader {
 
     /**
      * Reads the map matrix from a JSON array
+     * 
      * @param mapMatrix The JSON array holding the map matrix
-     * @param gridPane The grid pane which displays the maps tiles
+     * @param gridPane  The grid pane which displays the maps tiles
      * @return The map matrix represented by tiles
      */
     private Tile[][] readMapMatrix(JSONArray mapMatrix, GridPane gridPane) {
         int lastRowSize = -1;
         var tiles = new Tile[mapMatrix.size()][];
         for (int y = 0; y < mapMatrix.size(); y++) {
-            var innerArray = (JSONArray) mapMatrix.get(y);
+            var innerArray = (JSONArray)mapMatrix.get(y);
             // ensure every row has same amount of columns otherwise we get errors later
             if (lastRowSize == -1) {
                 lastRowSize = innerArray.size();
@@ -103,7 +108,7 @@ public class AssetLoader {
             }
             tiles[y] = new Tile[innerArray.size()];
             for (int x = 0; x < innerArray.size(); x++) {
-                var tileId = (int) (long) innerArray.get(x);
+                var tileId = (int)(long)innerArray.get(x);
                 var tileTemplate = tileTemplates.get(tileId);
                 if (tileTemplate == null)
                     throw new RuntimeException("Missing tile template for id '" + tileId + "'");
@@ -121,6 +126,7 @@ public class AssetLoader {
 
     /**
      * Reads a JSON resource from a given path
+     * 
      * @param path The path to the JSON resource
      * @return The parsed JSON object
      */
@@ -137,6 +143,7 @@ public class AssetLoader {
 
     /**
      * Reads an image resource from a given path
+     * 
      * @param path The path to the image resource
      * @return The loaded image
      * @throws IOException If an I/O error occurs

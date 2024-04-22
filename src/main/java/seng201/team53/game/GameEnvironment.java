@@ -69,7 +69,7 @@ public class GameEnvironment {
             case ROUND_COMPLETE -> {
                 controller.showStartButton();
                 gameRound.stop();
-                
+
                 gameRound = gameRound.getNextRound();
                 // check win or lose condition
                 if (gameRound == null) { // put game into dead state for testing purposes

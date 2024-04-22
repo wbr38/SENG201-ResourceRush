@@ -13,26 +13,19 @@ import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
 
 public class MainController {
-    @FXML
-    private ChoiceBox<GameDifficulty> difficultyChoiceBox;
+    @FXML private ChoiceBox<GameDifficulty> difficultyChoiceBox;
 
-    @FXML
-    private TextField nameTextField;
+    @FXML private TextField nameTextField;
 
-    @FXML
-    private ImageView nameGreenCheckmark;
+    @FXML private ImageView nameGreenCheckmark;
 
-    @FXML
-    private ImageView nameRedCross;
+    @FXML private ImageView nameRedCross;
 
-    @FXML
-    private Text nameNotValidLabel;
+    @FXML private Text nameNotValidLabel;
 
-    @FXML
-    private Slider numberOfRoundsSlider;
+    @FXML private Slider numberOfRoundsSlider;
 
-    @FXML
-    private Text numberOfRoundsLabel;
+    @FXML private Text numberOfRoundsLabel;
 
     private boolean validNameChoice = false;
     private final int MIN_NAME_LENGTH = 3;
@@ -41,9 +34,8 @@ public class MainController {
     @FXML
     void onNameFieldKeyPress(KeyEvent event) {
         var text = nameTextField.getText() + event.getText();
-        
-        boolean _validName = (
-            text.length() >= MIN_NAME_LENGTH
+
+        boolean _validName = (text.length() >= MIN_NAME_LENGTH
             && text.length() <= MAX_NAME_LENGTH
             && text.matches("^[A-Za-z0-9]*$") // only letters or numbers
         );
@@ -68,7 +60,7 @@ public class MainController {
             return;
         }
         var name = nameTextField.getText();
-        var rounds = (int) numberOfRoundsSlider.getValue();
+        var rounds = (int)numberOfRoundsSlider.getValue();
         GameDifficulty gameDifficulty = difficultyChoiceBox.getSelectionModel().getSelectedItem();
         var gameEnvironment = new GameEnvironment(name, rounds, gameDifficulty);
         App.getApp().setGameEnvironment(gameEnvironment);

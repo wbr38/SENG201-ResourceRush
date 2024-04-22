@@ -100,8 +100,8 @@ public class GameController {
         if (map.getCurrentInteraction() == MapInteraction.NONE)
             return;
 
-        int mouseX = (int) Math.round(event.getSceneX());
-        int mouseY = (int) Math.round(event.getSceneY());
+        int mouseX = (int)Math.round(event.getSceneX());
+        int mouseY = (int)Math.round(event.getSceneY());
         Tile tile = map.getTileFromScreenPosition(mouseX, mouseY);
         switch (map.getCurrentInteraction()) {
             case PLACE_TOWER:

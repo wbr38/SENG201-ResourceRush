@@ -20,8 +20,8 @@ public class TileTemplate {
 
     public Tile createTile(Point point) {
         return new Tile(new ImageView(image),
-                buildable,
-                path,
-                point);
+            buildable,
+            path,
+            point);
     }
 }

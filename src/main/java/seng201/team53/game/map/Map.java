@@ -15,8 +15,8 @@ public class Map {
 
     public static final int TILE_HEIGHT = 40;
     public static final int TILE_WIDTH = 40;
-    private static final int[] X_DIRECTIONS = { -1, 0, 1, 0 };
-    private static final int[] Y_DIRECTIONS = { 0, 1, 0, -1 };
+    private static final int[] X_DIRECTIONS = {-1, 0, 1, 0};
+    private static final int[] Y_DIRECTIONS = {0, 1, 0, -1};
     private final String name;
     private final Tile[][] tiles;
     private final Stack<Point> path = new Stack<>();
@@ -49,6 +49,7 @@ public class Map {
     public Tile[][] getTiles() {
         return tiles;
     }
+
     public Tile getTileAt(int tileX, int tileY) {
         // because we are using a 2D array to store tiles, we have to get the row first (y value)
         // then get the column (x value) hence tiles[tileY][tileX]
@@ -56,6 +57,7 @@ public class Map {
             return tiles[tileY][tileX];
         throw new RuntimeException("Tile does not exist at x=" + tileX + ", y=" + tileY);
     }
+
     public Tile getTileFromScreenPosition(int screenX, int screenY) {
         // screen x consists of 20 columns of width 40px each
         // screen y consists of 20 rows of height 40px each
@@ -75,6 +77,7 @@ public class Map {
     public MapInteraction getCurrentInteraction() {
         return currentInteraction;
     }
+
     public void setInteraction(MapInteraction interaction) {
         currentInteraction = interaction;
 
@@ -90,6 +93,7 @@ public class Map {
     public Tower getSelectedTower() {
         return selectedTower;
     }
+
     public void startPlacingTower(Tower tower) {
         this.setInteraction(MapInteraction.PLACE_TOWER);
         selectedTowerImage = tower.getImageView();
@@ -101,6 +105,7 @@ public class Map {
         });
         selectedTower = tower;
     }
+
     public void stopPlacingTower() {
         AnchorPane pane = App.getApp().getGameEnvironment().getWindow().getController().test;
         pane.setOnMouseMoved(null);
@@ -108,6 +113,7 @@ public class Map {
         this.selectedTower = null;
         selectedTowerImage = null;
     }
+
     public void placeTower(Tower tower, Tile tile) {
         var gameController = App.getApp().getGameEnvironment().getWindow().getController();
         var gridPane = gameController.getGridPane();
@@ -138,6 +144,7 @@ public class Map {
         polylinePath.getPoints().add(lastPoint.y * 40 + 20.0);
         polylinePath.getPoints().add(lastPoint.x * 40 + 60.0);
     }
+
     private void findPath() {
         if (!path.isEmpty())
             throw new IllegalStateException("Map already has a path calculated.");
@@ -145,6 +152,7 @@ public class Map {
         if (!depthFirstSearch(discovered, startX, startY, endX, endY))
             throw new RuntimeException("Invalid map, does not contain a path");
     }
+
     private boolean depthFirstSearch(int[][] discovered, int x, int y, int endX, int endY) {
         discovered[x][y] = 2;
         if (x == endX && y == endY) {
@@ -163,10 +171,16 @@ public class Map {
         }
         return false;
     }
+
     private boolean isValidCell(int[][] discovered, int x, int y) {
-        return x >= 0 && y >= 0 && x < tiles.length && y < tiles[x].length && tiles[x][y].isPath()
-                && discovered[x][y] == 0;
+        return (x >= 0
+            && y >= 0
+            && x < tiles.length
+            && y < tiles[x].length
+            && tiles[x][y].isPath()
+            && discovered[x][y] == 0);
     }
+
     private void scaleTiles(double value) {
         for (Tile[] tileRow : tiles) {
             for (Tile tile : tileRow) {

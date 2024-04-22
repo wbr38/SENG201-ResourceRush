@@ -23,6 +23,7 @@ public abstract class GameRound implements Tickable {
     public GameRound(int roundNumber, double startingMoney) {
         this(roundNumber, startingMoney, null);
     }
+
     public GameRound(int roundNumber, double startingMoney, Map map) {
         this.roundNumber = roundNumber;
         this.startingMoney = startingMoney;
@@ -36,6 +37,7 @@ public abstract class GameRound implements Tickable {
     public Map getMap() {
         return map;
     }
+
     public void setMap(Map map) {
         if (this.map != null)
             throw new IllegalStateException("Map has already been set");
@@ -52,12 +54,14 @@ public abstract class GameRound implements Tickable {
     public void tick() {
         carts.forEach(Cart::tick);
     }
+
     public void start() {
         if (gameLoop != null)
             throw new IllegalStateException("Game round has already started and we cannot have duplicate game loops");
         gameLoop = new GameLoop();
         play();
     }
+
     public void play() {
         gameLoop.start();
         carts.forEach(cart -> {
@@ -65,6 +69,7 @@ public abstract class GameRound implements Tickable {
                 cart.getPathTransition().play();
         });
     }
+
     public void pause() {
         gameLoop.stop();
         carts.forEach(cart -> {
@@ -72,6 +77,7 @@ public abstract class GameRound implements Tickable {
                 cart.getPathTransition().pause();
         });
     }
+
     public void stop() {
         gameLoop.stop();
     }
@@ -87,14 +93,15 @@ public abstract class GameRound implements Tickable {
     }
 
     public abstract void init();
+
     public abstract GameRound getNextRound();
 
     protected void createCart(int maxCapacity, float velocity, EnumSet<ResourceType> acceptedResources, int spawnAfterTicks) {
         var difficulty = App.getApp().getGameEnvironment().getDifficulty();
         var cart = new Cart(maxCapacity,
-                velocity * difficulty.getCartVelocityMultiplier(),
-                acceptedResources,
-                spawnAfterTicks);
+            velocity * difficulty.getCartVelocityMultiplier(),
+            acceptedResources,
+            spawnAfterTicks);
         carts.add(cart);
     }
 }
