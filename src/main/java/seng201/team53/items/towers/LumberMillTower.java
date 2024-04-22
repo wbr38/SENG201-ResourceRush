@@ -16,8 +16,8 @@ public class LumberMillTower extends Tower {
     }
 
     @Override
-    public Double getCostPrice() {
-        return 100.0;
+    public int getCostPrice() {
+        return 100;
     }
 
     @Override

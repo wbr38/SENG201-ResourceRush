@@ -1,25 +1,27 @@
 package seng201.team53.game;
 
 import seng201.team53.game.assets.AssetLoader;
+import seng201.team53.game.map.Map;
 import seng201.team53.game.round.GameRound;
 import seng201.team53.game.round.GameRoundOne;
 import seng201.team53.gui.GameController;
 import seng201.team53.gui.GameWindow;
+import seng201.team53.items.Shop;
+import seng201.team53.items.towers.Tower;
 
 public class GameEnvironment {
     private final GameWindow gameWindow = new GameWindow();
     private final AssetLoader assetLoader = new AssetLoader();
     private final String playerName;
     private final int rounds;
-    private int money = 0;
     private GameDifficulty difficulty;
     private GameState gameState = GameState.ROUND_NOT_STARTED;
     private GameRound gameRound;
+    private Shop shop = new Shop();
 
     // TODO
     // public Inventory inventory;
     // public double money;
-    // public Shop shop;
 
     public GameEnvironment(String playerName, int rounds, GameDifficulty difficulty) {
         this.playerName = playerName;
@@ -35,6 +37,22 @@ public class GameEnvironment {
         assetLoader.init();
         gameRound = new GameRoundOne();
         this.loadRound(gameRound);
+    }
+
+    public void tryPurchaseTower(Tower tower) {
+        Map map = this.gameRound.getMap();
+
+        // Attempt to purchase tower
+        Boolean purchased = this.shop.purchaseItem(tower);
+        if (!purchased) {
+            GameController gameController = gameWindow.getController();
+            gameController.showNotification("Not enough money", 1.5);
+            return;
+        }
+
+        GameController gameController = gameWindow.getController();
+        gameController.updateMoneyLabel(this.shop.getMoney());
+        map.startPlacingTower(tower);
     }
 
     public GameWindow getWindow() {
@@ -98,10 +116,10 @@ public class GameEnvironment {
 
     private void loadRound(GameRound gameRound) {
         gameRound.init();
-        this.money += gameRound.startingMoney;
+        this.shop.addMoney(gameRound.startingMoney);
 
         GameController gameController = gameWindow.getController();
-        gameController.updateMoneyLabel(money);
+        gameController.updateMoneyLabel(this.shop.getMoney());
         gameController.updateRoundCounter(gameRound.getRoundNumber());
     }
 

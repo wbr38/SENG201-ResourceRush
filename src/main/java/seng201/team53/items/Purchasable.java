@@ -5,7 +5,7 @@ public interface Purchasable {
 
     String getDescription();
 
-    Double getCostPrice();
+    int getCostPrice();
 
     Double getSellPrice();
 

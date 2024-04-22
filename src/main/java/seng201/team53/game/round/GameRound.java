@@ -15,16 +15,16 @@ import seng201.team53.items.ResourceType;
 public abstract class GameRound implements Tickable {
     private final int roundNumber;
     private final List<Cart> carts = new ArrayList<>();
-    public final double startingMoney;
+    public final int startingMoney;
     private GameLoop gameLoop;
     private Map map;
     private int cartsCompletedPath = 0;
 
-    public GameRound(int roundNumber, double startingMoney) {
+    public GameRound(int roundNumber, int startingMoney) {
         this(roundNumber, startingMoney, null);
     }
 
-    public GameRound(int roundNumber, double startingMoney, Map map) {
+    public GameRound(int roundNumber, int startingMoney, Map map) {
         this.roundNumber = roundNumber;
         this.startingMoney = startingMoney;
         this.map = map;
