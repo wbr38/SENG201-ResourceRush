@@ -108,7 +108,7 @@ public class AssetLoader {
                 if (tileTemplate == null)
                     throw new RuntimeException("Missing tile template for id '" + tileId + "'");
 
-                var tile = tileTemplate.createTile(new Point(x, y));
+                var tile = tileTemplate.createTile(x, y);
                 var imageView = tile.getImageView();
                 tiles[y][x] = tile;
                 imageView.setFitHeight(seng201.team53.game.map.Map.TILE_HEIGHT);

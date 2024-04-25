@@ -8,14 +8,16 @@ public class Tile {
     private final ImageView imageView;
     private final boolean buildable;
     private final boolean path;
-    private final Point point;
+    private final int x;
+    private final int y;
     private Tower tower;
 
-    public Tile(ImageView imageView, boolean buildable, boolean path, Point point) {
+    public Tile(ImageView imageView, boolean buildable, boolean path, int x, int y) {
         this.imageView = imageView;
         this.buildable = buildable;
         this.path = path;
-        this.point = point;
+        this.x = x;
+        this.y = y;
     }
 
     public ImageView getImageView() {
@@ -30,8 +32,12 @@ public class Tile {
         return path;
     }
 
-    public Point getPoint() {
-        return point;
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
     public Tower getTower() {

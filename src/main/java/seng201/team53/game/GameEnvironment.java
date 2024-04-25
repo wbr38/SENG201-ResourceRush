@@ -11,10 +11,10 @@ public class GameEnvironment {
     private final GameWindow gameWindow = new GameWindow();
     private final AssetLoader assetLoader = new AssetLoader();
     private final RandomEvents randomEvents = new RandomEvents();
+    private final GameStateHandler stateHandler = new GameStateHandler(this);
     private final String playerName;
     private final int rounds;
     private GameDifficulty difficulty;
-    private GameState gameState = GameState.ROUND_NOT_STARTED;
     private GameRound gameRound;
 
     // TODO
@@ -32,6 +32,7 @@ public class GameEnvironment {
         gameWindow.start();
 
         GameController gameController = gameWindow.getController();
+        gameController.setEnvironment(this);
         gameController.init();
         assetLoader.init();
         randomEvents.init();
@@ -42,11 +43,17 @@ public class GameEnvironment {
     public GameWindow getWindow() {
         return gameWindow;
     }
+    public GameController getController() {
+        return gameWindow.getController();
+    }
     public AssetLoader getAssetLoader() {
         return assetLoader;
     }
     public RandomEvents getRandomEvents() {
         return randomEvents;
+    }
+    public GameStateHandler getStateHandler() {
+        return stateHandler;
     }
 
     public GameDifficulty getDifficulty() {
@@ -60,49 +67,16 @@ public class GameEnvironment {
         return rounds;
     }
 
-    public GameState getState() {
-        return gameState;
-    }
-
-    public void setState(GameState gameState) {
-        var previousState = this.gameState;
-        this.gameState = gameState;
-        switch (gameState) {
-            case ROUND_COMPLETE -> handleStateChangeRoundComplete(previousState);
-            case ROUND_ACTIVE -> handleStateChangeRoundActive(previousState);
-            case ROUND_PAUSE -> handleStateChangeRoundPause(previousState);
-        }
-    }
-    private void handleStateChangeRoundComplete(GameState previousState) {
-        var controller = getWindow().getController();
-        controller.showStartButton();
-        gameRound.stop();
-        // check win or lose condition
-        gameRound = gameRound.getNextRound();
-        if (gameRound == null) { // put game into dead state for testing purposes
-            gameState = GameState.COMPLETE;
-            return;
-        }
-        gameRound.init();
-    }
-    private void handleStateChangeRoundActive(GameState previousState) {
-        var controller = getWindow().getController();
-        controller.showPauseButton();
-        controller.updateRoundCounter(gameRound.getRoundNumber());
-        if (previousState == GameState.ROUND_NOT_STARTED || previousState == GameState.ROUND_COMPLETE) {
-            gameRound.start();
-            gameRound.initRandomEvent();
-        } else {
-            gameRound.play();
-        }
-    }
-    private void handleStateChangeRoundPause(GameState gameState) {
-        var controller = getWindow().getController();
-        controller.showResumeButton();
-        gameRound.pause();
-    }
-
     public GameRound getRound() {
         return gameRound;
+    }
+    public boolean goNextRound() {
+        // check win condition here?
+        gameRound = gameRound.getNextRound();
+        if (gameRound == null)
+            return false;
+        gameRound.init();
+        getController().updateRoundCounter(gameRound.getRoundNumber());
+        return true;
     }
 }

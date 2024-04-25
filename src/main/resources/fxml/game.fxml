@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -12,6 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng201.team53.gui.GameController">
    <children>
@@ -126,7 +128,135 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="test" prefHeight="640.0" prefWidth="800.0" />
+      <AnchorPane fx:id="test" prefHeight="640.0" prefWidth="800.0">
+         <children>
+            <Pane fx:id="randomEventPane" disable="true" layoutX="261.0" layoutY="234.0" prefHeight="154.0" prefWidth="293.0" visible="false">
+               <children>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="-4.0" layoutY="-2.0">
+                     <image>
+                        <Image url="@../assets/wood_tile_top_left.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="71.0" layoutY="-2.0">
+                     <image>
+                        <Image url="@../assets/wood_tile_top_center.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="146.0" layoutY="-2.0">
+                     <image>
+                        <Image url="@../assets/wood_tile_top_center.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="221.0" layoutY="-2.0">
+                     <image>
+                        <Image url="@../assets/wood_tile_top_right.png" />
+                     </image>
+                  </ImageView>
+                  <Text fill="WHITE" layoutX="38.0" layoutY="55.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="Random Event">
+                     <font>
+                        <Font name="Expo M" size="36.0" />
+                     </font>
+                  </Text>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="-4.0" layoutY="78.0">
+                     <image>
+                        <Image url="@../assets/wood_tile_bottom_left.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="71.0" layoutY="78.0">
+                     <image>
+                        <Image url="@../assets/wood_tile_bottom_center.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="146.0" layoutY="78.0">
+                     <image>
+                        <Image url="@../assets/wood_tile_bottom_center.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="221.0" layoutY="78.0">
+                     <image>
+                        <Image url="@../assets/wood_tile_bottom_right.png" />
+                     </image>
+                  </ImageView>
+                  <TextFlow layoutX="30.0" layoutY="68.0" prefHeight="76.0" prefWidth="231.0" textAlignment="CENTER">
+                     <children>
+                        <Text fx:id="randomEventTest" fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.5" text="You have encountered a random event" wrappingWidth="110.91796875">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </TextFlow>
+                  <ImageView layoutX="284.0" layoutY="-7.0" onMouseClicked="#onRandomEventDialogExistClick">
+                     <image>
+                        <Image url="@../assets/red_cross.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane fx:id="roundCompletePane" disable="true" layoutX="271.0" layoutY="244.0" prefHeight="154.0" prefWidth="293.0" visible="false">
+               <children>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="-4.0" layoutY="-2.0">
+                     <image>
+                        <Image url="@../assets/wood_tile_top_left.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="71.0" layoutY="-2.0">
+                     <image>
+                        <Image url="@../assets/wood_tile_top_center.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="146.0" layoutY="-2.0">
+                     <image>
+                        <Image url="@../assets/wood_tile_top_center.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="221.0" layoutY="-2.0">
+                     <image>
+                        <Image url="@../assets/wood_tile_top_right.png" />
+                     </image>
+                  </ImageView>
+                  <Text fill="WHITE" layoutX="11.0" layoutY="52.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="Round Complete" textAlignment="CENTER">
+                     <font>
+                        <Font name="Expo M" size="36.0" />
+                     </font>
+                  </Text>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="-4.0" layoutY="78.0">
+                     <image>
+                        <Image url="@../assets/wood_tile_bottom_left.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="71.0" layoutY="78.0">
+                     <image>
+                        <Image url="@../assets/wood_tile_bottom_center.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="146.0" layoutY="78.0">
+                     <image>
+                        <Image url="@../assets/wood_tile_bottom_center.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="221.0" layoutY="78.0">
+                     <image>
+                        <Image url="@../assets/wood_tile_bottom_right.png" />
+                     </image>
+                  </ImageView>
+                  <TextFlow layoutX="30.0" layoutY="68.0" prefHeight="76.0" prefWidth="231.0" textAlignment="CENTER">
+                     <children>
+                        <Text fx:id="randomEventTest1" fill="WHITE" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.5" text="maybe add some stats here, money earned idk" wrappingWidth="110.91796875">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </TextFlow>
+                  <ImageView layoutX="284.0" layoutY="-7.0" onMouseClicked="#onRoundCompleteDialogExistClick">
+                     <image>
+                        <Image url="@../assets/red_cross.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </children></AnchorPane>
       <Pane layoutX="650.0" layoutY="55.0" prefHeight="581.0" prefWidth="150.0">
          <children>
             <ImageView fitHeight="80.0" fitWidth="75.0" layoutY="391.0">
@@ -301,7 +431,7 @@
                   <Image url="@../../../../../../Downloads/single_dollar.png" />
                </image>
             </ImageView>
-            <Text fx:id="moneyLabel" fill="WHITE" layoutX="75.0" layoutY="65.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="\$100">
+            <Text fx:id="moneyLabel" fill="WHITE" layoutX="37.0" layoutY="66.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="\$100">
                <font>
                   <Font name="Expo M" size="18.0" />
                </font>
@@ -313,5 +443,6 @@
             </Text>
          </children>
       </Pane>
+      <TextField fx:id="stateTextField" layoutY="614.0" prefHeight="25.0" prefWidth="653.0" />
    </children>
 </AnchorPane>

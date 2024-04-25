@@ -17,9 +17,8 @@ public class RandomEvents {
     public RandomEvent requestRandomEvent() {
         GameDifficulty difficulty = App.getApp().getGameEnvironment().getDifficulty();
         double randomDouble = ThreadLocalRandom.current().nextDouble();
-        //if (randomDouble > difficulty.getRandomEventOdds())
-            //return null;
-        // make random event happen all the time for testing
+        if (randomDouble > difficulty.getRandomEventOdds())
+            return null;
 
         int randomInt = ThreadLocalRandom.current().nextInt(0, randomEvents.size());
         return randomEvents.get(randomInt);

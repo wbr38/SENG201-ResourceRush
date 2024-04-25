@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 import seng201.team53.App;
+import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.GameLoop;
 import seng201.team53.game.GameState;
 import seng201.team53.game.Tickable;
@@ -45,8 +46,10 @@ public abstract class GameRound implements Tickable {
 
     public void addCartCompletedPath() {
         cartsCompletedPath++;
-        if (cartsCompletedPath == carts.size())
-            App.getApp().getGameEnvironment().setState(GameState.ROUND_COMPLETE);
+        if (cartsCompletedPath == carts.size()) {
+            App.getApp().getGameEnvironment().getStateHandler().setState(GameState.ROUND_COMPLETE);
+            gameLoop.stop();
+        }
     }
 
     @Override
@@ -73,25 +76,17 @@ public abstract class GameRound implements Tickable {
                 cart.getPathTransition().pause();
         });
     }
-    public void stop() {
-        gameLoop.stop();
-    }
 
-    public void initRandomEvent() {
-        RandomEvent randomEvent = App.getApp().getGameEnvironment().getRandomEvents().requestRandomEvent();
-        if (randomEvent == null)
+    public void begin() {
+        var environment = App.getApp().getGameEnvironment();
+        var randomEvent = environment.getRandomEvents().requestRandomEvent();
+        if (randomEvent != null) {
+            environment.getStateHandler().setState(GameState.RANDOM_EVENT_DIALOG_OPEN);
+            environment.getWindow().getController().showRandomEventDialog(randomEvent.getClass().getName());
             return;
-        System.out.println("We got a random event: " + randomEvent.getClass().getName());
-    }
-
-    public Boolean checkWinCondition() {
-        // Check if all carts have been filled
-        throw new UnsupportedOperationException("Unimplemented method 'checkWinCondition'");
-    }
-
-    public Boolean checkLoseCondition() {
-        // Check if any carts have reached the end of the track that have not been filled
-        throw new UnsupportedOperationException("Unimplemented method 'checkLoseCondition'");
+        }
+        environment.getStateHandler().setState(GameState.ROUND_ACTIVE);
+        start();
     }
 
     public abstract void init();
