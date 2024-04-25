@@ -65,36 +65,41 @@ public class GameEnvironment {
     }
 
     public void setState(GameState gameState) {
-        var controller = getWindow().getController();
         var previousState = this.gameState;
         this.gameState = gameState;
         switch (gameState) {
-            case ROUND_COMPLETE -> {
-                controller.showStartButton();
-                gameRound.stop();
-                // check win or lose condition
-                gameRound = gameRound.getNextRound();
-                if (gameRound == null) { // put game into dead state for testing purposes
-                    gameState = GameState.DEAD;
-                    return;
-                }
-                gameRound.init();
-            }
-            case ROUND_ACTIVE -> {
-                controller.showPauseButton();
-                controller.updateRoundCounter(gameRound.getRoundNumber());
-                if (previousState == GameState.ROUND_NOT_STARTED || previousState == GameState.ROUND_COMPLETE) {
-                    gameRound.start();
-                    gameRound.initRandomEvent();
-                } else {
-                    gameRound.play();
-                }
-            }
-            case ROUND_PAUSE -> {
-                controller.showResumeButton();
-                gameRound.pause();
-            }
+            case ROUND_COMPLETE -> handleStateChangeRoundComplete(previousState);
+            case ROUND_ACTIVE -> handleStateChangeRoundActive(previousState);
+            case ROUND_PAUSE -> handleStateChangeRoundPause(previousState);
         }
+    }
+    private void handleStateChangeRoundComplete(GameState previousState) {
+        var controller = getWindow().getController();
+        controller.showStartButton();
+        gameRound.stop();
+        // check win or lose condition
+        gameRound = gameRound.getNextRound();
+        if (gameRound == null) { // put game into dead state for testing purposes
+            gameState = GameState.COMPLETE;
+            return;
+        }
+        gameRound.init();
+    }
+    private void handleStateChangeRoundActive(GameState previousState) {
+        var controller = getWindow().getController();
+        controller.showPauseButton();
+        controller.updateRoundCounter(gameRound.getRoundNumber());
+        if (previousState == GameState.ROUND_NOT_STARTED || previousState == GameState.ROUND_COMPLETE) {
+            gameRound.start();
+            gameRound.initRandomEvent();
+        } else {
+            gameRound.play();
+        }
+    }
+    private void handleStateChangeRoundPause(GameState gameState) {
+        var controller = getWindow().getController();
+        controller.showResumeButton();
+        gameRound.pause();
     }
 
     public GameRound getRound() {
