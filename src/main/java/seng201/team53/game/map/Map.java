@@ -72,6 +72,10 @@ public class Map {
         return polylinePath;
     }
 
+    public List<Tower> getTowers() {
+        return towers;
+    }
+
     public MapInteraction getCurrentInteraction() {
         return currentInteraction;
     }

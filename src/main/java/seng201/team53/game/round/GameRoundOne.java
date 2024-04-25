@@ -19,6 +19,7 @@ public class GameRoundOne extends GameRound {
         createCart(40, 10, EnumSet.of(ResourceType.ORE), 20);
         createCart(20, 10, EnumSet.of(ResourceType.FOOD), 40);
     }
+
     @Override
     public GameRound getNextRound() {
         // if we are going to use the same map for the next round

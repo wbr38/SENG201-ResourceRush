@@ -8,6 +8,7 @@ import seng201.team53.App;
 import seng201.team53.game.GameLoop;
 import seng201.team53.game.GameState;
 import seng201.team53.game.Tickable;
+import seng201.team53.game.event.type.RandomEvent;
 import seng201.team53.game.map.Map;
 import seng201.team53.items.Cart;
 import seng201.team53.items.ResourceType;
@@ -74,6 +75,13 @@ public abstract class GameRound implements Tickable {
     }
     public void stop() {
         gameLoop.stop();
+    }
+
+    public void initRandomEvent() {
+        RandomEvent randomEvent = App.getApp().getGameEnvironment().getRandomEvents().requestRandomEvent();
+        if (randomEvent == null)
+            return;
+        System.out.println("We got a random event: " + randomEvent.getClass().getName());
     }
 
     public Boolean checkWinCondition() {
