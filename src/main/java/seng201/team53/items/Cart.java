@@ -4,10 +4,11 @@ import javafx.animation.Interpolator;
 import javafx.animation.PathTransition;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
-import seng201.team53.App;
 import seng201.team53.game.Tickable;
 
 import java.util.EnumSet;
+
+import static seng201.team53.App.getGameEnvironment;
 
 public class Cart implements Tickable {
     private final int maxCapacity;
@@ -54,13 +55,12 @@ public class Cart implements Tickable {
     public void tick() {
         if (spawnAfterTicks == lifetimeTicks) {
             if (!completedPath) {
-                var gameEnvironment = App.getApp().getGameEnvironment();
-                var map = gameEnvironment.getRound().getMap();
+                var map = getGameEnvironment().getRound().getMap();
                 var polylinePath = map.getPolylinePath();
-                var imageView = new ImageView(gameEnvironment.getAssetLoader().getCartImage());
+                var imageView = new ImageView(getGameEnvironment().getAssetLoader().getCartImage());
                 imageView.setX(polylinePath.getPoints().get(1));
                 imageView.setY(polylinePath.getPoints().get(0));
-                gameEnvironment.getWindow().getController().test.getChildren().add(imageView);
+                getGameEnvironment().getWindow().getController().test.getChildren().add(imageView);
                 pathTransition = new PathTransition();
                 pathTransition.setNode(imageView);
                 pathTransition.setDuration(calculateDuration());
@@ -70,8 +70,8 @@ public class Cart implements Tickable {
                 pathTransition.setOnFinished(event -> {
                     pathTransition = null;
                     completedPath = true;
-                    gameEnvironment.getRound().addCartCompletedPath();
-                    gameEnvironment.getWindow().getController().test.getChildren().remove(imageView);
+                    getGameEnvironment().getRound().addCartCompletedPath();
+                    getGameEnvironment().getWindow().getController().test.getChildren().remove(imageView);
                 });
             }
         }
@@ -79,7 +79,7 @@ public class Cart implements Tickable {
     }
 
     private Duration calculateDuration() {
-        var map = App.getApp().getGameEnvironment().getRound().getMap();
+        var map = getGameEnvironment().getRound().getMap();
         var pathLength = map.getPath().size() + 2; // add 2 to take into account starting off screen and ending off screen
         float duration = pathLength / velocity;
         return Duration.seconds(duration);

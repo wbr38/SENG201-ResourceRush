@@ -10,7 +10,7 @@ public class GameWindow {
     private GameController gameController;
 
     public void start() throws Exception {
-        Stage primaryStage = App.getApp().getPrimaryStage();
+        Stage primaryStage = App.getPrimaryStage();
         FXMLLoader baseLoader = new FXMLLoader(getClass().getResource("/fxml/game.fxml"));
         Parent root = baseLoader.load();
         gameController = baseLoader.getController();

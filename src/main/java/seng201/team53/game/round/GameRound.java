@@ -1,18 +1,17 @@
 package seng201.team53.game.round;
 
+import seng201.team53.game.GameLoop;
+import seng201.team53.game.GameState;
+import seng201.team53.game.Tickable;
+import seng201.team53.game.map.Map;
+import seng201.team53.items.Cart;
+import seng201.team53.items.ResourceType;
+
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import seng201.team53.App;
-import seng201.team53.game.GameEnvironment;
-import seng201.team53.game.GameLoop;
-import seng201.team53.game.GameState;
-import seng201.team53.game.Tickable;
-import seng201.team53.game.event.type.RandomEvent;
-import seng201.team53.game.map.Map;
-import seng201.team53.items.Cart;
-import seng201.team53.items.ResourceType;
+import static seng201.team53.App.getGameEnvironment;
 
 public abstract class GameRound implements Tickable {
     private final int roundNumber;
@@ -47,7 +46,7 @@ public abstract class GameRound implements Tickable {
     public void addCartCompletedPath() {
         cartsCompletedPath++;
         if (cartsCompletedPath == carts.size()) {
-            App.getApp().getGameEnvironment().getStateHandler().setState(GameState.ROUND_COMPLETE);
+            getGameEnvironment().getStateHandler().setState(GameState.ROUND_COMPLETE);
             gameLoop.stop();
         }
     }
@@ -59,7 +58,7 @@ public abstract class GameRound implements Tickable {
     public void start() {
         if (gameLoop != null)
             throw new IllegalStateException("Game round has already started and we cannot have duplicate game loops");
-        gameLoop = new GameLoop();
+        gameLoop = new GameLoop(this);
         play();
     }
     public void play() {
@@ -78,22 +77,20 @@ public abstract class GameRound implements Tickable {
     }
 
     public void begin() {
-        var environment = App.getApp().getGameEnvironment();
-        var randomEvent = environment.getRandomEvents().requestRandomEvent();
+        var randomEvent = getGameEnvironment().getRandomEvents().requestRandomEvent();
         if (randomEvent != null) {
-            environment.getStateHandler().setState(GameState.RANDOM_EVENT_DIALOG_OPEN);
-            environment.getWindow().getController().showRandomEventDialog(randomEvent.getClass().getName());
+            getGameEnvironment().getController().showRandomEventDialog(randomEvent.getClass().getName());
+            getGameEnvironment().getStateHandler().setState(GameState.RANDOM_EVENT_DIALOG_OPEN);
             return;
         }
-        environment.getStateHandler().setState(GameState.ROUND_ACTIVE);
-        start();
+        getGameEnvironment().getStateHandler().setState(GameState.ROUND_ACTIVE);
     }
 
     public abstract void init();
     public abstract GameRound getNextRound();
 
     protected void createCart(int maxCapacity, float velocity, EnumSet<ResourceType> acceptedResources, int spawnAfterTicks) {
-        var difficulty = App.getApp().getGameEnvironment().getDifficulty();
+        var difficulty = getGameEnvironment().getDifficulty();
         var cart = new Cart(maxCapacity,
                 velocity * difficulty.getCartVelocityMultiplier(),
                 acceptedResources,

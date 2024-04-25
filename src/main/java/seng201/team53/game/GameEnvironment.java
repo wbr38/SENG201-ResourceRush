@@ -11,7 +11,7 @@ public class GameEnvironment {
     private final GameWindow gameWindow = new GameWindow();
     private final AssetLoader assetLoader = new AssetLoader();
     private final RandomEvents randomEvents = new RandomEvents();
-    private final GameStateHandler stateHandler = new GameStateHandler(this);
+    private final GameStateHandler stateHandler = new GameStateHandler();
     private final String playerName;
     private final int rounds;
     private GameDifficulty difficulty;
@@ -32,7 +32,7 @@ public class GameEnvironment {
         gameWindow.start();
 
         GameController gameController = gameWindow.getController();
-        gameController.setEnvironment(this);
+        gameController.setGame(this);
         gameController.init();
         assetLoader.init();
         randomEvents.init();

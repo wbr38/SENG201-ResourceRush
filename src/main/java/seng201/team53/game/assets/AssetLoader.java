@@ -6,14 +6,14 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import seng201.team53.App;
 import seng201.team53.game.map.Map;
 import seng201.team53.game.map.Tile;
 
-import java.awt.Point;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.HashMap;
+
+import static seng201.team53.App.getGameEnvironment;
 
 /**
  * This class is responsible for loading the tile templates, game maps, and cart image
@@ -50,8 +50,7 @@ public class AssetLoader {
         var endPositionX = (int)(long) endPosition.get("y");
         var endPositionY = (int)(long) endPosition.get("x");
         var mapMatrix = (JSONArray) json.get("map_matrix");
-        var gameController = App.getApp().getGameEnvironment().getWindow().getController();
-        var gridPane = gameController.getGridPane();
+        var gridPane = getGameEnvironment().getController().getGridPane();
         var tiles = readMapMatrix(mapMatrix, gridPane);
         return new seng201.team53.game.map.Map(name, tiles, startPositionX, startPositionY, endPositionX, endPositionY);
     }

@@ -1,6 +1,5 @@
 package seng201.team53.game.map;
 
-import java.awt.Point;
 import javafx.scene.image.ImageView;
 import seng201.team53.items.towers.Tower;
 

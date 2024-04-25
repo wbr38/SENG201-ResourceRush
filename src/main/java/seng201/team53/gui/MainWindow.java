@@ -22,7 +22,7 @@ public class MainWindow extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
-        App.getApp().setPrimaryStage(primaryStage);
+        App.setPrimaryStage(primaryStage);
         FXMLLoader baseLoader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
         Parent root = baseLoader.load();
 
@@ -34,18 +34,6 @@ public class MainWindow extends Application {
         Scene scene = new Scene(root, 800, 640);
         primaryStage.setScene(scene);
         primaryStage.show();
-
-        // temp for bypassing the main menu screen
-//        var name = "Testing";
-//        var rounds = 3;
-//        GameDifficulty gameDifficulty = GameDifficulty.NORMAL;
-//        var gameEnvironment = new GameEnvironment(name, rounds, gameDifficulty);
-//        App.getApp().setGameEnvironment(gameEnvironment);
-//        try {
-//            gameEnvironment.init();
-//        } catch (Exception exception) {
-//            exception.printStackTrace();
-//        }
     }
 
     /**
@@ -56,5 +44,4 @@ public class MainWindow extends Application {
     public static void launchWrapper(String [] args) {
         launch(args);
     }
-
 }

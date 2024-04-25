@@ -4,8 +4,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import seng201.team53.game.map.Tile;
 
-import java.awt.*;
-
 /**
  * This class represents a template for a tile on a map. It stores information about the tile's properties before
  * the actual map is created.

@@ -1,12 +1,16 @@
 package seng201.team53.game;
 
 import javafx.animation.AnimationTimer;
-import seng201.team53.App;
 
-public class GameLoop extends AnimationTimer implements Tickable {
+public class GameLoop extends AnimationTimer {
     public static final int TICKS_PER_SECOND = 20;
     public static final long MS_BETWEEN_TICKS = 1000 / TICKS_PER_SECOND;
+    private final Tickable function;
     private long lastTickTime = -1;
+
+    public GameLoop(Tickable function) {
+        this.function = function;
+    }
 
     @Override
     public void handle(long now) {
@@ -14,11 +18,7 @@ public class GameLoop extends AnimationTimer implements Tickable {
             if (System.currentTimeMillis() - lastTickTime < MS_BETWEEN_TICKS)
                 return;
         }
-        tick();
+        function.tick();
         lastTickTime = System.currentTimeMillis();
-    }
-
-    public void tick() {
-        App.getApp().getGameEnvironment().getRound().tick();
     }
 }

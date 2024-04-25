@@ -3,13 +3,14 @@ package seng201.team53.game.map;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Polyline;
-import seng201.team53.App;
 import seng201.team53.items.towers.Tower;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+
+import static seng201.team53.App.getGameEnvironment;
 
 /**
  * This class represents a map in the game. It stores information about the map grid, tiles, and pathfinding
@@ -149,7 +150,7 @@ public class Map {
     public void startPlacingTower(Tower tower) {
         this.setInteraction(MapInteraction.PLACE_TOWER);
         selectedTowerImage = tower.getImageView();
-        AnchorPane pane = App.getApp().getGameEnvironment().getWindow().getController().test;
+        AnchorPane pane = getGameEnvironment().getWindow().getController().test;
         pane.getChildren().add(selectedTowerImage);
         pane.setOnMouseMoved(event -> {
             selectedTowerImage.setX(event.getX() - 20);
@@ -163,7 +164,7 @@ public class Map {
      * and resets the map interaction state
      */
     public void stopPlacingTower() {
-        AnchorPane pane = App.getApp().getGameEnvironment().getWindow().getController().test;
+        AnchorPane pane = getGameEnvironment().getWindow().getController().test;
         pane.setOnMouseMoved(null);
         pane.getChildren().remove(selectedTowerImage);
         this.selectedTower = null;
@@ -176,7 +177,7 @@ public class Map {
      * @param tile The tile where the tile should be placed
      */
     public void placeTower(Tower tower, Tile tile) {
-        var gameController = App.getApp().getGameEnvironment().getWindow().getController();
+        var gameController = getGameEnvironment().getWindow().getController();
         var gridPane = gameController.getGridPane();
         var imageView = tower.getImageView();
         gridPane.add(imageView, tile.getX(), tile.getY());

@@ -1,6 +1,5 @@
 package seng201.team53.game.event;
 
-import seng201.team53.App;
 import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.event.type.RandomEvent;
 import seng201.team53.game.event.type.RandomEventBrokenTower;
@@ -11,11 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static seng201.team53.App.getGameEnvironment;
+
 public class RandomEvents {
     private final List<RandomEvent> randomEvents = new ArrayList<>();
 
     public RandomEvent requestRandomEvent() {
-        GameDifficulty difficulty = App.getApp().getGameEnvironment().getDifficulty();
+        GameDifficulty difficulty = getGameEnvironment().getDifficulty();
         double randomDouble = ThreadLocalRandom.current().nextDouble();
         if (randomDouble > difficulty.getRandomEventOdds())
             return null;

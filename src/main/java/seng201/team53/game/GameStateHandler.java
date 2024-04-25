@@ -2,22 +2,15 @@ package seng201.team53.game;
 
 import javafx.scene.control.TextField;
 
+import static seng201.team53.App.getGameEnvironment;
+
 /**
  * This class manages the game state within the game environment. It keeps track of the current game state
  *  and handles transitions between different states
  */
 public class GameStateHandler {
-    private final GameEnvironment environment;
     private GameState state = GameState.ROUND_NOT_STARTED;
     private GameState previousState;
-
-    /**
-     * Constructs a new GameStateHandler associated with the game environment
-     * @param environment The game environment
-     */
-    public GameStateHandler(GameEnvironment environment) {
-        this.environment = environment;
-    }
 
     /**
      * Returns the current game state
@@ -46,7 +39,7 @@ public class GameStateHandler {
         this.state = gameState;
 
         // debug
-        TextField field = environment.getController().stateTextField;
+        TextField field = getGameEnvironment().getController().stateTextField;
         field.setText(gameState.name() + " --- " + field.getText());
 
         switch (state) {
@@ -63,17 +56,17 @@ public class GameStateHandler {
      * Handles logic specific to the ROUND_NOT_STARTED state transition.
      */
     private void handleChangedGameStateRoundNotStarted() {
-        if (!environment.goNextRound())
+        if (!getGameEnvironment().goNextRound())
             return; // atm goes into dead state
-        environment.getController().showStartButton();
+        getGameEnvironment().getController().showStartButton();
     }
 
     /**
      * Handles logic specific to the ROUND_ACTIVE state transition.
      */
     private void handleChangedGameStateRoundActive() {
-        var round = environment.getRound();
-        environment.getController().showPauseButton();
+        var round = getGameEnvironment().getRound();
+        getGameEnvironment().getController().showPauseButton();
         if (previousState == GameState.ROUND_NOT_STARTED || previousState == GameState.RANDOM_EVENT_DIALOG_OPEN) {
             round.start();
             return;
@@ -85,8 +78,8 @@ public class GameStateHandler {
      * Handles logic specific to the ROUND_PAUSE state transition.
      */
     private void handleChangedGameStateRoundPause() {
-        var round = environment.getRound();
-        environment.getController().showResumeButton();
+        var round = getGameEnvironment().getRound();
+        getGameEnvironment().getController().showResumeButton();
         round.pause();
     }
 
@@ -94,7 +87,7 @@ public class GameStateHandler {
      * Handles logic specific to the ROUND_COMPLETE state transition.
      */
     private void handleChangedGameStateRoundComplete() {
-        environment.getController().showRoundCompleteDialog();
+        getGameEnvironment().getController().showRoundCompleteDialog();
     }
 
     /**

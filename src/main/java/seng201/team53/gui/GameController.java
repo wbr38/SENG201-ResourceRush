@@ -30,10 +30,10 @@ public class GameController {
     @FXML private Button resumeButton;
     @FXML private Text roundCounterLabel;
     @FXML public TextField stateTextField; // debugging
-    private GameEnvironment environment;
+    private GameEnvironment game;
 
     public void init() {
-        var scene = App.getApp().getPrimaryStage().getScene();
+        var scene = App.getPrimaryStage().getScene();
         scene.setOnMousePressed(this::onMousePressed);
     }
 
@@ -41,27 +41,27 @@ public class GameController {
     private void onStartButtonMouseClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
-        if (environment.getStateHandler().getState() != GameState.ROUND_NOT_STARTED)
+        if (game.getStateHandler().getState() != GameState.ROUND_NOT_STARTED)
             return;
-        App.getApp().getGameEnvironment().getRound().begin();
+        game.getRound().begin();
     }
 
     @FXML
     private void onPauseButtonMouseClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
-        if (environment.getStateHandler().getState() != GameState.ROUND_ACTIVE)
+        if (game.getStateHandler().getState() != GameState.ROUND_ACTIVE)
             return;
-        environment.getStateHandler().setState(GameState.ROUND_PAUSE);
+        game.getStateHandler().setState(GameState.ROUND_PAUSE);
     }
 
     @FXML
     private void onResumeButtonMouseClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
-        if (environment.getStateHandler().getState() != GameState.ROUND_PAUSE)
+        if (game.getStateHandler().getState() != GameState.ROUND_PAUSE)
             return;
-        App.getApp().getGameEnvironment().getStateHandler().setState(GameState.ROUND_ACTIVE);
+        game.getStateHandler().setState(GameState.ROUND_ACTIVE);
     }
 
     @FXML
@@ -76,22 +76,22 @@ public class GameController {
     private void onRandomEventDialogExistClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
-        if (environment.getStateHandler().getState() != GameState.RANDOM_EVENT_DIALOG_OPEN)
+        if (game.getStateHandler().getState() != GameState.RANDOM_EVENT_DIALOG_OPEN)
             return;
         randomEventPane.setVisible(false);
         randomEventPane.setDisable(true);
-        App.getApp().getGameEnvironment().getStateHandler().setState(GameState.ROUND_ACTIVE);
+        game.getStateHandler().setState(GameState.ROUND_ACTIVE);
     }
 
     @FXML
     private void onRoundCompleteDialogExistClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
-        if (environment.getStateHandler().getState() != GameState.ROUND_COMPLETE)
+        if (game.getStateHandler().getState() != GameState.ROUND_COMPLETE)
             return;
         roundCompletePane.setVisible(false);
         roundCompletePane.setDisable(true);
-        App.getApp().getGameEnvironment().getStateHandler().setState(GameState.ROUND_NOT_STARTED);
+        game.getStateHandler().setState(GameState.ROUND_NOT_STARTED);
     }
 
     @FXML
@@ -117,7 +117,7 @@ public class GameController {
     private void onShopTowerClick(MouseEvent event, TowerType towerType) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
-        Map map = App.getApp().getGameEnvironment().getRound().getMap();
+        Map map = game.getRound().getMap();
         if (map.getCurrentInteraction() != MapInteraction.NONE) // prevents starting the "placing" methods running again
             return;
         Tower tower = towerType.create();
@@ -131,7 +131,7 @@ public class GameController {
     private void onMousePressed(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
-        var map = App.getApp().getGameEnvironment().getRound().getMap();
+        var map = game.getRound().getMap();
         if (map.getCurrentInteraction() == MapInteraction.NONE)
             return;
 
@@ -156,11 +156,11 @@ public class GameController {
         return gridPane;
     }
 
-    public void setEnvironment(GameEnvironment environment) {
-        this.environment = environment;
+    public void setGame(GameEnvironment game) {
+        this.game = game;
     }
     public void updateRoundCounter(int currentRound) {
-        int rounds = App.getApp().getGameEnvironment().getRounds();
+        int rounds = game.getRounds();
         roundCounterLabel.setText(currentRound + "/" + rounds);
     }
 

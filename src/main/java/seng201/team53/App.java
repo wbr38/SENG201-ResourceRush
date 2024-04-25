@@ -9,36 +9,25 @@ import seng201.team53.gui.MainWindow;
  * @author seng201 teaching team
  */
 public class App {
-    private static App app;
-    private GameEnvironment gameEnvironment;
-    private Stage primaryStage; // lazy way to start testing - TODO remove
+    private static Stage primaryStage;
+    private static GameEnvironment gameEnvironment;
 
-    public App() {
-        if (app != null)
-            throw new IllegalStateException("Instance of app already exists");
-        App.app = this;
-    }
-
-    public static App getApp() {
-        return app;
-    }
-
-    public Stage getPrimaryStage() {
+    public static Stage getPrimaryStage() {
+        if (primaryStage == null)
+            throw new IllegalStateException("Primary Stage has not yet been set");
         return primaryStage;
     }
-    public void setPrimaryStage(Stage primaryStage) {
-        this.primaryStage = primaryStage;
+    public static void setPrimaryStage(Stage primaryStage) {
+        if (App.primaryStage != null)
+            throw new IllegalStateException("Primary Stage has already been set");
+        App.primaryStage = primaryStage;
     }
 
-    public GameEnvironment getGameEnvironment() {
-        if (gameEnvironment == null)
-            throw new IllegalStateException("Game environment has not yet been created");
+    public static GameEnvironment getGameEnvironment() {
         return gameEnvironment;
     }
-    public void setGameEnvironment(GameEnvironment gameEnvironment) {
-        if (this.gameEnvironment != null)
-            throw new IllegalStateException("Game environment has already been created");
-        this.gameEnvironment = gameEnvironment;
+    public static void setGameEnvironment(GameEnvironment gameEnvironment) {
+        App.gameEnvironment = gameEnvironment;
     }
 
     /**
@@ -48,7 +37,6 @@ public class App {
      * @param args program arguments from command line
      */
     public static void main(String[] args) {
-        new App();
         MainWindow.launchWrapper(args);
     }
 }
