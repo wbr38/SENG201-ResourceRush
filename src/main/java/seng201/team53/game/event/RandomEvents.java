@@ -10,13 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static seng201.team53.App.getGameEnvironment;
-
 public class RandomEvents {
     private final List<RandomEvent> randomEvents = new ArrayList<>();
 
-    public RandomEvent requestRandomEvent() {
-        GameDifficulty difficulty = getGameEnvironment().getDifficulty();
+    public RandomEvent requestRandomEvent(GameDifficulty difficulty) {
         double randomDouble = ThreadLocalRandom.current().nextDouble();
         if (randomDouble > difficulty.getRandomEventOdds())
             return null;

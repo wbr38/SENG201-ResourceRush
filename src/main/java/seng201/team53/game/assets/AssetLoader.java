@@ -2,6 +2,7 @@ package seng201.team53.game.assets;
 
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -12,8 +13,6 @@ import seng201.team53.game.map.Tile;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-
-import static seng201.team53.App.getGameEnvironment;
 
 /**
  * This class is responsible for loading the tile templates, game maps, and cart image
@@ -41,7 +40,7 @@ public class AssetLoader {
      * @param path The path to the JSON file resource
      * @return The loaded map
      */
-    public seng201.team53.game.map.Map loadMap(String name, String path) {
+    public Map loadMap(String name, String path, GridPane gridPane, Pane overlay) {
         var json = (JSONObject) readJsonResource(path);
         var startPosition = (JSONObject) json.get("start_position");
         var startPositionX = (int)(long) startPosition.get("y");
@@ -50,9 +49,8 @@ public class AssetLoader {
         var endPositionX = (int)(long) endPosition.get("y");
         var endPositionY = (int)(long) endPosition.get("x");
         var mapMatrix = (JSONArray) json.get("map_matrix");
-        var gridPane = getGameEnvironment().getController().getGridPane();
         var tiles = readMapMatrix(mapMatrix, gridPane);
-        return new seng201.team53.game.map.Map(name, tiles, startPositionX, startPositionY, endPositionX, endPositionY);
+        return new Map(name, tiles, startPositionX, startPositionY, endPositionX, endPositionY, gridPane, overlay);
     }
     public Image getCartImage() {
         return cartImage;
@@ -80,7 +78,7 @@ public class AssetLoader {
      * @throws IOException If an I/O error occurs
      */
     private void loadCartImage() throws IOException {
-        cartImage = readImage("/assets/cart.png");
+        cartImage = readImage("/assets/items/cart.png");
     }
 
     /**
@@ -110,7 +108,7 @@ public class AssetLoader {
                 var tile = tileTemplate.createTile(x, y);
                 var imageView = tile.getImageView();
                 tiles[y][x] = tile;
-                imageView.setFitHeight(seng201.team53.game.map.Map.TILE_HEIGHT);
+                imageView.setFitHeight(Map.TILE_HEIGHT);
                 imageView.setFitWidth(Map.TILE_WIDTH);
                 gridPane.add(imageView, x, y); // idk why it has to be backwards
             }

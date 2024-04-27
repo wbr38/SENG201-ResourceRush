@@ -8,7 +8,7 @@ public class LumberMillTower extends Tower {
 
         super(
                 "Lumber Mill",
-                "/assets/wood_tower.png",
+                "/assets/items/wood_tower.png",
                 ResourceType.WOOD);
     }
 

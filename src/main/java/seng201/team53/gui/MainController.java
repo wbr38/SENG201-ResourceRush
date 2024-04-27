@@ -8,9 +8,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
-import seng201.team53.App;
 import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
+import seng201.team53.game.GameStateHandler;
 
 public class MainController {
     public static final int MIN_NAME_LENGTH = 3;
@@ -22,7 +22,12 @@ public class MainController {
     @FXML private Text nameNotValidLabel;
     @FXML private Slider numberOfRoundsSlider;
     @FXML private Text numberOfRoundsLabel;
+    private final WindowManager windowManager;
     private boolean currentNameChoiceValid = false;
+
+    public MainController(WindowManager windowManager) {
+        this.windowManager = windowManager;
+    }
 
     @FXML
     void onNameFieldKeyPress(KeyEvent event) {
@@ -53,8 +58,9 @@ public class MainController {
         var name = nameTextField.getText();
         var rounds = (int) numberOfRoundsSlider.getValue();
         var gameDifficulty = difficultyChoiceBox.getSelectionModel().getSelectedItem();
-        var gameEnvironment = new GameEnvironment(name, rounds, gameDifficulty);
-        App.setGameEnvironment(gameEnvironment);
+        var gameStateHandler = new GameStateHandler();
+        var gameController = windowManager.loadGameScreen(gameStateHandler);
+        var gameEnvironment = new GameEnvironment(gameStateHandler, gameController, name, rounds, gameDifficulty);
         gameEnvironment.init();
     }
 

@@ -7,7 +7,7 @@ public class MineTower extends Tower {
     public MineTower() {
         super(
                 "Mine",
-                "/assets/wood_tower.png",
+                "/assets/items/wood_tower.png",
                 ResourceType.ORE);
     }
 

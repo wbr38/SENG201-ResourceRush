@@ -7,7 +7,7 @@ public class QuarryTower extends Tower {
     public QuarryTower() {
         super(
                 "Quarry",
-                "/assets/wood_tower.png",
+                "/assets/items/wood_tower.png",
                 ResourceType.ORE);
     }
 

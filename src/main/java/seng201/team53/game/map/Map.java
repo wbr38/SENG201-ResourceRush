@@ -1,16 +1,16 @@
 package seng201.team53.game.map;
 
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Polyline;
+import javafx.util.Duration;
 import seng201.team53.items.towers.Tower;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-
-import static seng201.team53.App.getGameEnvironment;
 
 /**
  * This class represents a map in the game. It stores information about the map grid, tiles, and pathfinding
@@ -32,6 +32,8 @@ public class Map {
     private final int startY;
     private final int endX;
     private final int endY;
+    private final GridPane gridPane;
+    private final Pane overlay;
     private MapInteraction currentInteraction = MapInteraction.NONE;
     private Tower selectedTower;
     private ImageView selectedTowerImage;
@@ -45,13 +47,15 @@ public class Map {
      * @param endX The paths ending grid x co-ordinate
      * @param endY The paths ending grid y co-ordinate
      */
-    public Map(String name, Tile[][] tiles, int startX, int startY, int endX, int endY) {
+    public Map(String name, Tile[][] tiles, int startX, int startY, int endX, int endY, GridPane gridPane, Pane overlay) {
         this.name = name;
         this.tiles = tiles;
         this.startX = startX;
         this.startY = startY;
         this.endX = endX;
         this.endY = endY;
+        this.gridPane = gridPane;
+        this.overlay = overlay;
         findPath();
         generatePathPolyline();
     }
@@ -134,6 +138,14 @@ public class Map {
         }
     }
 
+    public GridPane getGridPane() {
+        return gridPane;
+    }
+
+    public Pane getOverlay() {
+        return overlay;
+    }
+
     /**
      * Returns the currently selected tower for placement on the map, or null
      * @return The currently selected tower, or null if no tower is selected
@@ -150,9 +162,8 @@ public class Map {
     public void startPlacingTower(Tower tower) {
         this.setInteraction(MapInteraction.PLACE_TOWER);
         selectedTowerImage = tower.getImageView();
-        AnchorPane pane = getGameEnvironment().getWindow().getController().test;
-        pane.getChildren().add(selectedTowerImage);
-        pane.setOnMouseMoved(event -> {
+        overlay.getChildren().add(selectedTowerImage);
+        overlay.setOnMouseMoved(event -> {
             selectedTowerImage.setX(event.getX() - 20);
             selectedTowerImage.setY(event.getY() - 20);
         });
@@ -164,9 +175,8 @@ public class Map {
      * and resets the map interaction state
      */
     public void stopPlacingTower() {
-        AnchorPane pane = getGameEnvironment().getWindow().getController().test;
-        pane.setOnMouseMoved(null);
-        pane.getChildren().remove(selectedTowerImage);
+        overlay.setOnMouseMoved(null);
+        overlay.getChildren().remove(selectedTowerImage);
         this.selectedTower = null;
         selectedTowerImage = null;
     }
@@ -176,13 +186,17 @@ public class Map {
      * @param tower The tower to be placed
      * @param tile The tile where the tile should be placed
      */
-    public void placeTower(Tower tower, Tile tile) {
-        var gameController = getGameEnvironment().getWindow().getController();
-        var gridPane = gameController.getGridPane();
+    public void placeTower(Tower tower, Tile tile, GridPane gridPane) {
         var imageView = tower.getImageView();
         gridPane.add(imageView, tile.getX(), tile.getY());
         towers.add(tower);
         tile.setTower(tower);
+    }
+
+    public Duration calculatePathDuration(float velocity) {
+        var pathLength = path.size() + 2; // add 2 to take into account starting off screen and ending off screen
+        float duration = pathLength / velocity;
+        return Duration.seconds(duration);
     }
 
     /**

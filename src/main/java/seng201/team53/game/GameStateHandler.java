@@ -1,16 +1,17 @@
 package seng201.team53.game;
 
-import javafx.scene.control.TextField;
-
-import static seng201.team53.App.getGameEnvironment;
-
 /**
  * This class manages the game state within the game environment. It keeps track of the current game state
  *  and handles transitions between different states
  */
 public class GameStateHandler {
+    private GameEnvironment game;
     private GameState state = GameState.ROUND_NOT_STARTED;
     private GameState previousState;
+
+    public void setGameEnvironment(GameEnvironment game) {
+        this.game = game;
+    }
 
     /**
      * Returns the current game state
@@ -38,10 +39,6 @@ public class GameStateHandler {
         this.previousState = this.state;
         this.state = gameState;
 
-        // debug
-        TextField field = getGameEnvironment().getController().stateTextField;
-        field.setText(gameState.name() + " --- " + field.getText());
-
         switch (state) {
             case ROUND_NOT_STARTED -> handleChangedGameStateRoundNotStarted();
             case ROUND_ACTIVE -> handleChangedGameStateRoundActive();
@@ -56,38 +53,37 @@ public class GameStateHandler {
      * Handles logic specific to the ROUND_NOT_STARTED state transition.
      */
     private void handleChangedGameStateRoundNotStarted() {
-        if (!getGameEnvironment().goNextRound())
-            return; // atm goes into dead state
-        getGameEnvironment().getController().showStartButton();
+        game.setupNextRound();
+        game.getController().hideRoundCompleteDialog();
     }
 
     /**
      * Handles logic specific to the ROUND_ACTIVE state transition.
      */
     private void handleChangedGameStateRoundActive() {
-        var round = getGameEnvironment().getRound();
-        getGameEnvironment().getController().showPauseButton();
-        if (previousState == GameState.ROUND_NOT_STARTED || previousState == GameState.RANDOM_EVENT_DIALOG_OPEN) {
-            round.start();
+        if (previousState == GameState.ROUND_NOT_STARTED) {
+            game.beginRound();
             return;
         }
-        round.play();
+        if (previousState == GameState.RANDOM_EVENT_DIALOG_OPEN) {
+            game.startRound();
+            game.getController().hideRandomEventDialog();
+        }
+        game.resumeRound();
     }
 
     /**
      * Handles logic specific to the ROUND_PAUSE state transition.
      */
     private void handleChangedGameStateRoundPause() {
-        var round = getGameEnvironment().getRound();
-        getGameEnvironment().getController().showResumeButton();
-        round.pause();
+        game.pauseRound();
     }
 
     /**
      * Handles logic specific to the ROUND_COMPLETE state transition.
      */
     private void handleChangedGameStateRoundComplete() {
-        getGameEnvironment().getController().showRoundCompleteDialog();
+        game.completeRound();
     }
 
     /**
@@ -101,6 +97,7 @@ public class GameStateHandler {
      * Handles logic specific to the GAME_COMPLETE state transition (implementation pending).
      */
     private void handleChangedGameStateGameComplete() {
-
+        game.getController().showGameCompleteDialog();
+        game.getController().showStartButton();
     }
 }
