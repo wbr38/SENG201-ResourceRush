@@ -1,7 +1,12 @@
 package seng201.team53.game.round;
 
+import javafx.animation.Interpolator;
+import javafx.animation.PathTransition;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import seng201.team53.game.GameLoop;
 import seng201.team53.game.GameState;
+import seng201.team53.game.GameStateHandler;
 import seng201.team53.game.Tickable;
 import seng201.team53.game.map.Map;
 import seng201.team53.items.Cart;
@@ -11,49 +16,60 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import static seng201.team53.App.getGameEnvironment;
-
-public abstract class GameRound implements Tickable {
+public class GameRound implements Tickable {
+    private final GameStateHandler stateHandler;
+    protected final Map map;
     private final int roundNumber;
     private final List<Cart> carts = new ArrayList<>();
     private final double startingMoney;
     private GameLoop gameLoop;
-    private Map map;
     private int cartsCompletedPath = 0;
 
-    public GameRound(int roundNumber, double startingMoney) {
-        this(roundNumber, startingMoney, null);
-    }
-    public GameRound(int roundNumber, double startingMoney, Map map) {
+    public GameRound(GameStateHandler stateHandler, Map map, int roundNumber, double startingMoney) {
+        this.stateHandler = stateHandler;
+        this.map = map;
         this.roundNumber = roundNumber;
         this.startingMoney = startingMoney;
-        this.map = map;
     }
 
     public int getRoundNumber() {
         return roundNumber;
     }
 
-    public Map getMap() {
-        return map;
-    }
-    public void setMap(Map map) {
-        if (this.map != null)
-            throw new IllegalStateException("Map has already been set");
-        this.map = map;
-    }
-
     public void addCartCompletedPath() {
         cartsCompletedPath++;
         if (cartsCompletedPath == carts.size()) {
-            getGameEnvironment().getStateHandler().setState(GameState.ROUND_COMPLETE);
             gameLoop.stop();
+            stateHandler.setState(GameState.ROUND_COMPLETE);
         }
     }
 
     @Override
     public void tick() {
-        carts.forEach(Cart::tick);
+        carts.forEach(cart -> {
+            if (cart.getSpawnAfterTicks() == cart.getLifetimeTicks()) {
+                var polylinePath = map.getPolylinePath();
+                var imageView = new ImageView(cart.getImage());
+                imageView.setX(polylinePath.getPoints().get(1));
+                imageView.setY(polylinePath.getPoints().get(0));
+                map.getOverlay().getChildren().add(imageView);
+
+                var pathTransition = new PathTransition();
+                pathTransition.setNode(imageView);
+                pathTransition.setDuration(map.calculatePathDuration(cart.getVelocity()));
+                pathTransition.setPath(polylinePath);
+                pathTransition.setInterpolator(Interpolator.LINEAR);
+                pathTransition.play();
+                pathTransition.setOnFinished(event -> {
+                    addCartCompletedPath();
+                    cart.setCompletedPath(true);
+                    cart.setPathTransition(null);
+                    map.getOverlay().getChildren().remove(imageView);
+                });
+                cart.setPathTransition(pathTransition);
+            }
+            cart.tick();
+        });
     }
     public void start() {
         if (gameLoop != null)
@@ -76,25 +92,12 @@ public abstract class GameRound implements Tickable {
         });
     }
 
-    public void begin() {
-        var randomEvent = getGameEnvironment().getRandomEvents().requestRandomEvent();
-        if (randomEvent != null) {
-            getGameEnvironment().getController().showRandomEventDialog(randomEvent.getClass().getName());
-            getGameEnvironment().getStateHandler().setState(GameState.RANDOM_EVENT_DIALOG_OPEN);
-            return;
-        }
-        getGameEnvironment().getStateHandler().setState(GameState.ROUND_ACTIVE);
-    }
-
-    public abstract void init();
-    public abstract GameRound getNextRound();
-
-    protected void createCart(int maxCapacity, float velocity, EnumSet<ResourceType> acceptedResources, int spawnAfterTicks) {
-        var difficulty = getGameEnvironment().getDifficulty();
+    public void addCart(Image image, int maxCapacity, float velocity, EnumSet<ResourceType> acceptedResources, int spawnAfterTicks) {
         var cart = new Cart(maxCapacity,
-                velocity * difficulty.getCartVelocityMultiplier(),
+                velocity,
                 acceptedResources,
-                spawnAfterTicks);
+                spawnAfterTicks,
+                image);
         carts.add(cart);
     }
 }
