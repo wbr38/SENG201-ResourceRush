@@ -11,69 +11,69 @@
    <children>
       <ImageView fitHeight="640.0" fitWidth="800.0">
          <image>
-            <Image url="@../assets/background.png" />
+            <Image url="@../assets/decoration/background.png" />
          </image>
       </ImageView>
       <AnchorPane layoutX="144.0" layoutY="128.0">
          <children>
             <ImageView layoutY="256.0">
                <image>
-                  <Image url="@../assets/wood_tile_bottom_left.png" />
+                  <Image url="@../assets/decoration/wood_tile_bottom_left.png" />
                </image>
             </ImageView>
             <ImageView layoutX="128.0" layoutY="256.0">
                <image>
-                  <Image url="@../assets/wood_tile_bottom_center.png" />
+                  <Image url="@../assets/decoration/wood_tile_bottom_center.png" />
                </image>
             </ImageView>
             <ImageView layoutX="256.0" layoutY="256.0">
                <image>
-                  <Image url="@../assets/wood_tile_bottom_center.png" />
+                  <Image url="@../assets/decoration/wood_tile_bottom_center.png" />
                </image>
             </ImageView>
             <ImageView layoutY="128.0">
                <image>
-                  <Image url="@../assets/wood_tile_center_left.png" />
+                  <Image url="@../assets/decoration/wood_tile_center_left.png" />
                </image>
             </ImageView>
             <ImageView layoutX="384.0" layoutY="256.0">
                <image>
-                  <Image url="@../assets/wood_tile_bottom_right.png" />
+                  <Image url="@../assets/decoration/wood_tile_bottom_right.png" />
                </image>
             </ImageView>
             <ImageView>
                <image>
-                  <Image url="@../assets/wood_tile_top_left.png" />
+                  <Image url="@../assets/decoration/wood_tile_top_left.png" />
                </image>
             </ImageView>
             <ImageView layoutX="128.0" layoutY="128.0">
                <image>
-                  <Image url="@../assets/center.png" />
+                  <Image url="@../assets/decoration/wood_tile_center.png" />
                </image>
             </ImageView>
             <ImageView layoutX="256.0" layoutY="128.0">
                <image>
-                  <Image url="@../assets/center.png" />
+                  <Image url="@../assets/decoration/wood_tile_center.png" />
                </image>
             </ImageView>
             <ImageView layoutX="128.0">
                <image>
-                  <Image url="@../assets/wood_tile_top_center.png" />
+                  <Image url="@../assets/decoration/wood_tile_top_center.png" />
                </image>
             </ImageView>
             <ImageView layoutX="256.0">
                <image>
-                  <Image url="@../assets/wood_tile_top_center.png" />
+                  <Image url="@../assets/decoration/wood_tile_top_center.png" />
                </image>
             </ImageView>
             <ImageView layoutX="384.0" layoutY="128.0">
                <image>
-                  <Image url="@../assets/wood_tile_center_right.png" />
+                  <Image url="@../assets/decoration/wood_tile_center_right.png" />
                </image>
             </ImageView>
             <ImageView layoutX="384.0">
                <image>
-                  <Image url="@../assets/wood_tile_top_right.png" />
+                  <Image url="@../assets/decoration/wood_tile_top_right.png" />
                </image>
             </ImageView>
             <Button layoutX="156.0" layoutY="256.0" mnemonicParsing="false" onMouseClicked="#onStartButtonMouseClick" prefHeight="51.0" prefWidth="200.0" style="-fx-background-color: #88E060; -fx-border-color: #5FB13A; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Start">
@@ -105,12 +105,12 @@
             </AnchorPane>
             <ImageView fx:id="nameGreenCheckmark" layoutX="428.0" layoutY="95.0" visible="false">
                <image>
-                  <Image url="@../assets/green_checkmark.png" />
+                  <Image url="@../assets/decoration/green_checkmark.png" />
                </image>
             </ImageView>
             <ImageView fx:id="nameRedCross" layoutX="428.0" layoutY="95.0">
                <image>
-                  <Image url="@../assets/red_cross.png" />
+                  <Image url="@../assets/decoration/red_cross.png" />
                </image>
             </ImageView>
             <Text fx:id="nameNotValidLabel" fill="WHITE" layoutX="88.0" layoutY="238.0" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.1" text="Your name must be of length 3-15 and not include special characters.">
@@ -127,7 +127,7 @@
       </AnchorPane>
       <ImageView fitHeight="170.0" fitWidth="706.0" layoutX="47.0" layoutY="69.0" preserveRatio="true">
          <image>
-            <Image url="@../assets/logo.png" />
+            <Image url="@../assets/decoration/logo.png" />
          </image>
       </ImageView>
    </children>
