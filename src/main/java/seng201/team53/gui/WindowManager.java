@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import seng201.team53.game.GameStateHandler;
+import seng201.team53.game.state.GameStateHandler;
 
 import java.io.IOException;
 
@@ -42,7 +42,6 @@ public class WindowManager {
             GameController controller = setupLoader.getController();
             pane.getChildren().add(setupParent);
             stage.setTitle("ResourceRush Game");
-            controller.init();
             return controller;
         } catch (IOException e) {
             throw new RuntimeException(e);

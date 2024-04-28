@@ -1,11 +1,16 @@
 package seng201.team53.game;
 
+import javafx.scene.input.MouseButton;
 import seng201.team53.game.assets.AssetLoader;
 import seng201.team53.game.event.RandomEvents;
 import seng201.team53.game.map.Map;
 import seng201.team53.game.round.GameRound;
 import seng201.team53.game.round.GameRoundFactory;
+import seng201.team53.game.state.GameState;
+import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.gui.GameController;
+
+import java.util.Arrays;
 
 public class GameEnvironment {
     private final GameStateHandler stateHandler;
@@ -29,10 +34,9 @@ public class GameEnvironment {
 
     public void init() {
         stateHandler.setGameEnvironment(this);
-        controller.init();
         assetLoader.init();
         randomEvents.init();
-        map = assetLoader.loadMap("default", "/assets/maps/map_one.json", controller.getGridPane(), controller.getOverlay());
+        map = assetLoader.loadMap("default", "/assets/maps/map_one.json", controller.getMapBackgroundPane(), controller.getGridPane(), controller.getOverlay());
         gameRound = roundFactory.getRound(stateHandler, map, 1, assetLoader.getCartImage());
     }
 
@@ -73,6 +77,28 @@ public class GameEnvironment {
         controller.showRoundCompleteDialog();
     }
 
+    // to create the path and buildable matrix stuff
+    public void enableMapCreationMode() {
+        int[][] matrix = new int[16][20];
+        controller.getOverlay().setOnMouseClicked(event -> {
+            var tile = map.getTileFromScreenPosition((int) event.getSceneX(), (int) event.getSceneY());
+            if (event.getButton() == MouseButton.PRIMARY) {
+                matrix[tile.getY()][tile.getX()] = 1;
+                return;
+            }
+            if (event.getButton() == MouseButton.SECONDARY) {
+                matrix[tile.getY()][tile.getX()] = 2;
+                return;
+            }
+            if (event.getButton() == MouseButton.MIDDLE) {
+                // print the matrix
+                for (int[] row : matrix) {
+                    System.out.println(Arrays.toString(row));
+                }
+            }
+        });
+    }
+
     public GameController getController() {
         return controller;
     }
@@ -96,5 +122,9 @@ public class GameEnvironment {
 
     public GameRound getRound() {
         return gameRound;
+    }
+
+    public Map getMap() {
+        return map;
     }
 }

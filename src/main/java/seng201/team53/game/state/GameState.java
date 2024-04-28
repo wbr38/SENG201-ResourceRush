@@ -1,4 +1,4 @@
-package seng201.team53.game;
+package seng201.team53.game.state;
 
 /**
  * An enum representing the various states the game can be in.

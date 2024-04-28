@@ -1,6 +1,7 @@
 package seng201.team53.game.assets;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import org.json.simple.JSONArray;
@@ -40,17 +41,27 @@ public class AssetLoader {
      * @param path The path to the JSON file resource
      * @return The loaded map
      */
-    public Map loadMap(String name, String path, GridPane gridPane, Pane overlay) {
-        var json = (JSONObject) readJsonResource(path);
-        var startPosition = (JSONObject) json.get("start_position");
-        var startPositionX = (int)(long) startPosition.get("y");
-        var startPositionY = (int)(long) startPosition.get("x");
-        var endPosition = (JSONObject) json.get("end_position");
-        var endPositionX = (int)(long) endPosition.get("y");
-        var endPositionY = (int)(long) endPosition.get("x");
-        var mapMatrix = (JSONArray) json.get("map_matrix");
-        var tiles = readMapMatrix(mapMatrix, gridPane);
-        return new Map(name, tiles, startPositionX, startPositionY, endPositionX, endPositionY, gridPane, overlay);
+    public Map loadMap(String name, String path, Pane mapBackgroundPane, GridPane gridPane, Pane overlay) {
+        try {
+            var json = (JSONObject) readJsonResource(path);
+            var backgroundImage = readImage((String) json.get("background"));
+            var startPosition = (JSONObject) json.get("start_position");
+            var startPositionX = (int) (long) startPosition.get("y");
+            var startPositionY = (int) (long) startPosition.get("x");
+            var endPosition = (JSONObject) json.get("end_position");
+            var endPositionX = (int) (long) endPosition.get("y");
+            var endPositionY = (int) (long) endPosition.get("x");
+            var mapMatrix = (JSONArray) json.get("map_matrix");
+            var tiles = readMapMatrix(mapMatrix);
+            var background = new ImageView(backgroundImage);
+            mapBackgroundPane.getChildren().clear();
+            background.setFitWidth(mapBackgroundPane.getPrefWidth());
+            background.setFitHeight(mapBackgroundPane.getPrefHeight());
+            mapBackgroundPane.getChildren().add(background);
+            return new Map(name, tiles, startPositionX, startPositionY, endPositionX, endPositionY, gridPane, overlay);
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
     }
     public Image getCartImage() {
         return cartImage;
@@ -61,16 +72,9 @@ public class AssetLoader {
      * @throws IOException If an I/O error occurs
      */
     private void loadTiles() throws IOException {
-        var objects = (JSONArray) readJsonResource("/assets/tiles/tiles.json");
-        for (var object : objects) {
-            var properties = (JSONObject) object;
-            var tileId = (int)(long) properties.get("tile_id");
-            var buildable = (boolean) properties.get("buildable");
-            var path = (boolean) properties.get("path");
-            var imagePath = (String) properties.get("image_path");
-            var image = readImage(imagePath);
-            tileTemplates.put(tileId, new TileTemplate(buildable, path, image));
-        }
+        tileTemplates.put(0, new TileTemplate(true, false));
+        tileTemplates.put(1, new TileTemplate(false, true));
+        tileTemplates.put(2, new TileTemplate(false, false));
     }
 
     /**
@@ -84,10 +88,9 @@ public class AssetLoader {
     /**
      * Reads the map matrix from a JSON array
      * @param mapMatrix The JSON array holding the map matrix
-     * @param gridPane The grid pane which displays the maps tiles
      * @return The map matrix represented by tiles
      */
-    private Tile[][] readMapMatrix(JSONArray mapMatrix, GridPane gridPane) {
+    private Tile[][] readMapMatrix(JSONArray mapMatrix) {
         int lastRowSize = -1;
         var tiles = new Tile[mapMatrix.size()][];
         for (int y = 0; y < mapMatrix.size(); y++) {
@@ -106,11 +109,7 @@ public class AssetLoader {
                     throw new RuntimeException("Missing tile template for id '" + tileId + "'");
 
                 var tile = tileTemplate.createTile(x, y);
-                var imageView = tile.getImageView();
                 tiles[y][x] = tile;
-                imageView.setFitHeight(Map.TILE_HEIGHT);
-                imageView.setFitWidth(Map.TILE_WIDTH);
-                gridPane.add(imageView, x, y); // idk why it has to be backwards
             }
         }
         return tiles;

@@ -1,7 +1,7 @@
 package seng201.team53.game.round;
 
 import javafx.scene.image.Image;
-import seng201.team53.game.GameStateHandler;
+import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.game.map.Map;
 
 import java.util.EnumSet;

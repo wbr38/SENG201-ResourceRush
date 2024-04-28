@@ -1,4 +1,8 @@
-package seng201.team53.game;
+package seng201.team53.game.state;
+
+import seng201.team53.game.GameEnvironment;
+import seng201.team53.game.map.MapInteraction;
+import seng201.team53.items.towers.TowerType;
 
 /**
  * This class manages the game state within the game environment. It keeps track of the current game state
@@ -47,6 +51,13 @@ public class GameStateHandler {
             case RANDOM_EVENT_DIALOG_OPEN -> handleChangedGameStateRandomEventDialogOpen();
             case GAME_COMPLETE -> handleChangedGameStateGameComplete();
         }
+    }
+
+    public void allowPlacingTower(TowerType towerType) {
+        var map = game.getMap();
+        if (map.getCurrentInteraction() != MapInteraction.NONE)
+            return;
+        map.startPlacingTower(towerType.create());
     }
 
     /**

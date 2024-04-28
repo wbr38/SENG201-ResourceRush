@@ -11,19 +11,16 @@ import seng201.team53.game.map.Tile;
 public class TileTemplate {
     private final boolean buildable;
     private final boolean path;
-    private final Image image;
 
     /**
      * Constructs a new TileTemplate with the specified properties.
      *
      * @param buildable True if a building can be constructed on this tile, false otherwise.
      * @param path True if this tile is considered a path tile, false otherwise.
-     * @param image The image associated with this tile.
      */
-    public TileTemplate(boolean buildable, boolean path, Image image) {
+    public TileTemplate(boolean buildable, boolean path) {
         this.buildable = buildable;
         this.path = path;
-        this.image = image;
     }
 
     /**
@@ -34,8 +31,7 @@ public class TileTemplate {
      * @return A new Tile object with the properties defined in this template.
      */
     public Tile createTile(int x, int y) {
-        return new Tile(new ImageView(image),
-                buildable,
+        return new Tile(buildable,
                 path,
                 x,
                 y);

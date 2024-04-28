@@ -6,6 +6,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Polyline;
 import javafx.util.Duration;
 import seng201.team53.items.towers.Tower;
+import seng201.team53.items.towers.TowerType;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -131,11 +132,7 @@ public class Map {
      */
     public void setInteraction(MapInteraction interaction) {
         currentInteraction = interaction;
-        if (interaction != MapInteraction.NONE) {
-            scaleTiles(0.95);
-        } else {
-            scaleTiles(1);
-        }
+        gridPane.setGridLinesVisible(interaction != MapInteraction.NONE);
     }
 
     public GridPane getGridPane() {
@@ -157,17 +154,28 @@ public class Map {
     /**
      * Begins the process of placing a tower on the map. This method begins a visual representation of the tower
      * that follows the mouse curser and sets the map interaction state
-     * @param tower The type of tower to be placed
+     * @param tower The tower to be placed
      */
     public void startPlacingTower(Tower tower) {
         this.setInteraction(MapInteraction.PLACE_TOWER);
-        selectedTowerImage = tower.getImageView();
+        this.selectedTower = tower;
+        selectedTowerImage = selectedTower.getImageView();
+        // start it off screen
+        selectedTowerImage.setX(1000);
+        selectedTowerImage.setY(1000);
         overlay.getChildren().add(selectedTowerImage);
         overlay.setOnMouseMoved(event -> {
             selectedTowerImage.setX(event.getX() - 20);
             selectedTowerImage.setY(event.getY() - 20);
         });
-        selectedTower = tower;
+        overlay.setOnMouseClicked(event -> {
+            if (getCurrentInteraction() != MapInteraction.PLACE_TOWER)
+                return;
+            var tile = getTileFromScreenPosition((int) event.getSceneX(), (int) event.getSceneY());
+            if (!tile.isBuildable() || tile.getTower() != null)
+                return;
+            placeTower(tile);
+        });
     }
 
     /**
@@ -176,21 +184,23 @@ public class Map {
      */
     public void stopPlacingTower() {
         overlay.setOnMouseMoved(null);
+        overlay.setOnMouseClicked(null);
         overlay.getChildren().remove(selectedTowerImage);
-        this.selectedTower = null;
+        selectedTower = null;
         selectedTowerImage = null;
     }
 
     /**
      * Places a tower on a specified tile on the map
-     * @param tower The tower to be placed
      * @param tile The tile where the tile should be placed
      */
-    public void placeTower(Tower tower, Tile tile, GridPane gridPane) {
-        var imageView = tower.getImageView();
+    public void placeTower(Tile tile) {
+        var imageView = selectedTower.getImageView();
         gridPane.add(imageView, tile.getX(), tile.getY());
-        towers.add(tower);
-        tile.setTower(tower);
+        towers.add(selectedTower);
+        tile.setTower(selectedTower);
+        setInteraction(MapInteraction.NONE);
+        stopPlacingTower();
     }
 
     public Duration calculatePathDuration(float velocity) {
@@ -277,19 +287,5 @@ public class Map {
     private boolean isValidTile(int[][] discovered, int x, int y) {
         return x >= 0 && y >= 0 && x < tiles.length && y < tiles[x].length && tiles[x][y].isPath()
                 && discovered[x][y] == 0;
-    }
-
-    /**
-     * Scales the image view of all tiles on the map by a specified factor
-     * This method is used for creating a grid view when placing a tower on the map
-     * @param value The scaling factor to apply
-     */
-    private void scaleTiles(double value) {
-        for (Tile[] tileRow : tiles) {
-            for (Tile tile : tileRow) {
-                tile.getImageView().setScaleX(value);
-                tile.getImageView().setScaleY(value);
-            }
-        }
     }
 }
