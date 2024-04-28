@@ -9,6 +9,7 @@ import seng201.team53.game.round.GameRoundFactory;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.gui.GameController;
+import seng201.team53.items.Shop;
 
 import java.util.Arrays;
 
@@ -18,6 +19,7 @@ public class GameEnvironment {
     private final AssetLoader assetLoader = new AssetLoader();
     private final RandomEvents randomEvents = new RandomEvents();
     private final GameRoundFactory roundFactory = new GameRoundFactory();
+    private final Shop shop = new Shop();
     private final String playerName;
     private final int rounds;
     private GameDifficulty difficulty;
@@ -38,6 +40,9 @@ public class GameEnvironment {
         randomEvents.init();
         map = assetLoader.loadMap("default", "/assets/maps/map_one.json", controller.getMapBackgroundPane(), controller.getGridPane(), controller.getOverlay());
         gameRound = roundFactory.getRound(stateHandler, map, 1, assetLoader.getCartImage());
+        shop.addMoney(gameRound.getStartingMoney());
+        controller.updateMoneyLabel(shop.getMoney());
+        controller.updateShopButtons(shop.getMoney());
     }
 
     public void setupNextRound() {
@@ -45,7 +50,10 @@ public class GameEnvironment {
         gameRound = roundFactory.getRound(stateHandler, map, nextRound, assetLoader.getCartImage());
         if (gameRound == null)
             return;
+        shop.addMoney(gameRound.getStartingMoney());
         controller.updateRoundCounter(nextRound, rounds);
+        controller.updateMoneyLabel(shop.getMoney());
+        controller.updateShopButtons(shop.getMoney());
     }
     public void beginRound() {
         var randomEvent = randomEvents.requestRandomEvent(difficulty);
@@ -107,6 +115,10 @@ public class GameEnvironment {
     }
     public RandomEvents getRandomEvents() {
         return randomEvents;
+    }
+
+    public Shop getShop() {
+        return shop;
     }
 
     public GameDifficulty getDifficulty() {

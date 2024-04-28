@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Shop {
     public ArrayList<Purchasable> items;
 
-    private int money = 0;
+    private int money = 100;
 
     /**
      * Attempt to purchase an item from the shop
@@ -14,7 +14,7 @@ public class Shop {
      *         player's money was adjusted. False if the player did not have enough
      *         balance to purchase the item.
      */
-    public Boolean purchaseItem(Purchasable item) {
+    public boolean purchaseItem(Purchasable item) {
         var cost = item.getCostPrice();
 
         if (cost > this.money)

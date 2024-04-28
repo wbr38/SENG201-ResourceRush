@@ -57,6 +57,14 @@ public class GameStateHandler {
         var map = game.getMap();
         if (map.getCurrentInteraction() != MapInteraction.NONE)
             return;
+
+        var tower = towerType.create();
+        if (!game.getShop().purchaseItem(tower)) {
+            game.getController().showNotification("Not enough money", 1.5);
+            return;
+        }
+        game.getController().updateMoneyLabel(game.getShop().getMoney());
+        game.getController().updateShopButtons(game.getShop().getMoney());
         map.startPlacingTower(towerType.create());
     }
 

@@ -18,14 +18,14 @@ import java.util.List;
 
 public class GameRound implements Tickable {
     private final GameStateHandler stateHandler;
-    protected final Map map;
+    private final Map map;
     private final int roundNumber;
     private final List<Cart> carts = new ArrayList<>();
-    private final double startingMoney;
+    private final int startingMoney;
     private GameLoop gameLoop;
     private int cartsCompletedPath = 0;
 
-    public GameRound(GameStateHandler stateHandler, Map map, int roundNumber, double startingMoney) {
+    public GameRound(GameStateHandler stateHandler, Map map, int roundNumber, int startingMoney) {
         this.stateHandler = stateHandler;
         this.map = map;
         this.roundNumber = roundNumber;
@@ -36,6 +36,19 @@ public class GameRound implements Tickable {
         return roundNumber;
     }
 
+    public int getStartingMoney() {
+        return startingMoney;
+    }
+
+    public void addCart(Image image, int maxCapacity, float velocity, EnumSet<ResourceType> acceptedResources, int spawnAfterTicks) {
+        var cart = new Cart(maxCapacity,
+                velocity,
+                acceptedResources,
+                spawnAfterTicks,
+                image);
+        carts.add(cart);
+    }
+
     public void addCartCompletedPath() {
         cartsCompletedPath++;
         if (cartsCompletedPath == carts.size()) {
@@ -43,7 +56,6 @@ public class GameRound implements Tickable {
             stateHandler.setState(GameState.ROUND_COMPLETE);
         }
     }
-
     @Override
     public void tick() {
         carts.forEach(cart -> {
@@ -84,20 +96,12 @@ public class GameRound implements Tickable {
                 cart.getPathTransition().play();
         });
     }
+
     public void pause() {
         gameLoop.stop();
         carts.forEach(cart -> {
             if (!cart.isCompletedPath() && cart.getPathTransition() != null)
                 cart.getPathTransition().pause();
         });
-    }
-
-    public void addCart(Image image, int maxCapacity, float velocity, EnumSet<ResourceType> acceptedResources, int spawnAfterTicks) {
-        var cart = new Cart(maxCapacity,
-                velocity,
-                acceptedResources,
-                spawnAfterTicks,
-                image);
-        carts.add(cart);
     }
 }

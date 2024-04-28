@@ -41,6 +41,7 @@ public class WindowManager {
             Parent setupParent = setupLoader.load();
             GameController controller = setupLoader.getController();
             pane.getChildren().add(setupParent);
+            controller.init();
             stage.setTitle("ResourceRush Game");
             return controller;
         } catch (IOException e) {

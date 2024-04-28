@@ -109,6 +109,12 @@ public class Map {
         return polylinePath;
     }
 
+    public Duration calculatePathDuration(float velocity) {
+        var pathLength = path.size() + 2; // add 2 to take into account starting off screen and ending off screen
+        float duration = pathLength / velocity;
+        return Duration.seconds(duration);
+    }
+
     /**
      * Returns the list of towers currently placed on the map
      * @return The list of towers
@@ -132,14 +138,6 @@ public class Map {
     public void setInteraction(MapInteraction interaction) {
         currentInteraction = interaction;
         gridPane.setGridLinesVisible(interaction != MapInteraction.NONE);
-    }
-
-    public GridPane getGridPane() {
-        return gridPane;
-    }
-
-    public Pane getOverlay() {
-        return overlay;
     }
 
     /**
@@ -202,10 +200,27 @@ public class Map {
         stopPlacingTower();
     }
 
-    public Duration calculatePathDuration(float velocity) {
-        var pathLength = path.size() + 2; // add 2 to take into account starting off screen and ending off screen
-        float duration = pathLength / velocity;
-        return Duration.seconds(duration);
+    public GridPane getGridPane() {
+        return gridPane;
+    }
+
+    public Pane getOverlay() {
+        return overlay;
+    }
+
+    /**
+     * Finds a path from the starting point (startX, startY) to the ending point (endX, endY) on the map
+     * This method uses a depth-first search algorithm to explore possible paths on the map
+     * It throws an exception if a path cannot be found or if a path has already been calculated for this map
+     * @throws IllegalStateException  If a path has already been calculated for this map
+     * @throws RuntimeException  If the map is invalid and does not contain a possible path between the specified points
+     */
+    private void findPath() {
+        if (!path.isEmpty())
+            throw new IllegalStateException("Map already has a path calculated.");
+        int[][] discovered = new int[tiles.length][tiles[0].length];
+        if (!depthFirstSearch(discovered, startX, startY, endX, endY))
+            throw new RuntimeException("Invalid map, does not contain a path");
     }
 
     /**
@@ -225,22 +240,7 @@ public class Map {
         }
         var lastPoint = path.get(path.size() - 1);
         polylinePath.getPoints().add((double) lastPoint.y * TILE_WIDTH + (TILE_WIDTH / 2));
-        polylinePath.getPoints().add((double) lastPoint.x * TILE_HEIGHT + (TILE_HEIGHT / 2));
-    }
-
-    /**
-     * Finds a path from the starting point (startX, startY) to the ending point (endX, endY) on the map
-     * This method uses a depth-first search algorithm to explore possible paths on the map
-     * It throws an exception if a path cannot be found or if a path has already been calculated for this map
-     * @throws IllegalStateException  If a path has already been calculated for this map
-     * @throws RuntimeException  If the map is invalid and does not contain a possible path between the specified points
-     */
-    private void findPath() {
-        if (!path.isEmpty())
-            throw new IllegalStateException("Map already has a path calculated.");
-        int[][] discovered = new int[tiles.length][tiles[0].length];
-        if (!depthFirstSearch(discovered, startX, startY, endX, endY))
-            throw new RuntimeException("Invalid map, does not contain a path");
+        polylinePath.getPoints().add((double) lastPoint.x * TILE_HEIGHT + ((3 * TILE_HEIGHT) / 2));
     }
 
     /**
