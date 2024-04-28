@@ -6,7 +6,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Polyline;
 import javafx.util.Duration;
 import seng201.team53.items.towers.Tower;
-import seng201.team53.items.towers.TowerType;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -285,7 +284,11 @@ public class Map {
      * @return True if the tile is a valid candidate, false otherwise
      */
     private boolean isValidTile(int[][] discovered, int x, int y) {
-        return x >= 0 && y >= 0 && x < tiles.length && y < tiles[x].length && tiles[x][y].isPath()
-                && discovered[x][y] == 0;
+        return (x >= 0
+            && y >= 0
+            && x < tiles.length
+            && y < tiles[x].length
+            && tiles[x][y].isPath()
+            && discovered[x][y] == 0);
     }
 }

@@ -4,6 +4,8 @@ import seng201.team53.items.ResourceType;
 
 public class LumberMillTower extends Tower {
 
+    public static final int COST = 100;
+
     public LumberMillTower() {
 
         super(
@@ -18,8 +20,8 @@ public class LumberMillTower extends Tower {
     }
 
     @Override
-    public Double getCostPrice() {
-        return 100.0;
+    public int getCostPrice() {
+        return COST;
     }
 
     @Override

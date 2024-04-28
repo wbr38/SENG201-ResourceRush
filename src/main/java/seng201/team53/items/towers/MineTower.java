@@ -4,6 +4,8 @@ import seng201.team53.items.ResourceType;
 
 public class MineTower extends Tower {
 
+    public static final int COST = 120;
+
     public MineTower() {
         super(
                 "Mine",
@@ -17,8 +19,8 @@ public class MineTower extends Tower {
     }
 
     @Override
-    public Double getCostPrice() {
-        return 100.0;
+    public int getCostPrice() {
+        return COST;
     }
 
     @Override
