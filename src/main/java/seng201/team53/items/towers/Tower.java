@@ -9,7 +9,7 @@ import seng201.team53.items.ResourceType;
 
 public abstract class Tower implements Purchasable, Tickable {
     private String name;
-    private Image image;
+    private ImageView imageView;
     public ResourceType resourceType;
     public int resourceAmount;
     public float reloadSpeed;
@@ -21,10 +21,13 @@ public abstract class Tower implements Purchasable, Tickable {
           ResourceType resourceType
     ) {
         this.name = name;
-        this.image = new Image(getClass().getResourceAsStream(imagePath));
         this.resourceType = resourceType;
         this.resourceAmount = 0;
         this.xpLevel = 0;
+
+        this.imageView = new ImageView(new Image(getClass().getResourceAsStream(imagePath)));
+        this.imageView.setFitWidth(Map.TILE_WIDTH);
+        this.imageView.setFitHeight(Map.TILE_HEIGHT);
     }
 
     @Override
@@ -33,9 +36,6 @@ public abstract class Tower implements Purchasable, Tickable {
     }
 
     public ImageView getImageView() {
-        var imageView = new ImageView(image);
-        imageView.setFitWidth(Map.TILE_WIDTH);
-        imageView.setFitHeight(Map.TILE_HEIGHT);
         return imageView;
     }
 

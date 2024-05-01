@@ -6,7 +6,7 @@ import seng201.team53.items.towers.TowerType;
 
 /**
  * This class manages the game state within the game environment. It keeps track of the current game state
- *  and handles transitions between different states
+ * and handles transitions between different states
  */
 public class GameStateHandler {
     private GameEnvironment game;
@@ -53,19 +53,27 @@ public class GameStateHandler {
         }
     }
 
-    public void allowPlacingTower(TowerType towerType) {
+    /**
+     * Try to start the process of placing a new tower onto the map.
+     * @param towerType The type of tower to purchase.
+     * @return If the tower was succesfully purchased from the shop, and the placing tower process has started (handled in Map.java)
+     */
+    public boolean tryStartingPlacingTower(TowerType towerType, double mouseX, double mouseY) {
         var map = game.getMap();
+
+        // User is already interacting with the map in some way
         if (map.getCurrentInteraction() != MapInteraction.NONE)
-            return;
+            return false;
 
         var tower = towerType.create();
         if (!game.getShop().purchaseItem(tower)) {
             game.getController().showNotification("Not enough money", 1.5);
-            return;
+            return false;
         }
         game.getController().updateMoneyLabel(game.getShop().getMoney());
         game.getController().updateShopButtons(game.getShop().getMoney());
-        map.startPlacingTower(towerType.create());
+        map.startPlacingTower(towerType.create(), mouseX, mouseY);
+        return true;
     }
 
     /**

@@ -32,7 +32,7 @@ public class MainController {
     @FXML
     void onNameFieldKeyPress(KeyEvent event) {
         var text = nameTextField.getText() + event.getText();
-        
+
         boolean validName = (
             text.length() >= MIN_NAME_LENGTH
             && text.length() <= MAX_NAME_LENGTH
@@ -46,7 +46,7 @@ public class MainController {
     }
 
     @FXML
-    void onStartButtonMouseClick(MouseEvent event) throws Exception {
+    void onStartButtonMouseClick(MouseEvent event) { 
         if (event.getButton() != MouseButton.PRIMARY)
             return;
         if (!currentNameChoiceValid) {
@@ -56,7 +56,7 @@ public class MainController {
             return;
         }
         var name = nameTextField.getText();
-        var rounds = (int) numberOfRoundsSlider.getValue();
+        var rounds = (int)numberOfRoundsSlider.getValue();
         var gameDifficulty = difficultyChoiceBox.getSelectionModel().getSelectedItem();
         var gameStateHandler = new GameStateHandler();
         var gameController = windowManager.loadGameScreen(gameStateHandler);

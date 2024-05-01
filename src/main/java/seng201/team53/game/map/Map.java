@@ -1,17 +1,20 @@
 package seng201.team53.game.map;
 
+import java.awt.Point;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Stack;
+
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Polyline;
 import javafx.util.Duration;
 import seng201.team53.exceptions.TileNotFoundException;
 import seng201.team53.items.towers.Tower;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
 
 /**
  * This class represents a map in the game. It stores information about the map grid, tiles, and pathfinding
@@ -22,13 +25,14 @@ import java.util.Stack;
 public class Map {
     public static final int TILE_HEIGHT = 40;
     public static final int TILE_WIDTH = 40;
-    public static final int[] X_DIRECTIONS = { -1, 0, 1, 0 };
-    public static final int[] Y_DIRECTIONS = { 0, 1, 0, -1 };
+    public static final int[] X_DIRECTIONS = {-1, 0, 1, 0};
+    public static final int[] Y_DIRECTIONS = {0, 1, 0, -1};
     private final String name;
     private final Tile[][] tiles;
     private final Stack<Point> path = new Stack<>();
     private final Polyline polylinePath = new Polyline();
-    private final List<Tower> towers = new ArrayList<>();
+    /** A mapping of towers on this map, and the tile they are placed on */
+    private final HashMap<Tower, Tile> towers = new HashMap<>();
     private final int startX;
     private final int startY;
     private final int endX;
@@ -37,7 +41,6 @@ public class Map {
     private final Pane overlay;
     private MapInteraction currentInteraction = MapInteraction.NONE;
     private Tower selectedTower;
-    private ImageView selectedTowerImage;
 
     /**
      * Constructs a new Map with the specified properties
@@ -57,12 +60,13 @@ public class Map {
         this.endY = endY;
         this.gridPane = gridPane;
         this.overlay = overlay;
+
+        this.overlay.setOnMouseClicked(this::onMouseClicked);
         findPath();
         generatePathPolyline();
     }
 
     /**
-     * Returns the name of the map
      * @return The name of the map
      */
     public String getName() {
@@ -95,16 +99,14 @@ public class Map {
     }
 
     /**
-     * Returns the list of points which makes up the complete path
-     * @return The list of points
+     * @return The list of points which makes up the complete path
      */
     public List<Point> getPath() {
         return path;
     }
 
     /**
-     * Returns the polyline version of the complete path
-     * @return The polyline path
+     * @return The polyline version of the complete path
      */
     public Polyline getPolylinePath() {
         return polylinePath;
@@ -117,16 +119,14 @@ public class Map {
     }
 
     /**
-     * Returns the list of towers currently placed on the map
-     * @return The list of towers
+     * @return The list of towers currently placed on the map
      */
-    public List<Tower> getTowers() {
-        return towers;
+    public Collection<Tower> getTowers() {
+        return towers.keySet();
     }
 
     /**
-     * Returns the current map interation
-     * @return The current map interaction
+     * @return The current map interation
      */
     public MapInteraction getCurrentInteraction() {
         return currentInteraction;
@@ -142,64 +142,108 @@ public class Map {
     }
 
     /**
-     * Returns the currently selected tower for placement on the map, or null
-     * @return The currently selected tower, or null if no tower is selected
-     */
-    public Tower getSelectedTower() {
-        return selectedTower;
-    }
-
-    /**
-     * Begins the process of placing a tower on the map. This method begins a visual representation of the tower
+     * Begins the process of placing a tower on the map. This method begins a
+     * visual representation of the tower
      * that follows the mouse curser and sets the map interaction state
      * @param tower The tower to be placed
      */
-    public void startPlacingTower(Tower tower) {
+    public boolean startPlacingTower(Tower tower, double mouseX, double mouseY) {
+
+
         this.setInteraction(MapInteraction.PLACE_TOWER);
         this.selectedTower = tower;
-        selectedTowerImage = selectedTower.getImageView();
+        ImageView towerImage = selectedTower.getImageView();
         // start it off screen
-        selectedTowerImage.setX(1000);
-        selectedTowerImage.setY(1000);
-        overlay.getChildren().add(selectedTowerImage);
+        towerImage.setX(mouseX - 20);
+        towerImage.setY(mouseY - 20);
+        overlay.getChildren().add(towerImage);
         overlay.setOnMouseMoved(event -> {
-            selectedTowerImage.setX(event.getX() - 20);
-            selectedTowerImage.setY(event.getY() - 20);
+            towerImage.setX(event.getX() - 20);
+            towerImage.setY(event.getY() - 20);
         });
-        overlay.setOnMouseClicked(event -> {
-            if (getCurrentInteraction() != MapInteraction.PLACE_TOWER)
-                return;
-            var tile = getTileFromScreenPosition((int) event.getSceneX(), (int) event.getSceneY());
-            if (!tile.isBuildable() || tile.getTower() != null)
-                return;
-            placeTower(tile);
-        });
+        return true;
     }
 
     /**
      * Stops the process of placing a tower on the map. This method removes the visual representation of the tower
      * and resets the map interaction state
      */
-    public void stopPlacingTower() {
+    private void stopPlacingTower() {
         overlay.setOnMouseMoved(null);
-        overlay.setOnMouseClicked(null);
-        overlay.getChildren().remove(selectedTowerImage);
+        overlay.getChildren().remove(selectedTower.getImageView());
         selectedTower = null;
-        selectedTowerImage = null;
     }
 
     /**
-     * Places a tower on a specified tile on the map
-     * @param tile The tile where the tile should be placed
+     * Try place the tower onto the map on the given tile.
+     * @param tower The tower to place
+     * @param tile The tile to place the tower on
+     * @return Whether the Tower was added to the map/placed on the tile. Will return false if the given tile is not buildable or part of the cart's
+     *         path.
      */
-    public void placeTower(Tile tile) {
-        var imageView = selectedTower.getImageView();
+    private boolean addTower(Tower tower, Tile tile) {
+
+        // Tile is not buildable or already occupied
+        if (!tile.isBuildable() || tile.getTower() != null)
+            return false;
+
+        var imageView = tower.getImageView();
         gridPane.add(imageView, tile.getX(), tile.getY());
-        towers.add(selectedTower);
+        towers.put(selectedTower, tile);
         tile.setTower(selectedTower);
-        setInteraction(MapInteraction.NONE);
-        stopPlacingTower();
+        return true;
     }
+
+    private boolean removeTower(Tower tower) {
+        // Remove the tower from the map
+        gridPane.getChildren().remove(tower.getImageView());
+        Tile tile = towers.get(tower);
+        tile.setTower(null);
+        towers.remove(tower);
+        return true;
+    }
+
+    /**
+     * Handle map interactions when the user clicks their mouse on the screen.
+     */
+    private void onMouseClicked(MouseEvent event) {
+        // Only care about left clicking
+        if (event.getButton() != MouseButton.PRIMARY)
+            return;
+
+        int mouseX = (int)Math.round(event.getSceneX());
+        int mouseY = (int)Math.round(event.getSceneY());
+
+        Tile tile;
+        try {
+            tile = this.getTileFromScreenPosition(mouseX, mouseY);
+        } catch (TileNotFoundException e) {
+            return;
+        }
+
+        Tower tileTower = tile.getTower();
+
+        MapInteraction interaction = this.getCurrentInteraction();
+
+        // If the user is not currently interacting with something, and selects a tower, then start moving the tower.
+        if (interaction == MapInteraction.NONE && tileTower != null) {
+            removeTower(tileTower);
+            startPlacingTower(tileTower, event.getX(), event.getY());
+            // MapInteraction is set to MOVE_TOWER from above call
+            return;
+        }
+
+        // PLACE_TOWER
+        if (interaction == MapInteraction.PLACE_TOWER) {
+            boolean placed = addTower(selectedTower, tile);
+            if (placed) {
+                setInteraction(MapInteraction.NONE);
+                stopPlacingTower();
+            }
+            return;
+        }
+    }
+
 
     public GridPane getGridPane() {
         return gridPane;
@@ -213,8 +257,8 @@ public class Map {
      * Finds a path from the starting point (startX, startY) to the ending point (endX, endY) on the map
      * This method uses a depth-first search algorithm to explore possible paths on the map
      * It throws an exception if a path cannot be found or if a path has already been calculated for this map
-     * @throws IllegalStateException  If a path has already been calculated for this map
-     * @throws RuntimeException  If the map is invalid and does not contain a possible path between the specified points
+     * @throws IllegalStateException If a path has already been calculated for this map
+     * @throws RuntimeException If the map is invalid and does not contain a possible path between the specified points
      */
     private void findPath() {
         if (!path.isEmpty())
@@ -233,15 +277,15 @@ public class Map {
         if (!polylinePath.getPoints().isEmpty())
             throw new IllegalStateException("Map already has a polyline path calculated.");
         var firstPoint = path.get(0);
-        polylinePath.getPoints().add((double) firstPoint.y * TILE_WIDTH - (TILE_WIDTH / 2));
-        polylinePath.getPoints().add((double) firstPoint.x * TILE_HEIGHT + (TILE_HEIGHT / 2));
+        polylinePath.getPoints().add((double)firstPoint.y * TILE_WIDTH - (TILE_WIDTH / 2));
+        polylinePath.getPoints().add((double)firstPoint.x * TILE_HEIGHT + (TILE_HEIGHT / 2));
         for (var point : path) {
-            polylinePath.getPoints().add((double) point.y * TILE_WIDTH + (TILE_WIDTH / 2));
-            polylinePath.getPoints().add((double) point.x * TILE_HEIGHT + (TILE_HEIGHT / 2));
+            polylinePath.getPoints().add((double)point.y * TILE_WIDTH + (TILE_WIDTH / 2));
+            polylinePath.getPoints().add((double)point.x * TILE_HEIGHT + (TILE_HEIGHT / 2));
         }
         var lastPoint = path.get(path.size() - 1);
-        polylinePath.getPoints().add((double) lastPoint.y * TILE_WIDTH + (TILE_WIDTH / 2));
-        polylinePath.getPoints().add((double) lastPoint.x * TILE_HEIGHT + ((3 * TILE_HEIGHT) / 2));
+        polylinePath.getPoints().add((double)lastPoint.y * TILE_WIDTH + (TILE_WIDTH / 2));
+        polylinePath.getPoints().add((double)lastPoint.x * TILE_HEIGHT + ((3 * TILE_HEIGHT) / 2));
     }
 
     /**

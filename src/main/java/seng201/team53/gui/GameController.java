@@ -126,7 +126,7 @@ public class GameController {
     private void onShopTowerClick(MouseEvent event, TowerType towerType) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
-        stateHandler.allowPlacingTower(towerType);
+        stateHandler.tryStartingPlacingTower(towerType, event.getX(), event.getY());
     }
 
     /**
