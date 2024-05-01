@@ -1,9 +1,11 @@
 package seng201.team53.game;
 
 import javafx.scene.input.MouseButton;
+import seng201.team53.exceptions.TileNotFoundException;
 import seng201.team53.game.assets.AssetLoader;
 import seng201.team53.game.event.RandomEvents;
 import seng201.team53.game.map.Map;
+import seng201.team53.game.map.Tile;
 import seng201.team53.game.round.GameRound;
 import seng201.team53.game.round.GameRoundFactory;
 import seng201.team53.game.state.GameState;
@@ -38,7 +40,8 @@ public class GameEnvironment {
         stateHandler.setGameEnvironment(this);
         assetLoader.init();
         randomEvents.init();
-        map = assetLoader.loadMap("default", "/assets/maps/map_one.json", controller.getMapBackgroundPane(), controller.getGridPane(), controller.getOverlay());
+        map = assetLoader.loadMap("default", "/assets/maps/map_one.json", controller.getMapBackgroundPane(), controller.getGridPane(),
+                                  controller.getOverlay());
         gameRound = roundFactory.getRound(stateHandler, map, 1, assetLoader.getCartImage());
         shop.addMoney(gameRound.getStartingMoney());
         controller.updateMoneyLabel(shop.getMoney());
@@ -55,6 +58,7 @@ public class GameEnvironment {
         controller.updateMoneyLabel(shop.getMoney());
         controller.updateShopButtons(shop.getMoney());
     }
+
     public void beginRound() {
         var randomEvent = randomEvents.requestRandomEvent(difficulty);
         if (randomEvent != null) {
@@ -64,18 +68,22 @@ public class GameEnvironment {
         }
         startRound();
     }
+
     public void startRound() {
         gameRound.start();
         controller.showPauseButton();
     }
+
     public void pauseRound() {
         gameRound.pause();
         controller.showResumeButton();
     }
+
     public void resumeRound() {
         gameRound.play();
         controller.showPauseButton();
     }
+
     public void completeRound() {
         if (gameRound.getRoundNumber() == rounds) {
             stateHandler.setState(GameState.GAME_COMPLETE);
@@ -89,7 +97,12 @@ public class GameEnvironment {
     public void enableMapCreationMode() {
         int[][] matrix = new int[16][20];
         controller.getOverlay().setOnMouseClicked(event -> {
-            var tile = map.getTileFromScreenPosition((int) event.getSceneX(), (int) event.getSceneY());
+            Tile tile;
+            try {
+                tile = map.getTileFromScreenPosition((int)event.getSceneX(), (int)event.getSceneY());
+            } catch (TileNotFoundException e) {
+                return;
+            }
             if (event.getButton() == MouseButton.PRIMARY) {
                 matrix[tile.getY()][tile.getX()] = 1;
                 return;
@@ -110,9 +123,11 @@ public class GameEnvironment {
     public GameController getController() {
         return controller;
     }
+
     public AssetLoader getAssetLoader() {
         return assetLoader;
     }
+
     public RandomEvents getRandomEvents() {
         return randomEvents;
     }
@@ -124,6 +139,7 @@ public class GameEnvironment {
     public GameDifficulty getDifficulty() {
         return difficulty;
     }
+
     public void setDifficulty(GameDifficulty difficulty) {
         this.difficulty = difficulty;
     }

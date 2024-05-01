@@ -5,6 +5,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Polyline;
 import javafx.util.Duration;
+import seng201.team53.exceptions.TileNotFoundException;
 import seng201.team53.items.towers.Tower;
 
 import java.awt.*;
@@ -73,12 +74,12 @@ public class Map {
      * @param tileX The X coordinate of the tile on the grid (zero-based indexing)
      * @param tileY The Y coordinate of the tile on the grid (zero-based indexing)
      * @return The tile object at the given coordinates, or null if the coordinates are outside the map bounds
-     * @throws RuntimeException  If the requested tile coordinates are outside the valid range of the map
+     * @throws TileNotFoundException If the requested tile coordinates are outside the valid range of the map
      */
-    public Tile getTileAt(int tileX, int tileY) {
+    public Tile getTileAt(int tileX, int tileY) throws TileNotFoundException {
         if (tileX >= 0 && tileX < tiles.length && tileY >= 0 && tileY < tiles[tileX].length)
             return tiles[tileY][tileX];
-        throw new RuntimeException("Tile does not exist at x=" + tileX + ", y=" + tileY);
+        throw new TileNotFoundException("Tile does not exist at x=" + tileX + ", y=" + tileY);
     }
 
     /**
@@ -87,7 +88,7 @@ public class Map {
      * @param screenY The Y coordinate of the screen (in pixels)
      * @return The tile object at the given coordinates, or null if the coordinates are outside the map bounds
      */
-    public Tile getTileFromScreenPosition(int screenX, int screenY) {
+    public Tile getTileFromScreenPosition(int screenX, int screenY) throws TileNotFoundException {
         int tileX = Math.floorDiv(screenX, TILE_WIDTH);
         int tileY = Math.floorDiv(screenY, TILE_HEIGHT);
         return getTileAt(tileX, tileY);
