@@ -15,6 +15,7 @@ import javafx.scene.shape.Polyline;
 import javafx.util.Duration;
 import seng201.team53.exceptions.TileNotFoundException;
 import seng201.team53.items.towers.Tower;
+import seng201.team53.service.PathFinderService;
 
 /**
  * This class represents a map in the game. It stores information about the map grid, tiles, and pathfinding
@@ -25,12 +26,10 @@ import seng201.team53.items.towers.Tower;
 public class Map {
     public static final int TILE_HEIGHT = 40;
     public static final int TILE_WIDTH = 40;
-    public static final int[] X_DIRECTIONS = {-1, 0, 1, 0};
-    public static final int[] Y_DIRECTIONS = {0, 1, 0, -1};
     private final String name;
     private final Tile[][] tiles;
     private final Stack<Point> path = new Stack<>();
-    private final Polyline polylinePath = new Polyline();
+    private final Polyline polylinePath;
     /** A mapping of towers on this map, and the tile they are placed on */
     private final HashMap<Tower, Tile> towers = new HashMap<>();
     private final int startX;
@@ -60,10 +59,11 @@ public class Map {
         this.endY = endY;
         this.gridPane = gridPane;
         this.overlay = overlay;
-
         this.overlay.setOnMouseClicked(this::onMouseClicked);
-        findPath();
-        generatePathPolyline();
+
+        var pathFinderService = new PathFinderService();
+        pathFinderService.findPath(tiles, startX, startY, endX, endY);
+        polylinePath = pathFinderService.generatePathPolyline();
     }
 
     /**
@@ -251,89 +251,5 @@ public class Map {
 
     public Pane getOverlay() {
         return overlay;
-    }
-
-    /**
-     * Finds a path from the starting point (startX, startY) to the ending point (endX, endY) on the map
-     * This method uses a depth-first search algorithm to explore possible paths on the map
-     * It throws an exception if a path cannot be found or if a path has already been calculated for this map
-     * @throws IllegalStateException If a path has already been calculated for this map
-     * @throws RuntimeException If the map is invalid and does not contain a possible path between the specified points
-     */
-    private void findPath() {
-        if (!path.isEmpty())
-            throw new IllegalStateException("Map already has a path calculated.");
-        int[][] discovered = new int[tiles.length][tiles[0].length];
-        if (!depthFirstSearch(discovered, startX, startY, endX, endY))
-            throw new RuntimeException("Invalid map, does not contain a path");
-    }
-
-    /**
-     * Generates a polyline path representing the movement path for carts on the map
-     * This method calculates a series of points that define a path that carts will follow. The first and last point
-     * are offset to allow the path to start and end off-screen
-     */
-    private void generatePathPolyline() {
-        if (!polylinePath.getPoints().isEmpty())
-            throw new IllegalStateException("Map already has a polyline path calculated.");
-        var firstPoint = path.get(0);
-        polylinePath.getPoints().add((double)firstPoint.y * TILE_WIDTH - (TILE_WIDTH / 2));
-        polylinePath.getPoints().add((double)firstPoint.x * TILE_HEIGHT + (TILE_HEIGHT / 2));
-        for (var point : path) {
-            polylinePath.getPoints().add((double)point.y * TILE_WIDTH + (TILE_WIDTH / 2));
-            polylinePath.getPoints().add((double)point.x * TILE_HEIGHT + (TILE_HEIGHT / 2));
-        }
-        var lastPoint = path.get(path.size() - 1);
-        polylinePath.getPoints().add((double)lastPoint.y * TILE_WIDTH + (TILE_WIDTH / 2));
-        polylinePath.getPoints().add((double)lastPoint.x * TILE_HEIGHT + ((3 * TILE_HEIGHT) / 2));
-    }
-
-    /**
-     * Recursive helper method for the findPath algorithm that implements a depth-first search.
-     * This method explores possible paths on the map by recursively checking neighboring tiles until it reaches
-     * the end point or exhausts all valid options. It marks visited tiles and builds the path by pushing and popping
-     * coordinates onto a stack
-     * @param discovered A 2D array to keep track of visited tiles (0: unvisited, 2: visited)
-     * @param x The current X coordinate on the map
-     * @param y The current Y coordinate on the map
-     * @param endX The X coordinate of the end point
-     * @param endY The Y coordinate of the end point
-     * @return True if a path is found, false otherwise
-     */
-    private boolean depthFirstSearch(int[][] discovered, int x, int y, int endX, int endY) {
-        discovered[x][y] = 2;
-        if (x == endX && y == endY) {
-            path.push(new Point(x, y));
-            return true;
-        }
-        for (int i = 0; i < X_DIRECTIONS.length; i++) {
-            int newX = x + X_DIRECTIONS[i];
-            int newY = y + Y_DIRECTIONS[i];
-            if (!isValidTile(discovered, newX, newY))
-                continue;
-            path.push(new Point(x, y));
-            if (depthFirstSearch(discovered, newX, newY, endX, endY))
-                return true;
-            path.pop();
-        }
-        return false;
-    }
-
-
-    /**
-     * Checks whether a tile on the map is a valid candidate for the path finding algorithm.
-     * A valid cell is within the map boundaries, is marked as a path tile, and has not been visited yet
-     * @param discovered A 2D array to keep track of visited tiles (0: unvisited, 1: on stack, 2: visited)
-     * @param x The X coordinate of the cell to check
-     * @param y The Y coordinate of the cell to check
-     * @return True if the tile is a valid candidate, false otherwise
-     */
-    private boolean isValidTile(int[][] discovered, int x, int y) {
-        return (x >= 0
-            && y >= 0
-            && x < tiles.length
-            && y < tiles[x].length
-            && tiles[x][y].isPath()
-            && discovered[x][y] == 0);
     }
 }

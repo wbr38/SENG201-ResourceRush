@@ -13,7 +13,7 @@ class NameValidatorServiceTest {
     private NameValidatorService nameValidatorService;
 
     @BeforeAll
-    public void beforeAllTests() {
+    void beforeAllTests() {
         nameValidatorService = new NameValidatorService();
     }
 
