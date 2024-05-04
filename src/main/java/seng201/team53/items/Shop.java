@@ -24,6 +24,13 @@ public class Shop {
         return true;
     }
 
+
+    private void updateLabels() {
+        GameController gameController = GameEnvironment.getGameEnvironment().getController();
+        gameController.updateMoneyLabel(this.getMoney());
+        gameController.updateShopButtons(this.getMoney());
+    }
+
     public int getMoney() {
         return this.money;
     }
@@ -36,9 +43,12 @@ public class Shop {
         this.money -= amount;
         if (this.money < 0)
             this.money = 0;
+
+        this.updateLabels();
     }
 
     public void addMoney(int amount) {
         this.money += amount;
+        this.updateLabels();
     }
 }

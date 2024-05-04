@@ -64,8 +64,6 @@ public class GameEnvironment {
                                   controller.getOverlay());
         gameRound = roundFactory.getRound(stateHandler, map, 1, assetLoader.getCartImage());
         shop.addMoney(gameRound.getStartingMoney());
-        controller.updateMoneyLabel(shop.getMoney());
-        controller.updateShopButtons(shop.getMoney());
     }
 
     public void setupNextRound() {
@@ -75,8 +73,6 @@ public class GameEnvironment {
             return;
         shop.addMoney(gameRound.getStartingMoney());
         controller.updateRoundCounter(nextRound, rounds);
-        controller.updateMoneyLabel(shop.getMoney());
-        controller.updateShopButtons(shop.getMoney());
     }
 
     public void beginRound() {
