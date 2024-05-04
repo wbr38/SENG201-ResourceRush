@@ -41,8 +41,7 @@ public class GameController {
     private final GameStateHandler stateHandler;
     private PauseTransition notificationPause;
 
-    public GameController(GameStateHandler stateHandler) {
-        this.stateHandler = stateHandler;
+    public GameController() {
     }
 
     public void init() {
@@ -74,8 +73,11 @@ public class GameController {
     private void onStartButtonMouseClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
+
+        GameStateHandler stateHandler = GameEnvironment.getGameEnvironment().getStateHandler();
         if (stateHandler.getState() != GameState.ROUND_NOT_STARTED)
             return;
+
         stateHandler.setState(GameState.ROUND_ACTIVE);
     }
 
@@ -83,8 +85,11 @@ public class GameController {
     private void onPauseButtonMouseClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
+
+        GameStateHandler stateHandler = GameEnvironment.getGameEnvironment().getStateHandler();
         if (stateHandler.getState() != GameState.ROUND_ACTIVE)
             return;
+
         stateHandler.setState(GameState.ROUND_PAUSE);
     }
 
@@ -92,8 +97,11 @@ public class GameController {
     private void onResumeButtonMouseClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
+
+        GameStateHandler stateHandler = GameEnvironment.getGameEnvironment().getStateHandler();
         if (stateHandler.getState() != GameState.ROUND_PAUSE)
             return;
+
         stateHandler.setState(GameState.ROUND_ACTIVE);
     }
 
@@ -109,8 +117,11 @@ public class GameController {
     private void onRandomEventDialogExistClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
+
+        GameStateHandler stateHandler = GameEnvironment.getGameEnvironment().getStateHandler();
         if (stateHandler.getState() != GameState.RANDOM_EVENT_DIALOG_OPEN)
             return;
+
         stateHandler.setState(GameState.ROUND_ACTIVE);
     }
 
@@ -118,14 +129,19 @@ public class GameController {
     private void onRoundCompleteDialogExistClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
+
+        GameStateHandler stateHandler = GameEnvironment.getGameEnvironment().getStateHandler();
         if (stateHandler.getState() != GameState.ROUND_COMPLETE)
             return;
+
         stateHandler.setState(GameState.ROUND_NOT_STARTED);
     }
 
     private void onShopTowerClick(MouseEvent event, TowerType towerType) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
+
+        GameStateHandler stateHandler = GameEnvironment.getGameEnvironment().getStateHandler();
         stateHandler.tryStartingPlacingTower(towerType, event.getX(), event.getY());
     }
 
@@ -169,29 +185,36 @@ public class GameController {
         hide(pauseButton);
         hide(resumeButton);
     }
+
     public void showPauseButton() {
         hide(startButton);
         show(pauseButton);
         hide(resumeButton);
     }
+
     public void showResumeButton() {
         hide(startButton);
         hide(pauseButton);
         show(resumeButton);
     }
+
     public void showRandomEventDialog(String text) {
         randomEventTest.setText(text);
         show(randomEventPane);
     }
+
     public void hideRandomEventDialog() {
         hide(randomEventPane);
     }
+
     public void showRoundCompleteDialog() {
         show(roundCompletePane);
     }
+
     public void hideRoundCompleteDialog() {
         hide(roundCompletePane);
     }
+
     public void showGameCompleteDialog() {
         show(gameCompletePane);
     }
@@ -200,6 +223,7 @@ public class GameController {
         node.setVisible(true);
         node.setDisable(false);
     }
+
     private void hide(Node node) {
         node.setVisible(false);
         node.setDisable(true);

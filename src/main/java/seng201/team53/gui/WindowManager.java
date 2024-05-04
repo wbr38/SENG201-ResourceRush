@@ -32,11 +32,11 @@ public class WindowManager {
             throw new RuntimeException(e);
         }
     }
-    public GameController loadGameScreen(GameStateHandler gameStateHandler) {
+    public GameController loadGameScreen() {
         pane.getChildren().clear();
         try {
             FXMLLoader setupLoader = new FXMLLoader(getClass().getResource("/fxml/game.fxml"));
-            setupLoader.setControllerFactory(param -> new GameController(gameStateHandler));
+            setupLoader.setControllerFactory(param -> new GameController());
 
             Parent setupParent = setupLoader.load();
             GameController controller = setupLoader.getController();
