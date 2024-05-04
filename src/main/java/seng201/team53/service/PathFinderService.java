@@ -36,6 +36,10 @@ public class PathFinderService {
         return polylinePath;
     }
 
+    public int calculatePathLength() {
+        return path.size() + 2; // add 2 to take into account starting off screen and ending off screen
+    }
+
     /**
      * Finds a path from the starting point (startX, startY) to the ending point (endX, endY) on the map
      * This method uses a depth-first search algorithm to explore possible paths on the map

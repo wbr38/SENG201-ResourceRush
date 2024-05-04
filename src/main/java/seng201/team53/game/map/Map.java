@@ -28,8 +28,8 @@ public class Map {
     public static final int TILE_WIDTH = 40;
     private final String name;
     private final Tile[][] tiles;
-    private final Stack<Point> path = new Stack<>();
     private final Polyline polylinePath;
+    private final int pathLength;
     /** A mapping of towers on this map, and the tile they are placed on */
     private final HashMap<Tower, Tile> towers = new HashMap<>();
     private final int startX;
@@ -63,7 +63,8 @@ public class Map {
 
         var pathFinderService = new PathFinderService();
         pathFinderService.findPath(tiles, startX, startY, endX, endY);
-        polylinePath = pathFinderService.generatePathPolyline();
+        this.polylinePath = pathFinderService.generatePathPolyline();
+        this.pathLength = pathFinderService.calculatePathLength();
     }
 
     /**
@@ -99,13 +100,6 @@ public class Map {
     }
 
     /**
-     * @return The list of points which makes up the complete path
-     */
-    public List<Point> getPath() {
-        return path;
-    }
-
-    /**
      * @return The polyline version of the complete path
      */
     public Polyline getPolylinePath() {
@@ -113,7 +107,6 @@ public class Map {
     }
 
     public Duration calculatePathDuration(float velocity) {
-        var pathLength = path.size() + 2; // add 2 to take into account starting off screen and ending off screen
         float duration = pathLength / velocity;
         return Duration.seconds(duration);
     }
