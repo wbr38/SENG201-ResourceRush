@@ -1,10 +1,7 @@
 package seng201.team53.game.map;
 
-import java.awt.Point;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Stack;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -14,6 +11,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Polyline;
 import javafx.util.Duration;
 import seng201.team53.exceptions.TileNotFoundException;
+import seng201.team53.game.GameEnvironment;
+import seng201.team53.items.Shop;
 import seng201.team53.items.towers.Tower;
 import seng201.team53.service.PathFinderService;
 
@@ -141,15 +140,13 @@ public class Map {
      * @param tower The tower to be placed
      */
     public boolean startPlacingTower(Tower tower, double mouseX, double mouseY) {
-
-
-        this.setInteraction(MapInteraction.PLACE_TOWER);
         this.selectedTower = tower;
         ImageView towerImage = selectedTower.getImageView();
         // start it off screen
         towerImage.setX(mouseX - 20);
         towerImage.setY(mouseY - 20);
         overlay.getChildren().add(towerImage);
+        towerImage.toBack(); // otherwise the image will appear ontop of buttons
         overlay.setOnMouseMoved(event -> {
             towerImage.setX(event.getX() - 20);
             towerImage.setY(event.getY() - 20);
@@ -165,6 +162,18 @@ public class Map {
         overlay.setOnMouseMoved(null);
         overlay.getChildren().remove(selectedTower.getImageView());
         selectedTower = null;
+    }
+
+    public void sellSelectedTower() {
+        if (this.selectedTower == null)
+            return;
+
+        Shop shop = GameEnvironment.getGameEnvironment().getShop();
+        shop.sellItem(this.selectedTower);
+
+        this.setInteraction(MapInteraction.NONE);
+        GameEnvironment.getGameEnvironment().getController().showSellTowerPopup(null);
+        stopPlacingTower();
     }
 
     /**
@@ -218,16 +227,19 @@ public class Map {
 
         MapInteraction interaction = this.getCurrentInteraction();
 
-        // If the user is not currently interacting with something, and selects a tower, then start moving the tower.
+        // NONE - If the user is not currently interacting with something, and selects a tower, then start moving the tower.
         if (interaction == MapInteraction.NONE && tileTower != null) {
-            removeTower(tileTower);
+            this.setInteraction(MapInteraction.MOVE_TOWER);
             startPlacingTower(tileTower, event.getX(), event.getY());
-            // MapInteraction is set to MOVE_TOWER from above call
+
+            // Show sell tower stuff
+            GameEnvironment.getGameEnvironment().getController().showSellTowerPopup(selectedTower);
+            removeTower(tileTower);
             return;
         }
 
-        // PLACE_TOWER
-        if (interaction == MapInteraction.PLACE_TOWER) {
+        // PLACE_TOWER - User was placing a tower and selected the tile to place the tower on.
+        if (interaction == MapInteraction.PLACE_TOWER || interaction == MapInteraction.MOVE_TOWER) {
             boolean placed = addTower(selectedTower, tile);
             if (placed) {
                 setInteraction(MapInteraction.NONE);

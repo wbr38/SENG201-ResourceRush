@@ -24,8 +24,8 @@ public class QuarryTower extends Tower {
     }
 
     @Override
-    public Double getSellPrice() {
-        return 50.0;
+    public int getSellPrice() {
+        return 50;
     }
 
     @Override

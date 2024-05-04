@@ -2,10 +2,15 @@ package seng201.team53.items;
 
 import java.util.ArrayList;
 
+import seng201.team53.exceptions.ItemNotFoundException;
+import seng201.team53.game.GameEnvironment;
+import seng201.team53.gui.GameController;
+
 public class Shop {
-    public ArrayList<Purchasable> items;
 
     private int money = 100;
+
+    public ArrayList<Purchasable> items = new ArrayList<>();
 
     /**
      * Attempt to purchase an item from the shop
@@ -21,9 +26,19 @@ public class Shop {
             return false;
 
         this.subtractMoney(cost);
+        this.items.add(item);
         return true;
     }
 
+    public void sellItem(Purchasable item) throws ItemNotFoundException {
+        if (!this.items.contains(item)) {
+            throw new ItemNotFoundException("Tried to sell a " + item.getName() + " item that we do not own!");
+        }
+
+        int sellPrice = item.getSellPrice();
+        this.items.remove(item);
+        this.addMoney(sellPrice);
+    }
 
     private void updateLabels() {
         GameController gameController = GameEnvironment.getGameEnvironment().getController();
