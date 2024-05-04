@@ -10,12 +10,13 @@ import java.io.IOException;
 
 public class ApplicationWindow extends Application {
     /**
-     * Opens the gui with the fxml content specified in resources/fxml/main.fxml
+     * Opens the gui with the fxml content specified in resources/fxml/application.fxml
      * @param primaryStage The current fxml stage, handled by javaFX Application class
      * @throws IOException if there is an issue loading fxml file
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
+
         FXMLLoader baseLoader = new FXMLLoader(getClass().getResource("/fxml/application.fxml"));
         baseLoader.setControllerFactory(param -> new WindowManager(primaryStage));
         Parent root = baseLoader.load();
@@ -33,7 +34,7 @@ public class ApplicationWindow extends Application {
      * errors out and does not run
      * @param args command line arguments
      */
-    public static void launchWrapper(String [] args) {
+    public static void launchWrapper(String[] args) {
         launch(args);
     }
 }

@@ -20,7 +20,7 @@ public class WindowManager {
     public void loadSetupScreen() {
         pane.getChildren().clear();
         try {
-            FXMLLoader setupLoader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
+            FXMLLoader setupLoader = new FXMLLoader(getClass().getResource("/fxml/main_menu.fxml"));
             setupLoader.setControllerFactory(param -> new MainController(this));
 
             Parent setupParent = setupLoader.load();
