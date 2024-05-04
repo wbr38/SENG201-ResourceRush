@@ -11,10 +11,9 @@ import javafx.scene.text.Text;
 import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.state.GameStateHandler;
+import seng201.team53.service.NameValidatorService;
 
 public class MainController {
-    public static final int MIN_NAME_LENGTH = 3;
-    public static final int MAX_NAME_LENGTH = 15;
     @FXML private ChoiceBox<GameDifficulty> difficultyChoiceBox;
     @FXML private TextField nameTextField;
     @FXML private ImageView nameGreenCheckmark;
@@ -22,8 +21,9 @@ public class MainController {
     @FXML private Text nameNotValidLabel;
     @FXML private Slider numberOfRoundsSlider;
     @FXML private Text numberOfRoundsLabel;
+
     private final WindowManager windowManager;
-    private boolean currentNameChoiceValid = false;
+    private final NameValidatorService nameValidatorService = new NameValidatorService();
 
     public MainController(WindowManager windowManager) {
         this.windowManager = windowManager;
@@ -32,30 +32,28 @@ public class MainController {
     @FXML
     void onNameFieldKeyPress(KeyEvent event) {
         var text = nameTextField.getText() + event.getText();
-        
-        boolean validName = (
-            text.length() >= MIN_NAME_LENGTH
-            && text.length() <= MAX_NAME_LENGTH
-            && text.matches("^[A-Za-z0-9]*$"));
-        if (currentNameChoiceValid != validName) {
-            currentNameChoiceValid = validName;
-            nameRedCross.setVisible(!currentNameChoiceValid);
-            nameNotValidLabel.setVisible(!currentNameChoiceValid);
-            nameGreenCheckmark.setVisible(currentNameChoiceValid);
-        }
+        var validName = nameValidatorService.isValid(text);
+        nameRedCross.setVisible(!validName);
+        nameNotValidLabel.setVisible(!validName);
+        nameGreenCheckmark.setVisible(validName);
     }
 
     @FXML
     void onStartButtonMouseClick(MouseEvent event) throws Exception {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
-        if (!currentNameChoiceValid) {
-            var content = "Your name must be of length 3-15 and not include special characters.";
+
+        var name = nameTextField.getText();
+        if (!nameValidatorService.isValid(name)) {
+            var content = "Your name must be of length " +
+                    NameValidatorService.MIN_NAME_LENGTH +
+                    "-" +
+                    NameValidatorService.MAX_NAME_LENGTH +
+                    " and not include special characters.";
             Alert alert = new Alert(Alert.AlertType.ERROR, content, ButtonType.OK);
             alert.showAndWait();
             return;
         }
-        var name = nameTextField.getText();
         var rounds = (int) numberOfRoundsSlider.getValue();
         var gameDifficulty = difficultyChoiceBox.getSelectionModel().getSelectedItem();
         var gameStateHandler = new GameStateHandler();
