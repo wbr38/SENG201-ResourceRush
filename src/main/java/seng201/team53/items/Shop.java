@@ -40,10 +40,14 @@ public class Shop {
         this.addMoney(sellPrice);
     }
 
+    /**
+     * Update the GUI labels and shop items for the current value of `money`.
+     */
     private void updateLabels() {
         GameController gameController = GameEnvironment.getGameEnvironment().getController();
-        gameController.updateMoneyLabel(this.getMoney());
-        gameController.updateShopButtons(this.getMoney());
+        int money = this.getMoney();
+        gameController.updateMoneyLabel(money);
+        gameController.updateShopButtons(money);
     }
 
     public int getMoney() {

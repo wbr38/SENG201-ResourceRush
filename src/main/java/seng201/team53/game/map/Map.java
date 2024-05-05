@@ -164,6 +164,9 @@ public class Map {
         selectedTower = null;
     }
 
+    /**
+     * Sell the tower the player has currently selected / is moving
+     */
     public void sellSelectedTower() {
         if (this.selectedTower == null)
             return;
