@@ -15,3 +15,7 @@ build/
 
 # Gradle
 .gradle/
+
+# VS Code
+.vscode/
+eclipse-formatter.xml
