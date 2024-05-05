@@ -7,7 +7,7 @@ public interface Purchasable {
 
     int getCostPrice();
 
-    Double getSellPrice();
+    int getSellPrice();
 
     Boolean isSellable();
 }

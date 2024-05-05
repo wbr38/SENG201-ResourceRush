@@ -43,23 +43,19 @@ public class MainController {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
-        var name = nameTextField.getText();
-        if (!nameValidatorService.isValid(name)) {
-            var content = "Your name must be of length " +
-                    NameValidatorService.MIN_NAME_LENGTH +
-                    "-" +
-                    NameValidatorService.MAX_NAME_LENGTH +
-                    " and not include special characters.";
+        var playerName = nameTextField.getText();
+        if (!nameValidatorService.isValid(playerName)) {
+            var content = "Your name must be of length " + NameValidatorService.MIN_NAME_LENGTH + "-" + NameValidatorService.MAX_NAME_LENGTH + " and not include special characters.";
             Alert alert = new Alert(Alert.AlertType.ERROR, content, ButtonType.OK);
             alert.showAndWait();
             return;
+
         }
         var rounds = (int) numberOfRoundsSlider.getValue();
         var gameDifficulty = difficultyChoiceBox.getSelectionModel().getSelectedItem();
-        var gameStateHandler = new GameStateHandler();
-        var gameController = windowManager.loadGameScreen(gameStateHandler);
-        var gameEnvironment = new GameEnvironment(gameStateHandler, gameController, name, rounds, gameDifficulty);
-        gameEnvironment.init();
+
+        GameController gameController = windowManager.loadGameScreen();
+        GameEnvironment.init(gameController, playerName, rounds, gameDifficulty);
     }
 
     public void init() {

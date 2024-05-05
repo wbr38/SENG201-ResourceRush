@@ -7,29 +7,44 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import seng201.team53.game.GameEnvironment;
+import seng201.team53.game.map.Map;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
-import seng201.team53.items.towers.*;
+import seng201.team53.items.towers.LumberMillTower;
+import seng201.team53.items.towers.MineTower;
+import seng201.team53.items.towers.QuarryTower;
+import seng201.team53.items.towers.Tower;
+import seng201.team53.items.towers.TowerType;
+import seng201.team53.items.towers.WindMillTower;
 
 public class GameController {
     @FXML private Pane overlay;
-    @FXML private Pane inventoryPane;
+    @FXML private GridPane gridPane;
+
     @FXML private Pane mapBackgroundPane;
-    @FXML private Pane randomEventPane;
     @FXML private Pane roundCompletePane;
     @FXML private Pane gameCompletePane;
-    @FXML private GridPane gridPane;
+
+    @FXML private Pane randomEventPane;
     @FXML private Text randomEventTest;
+
+    // Info section (top-middle of screen)
     @FXML private Text moneyLabel;
-    @FXML private Text notificationLabel;
     @FXML private Text roundCounterLabel;
+    @FXML private Text notificationLabel;
+    private PauseTransition notificationPause;
+
     @FXML private Button pauseButton;
     @FXML private Button startButton;
     @FXML private Button resumeButton;
+
+    // Shop
     @FXML private Button lumberTowerButton;
     @FXML private Button mineTowerButton;
     @FXML private Button quarryTowerButton;
@@ -38,11 +53,16 @@ public class GameController {
     @FXML private Tooltip mineTowerTooltip;
     @FXML private Tooltip quarryTowerTooltip;
     @FXML private Tooltip windTowerTooltip;
-    private final GameStateHandler stateHandler;
-    private PauseTransition notificationPause;
 
-    public GameController(GameStateHandler stateHandler) {
-        this.stateHandler = stateHandler;
+    // Sell Tower popup
+    @FXML private AnchorPane sellTowerPane;
+    @FXML private Text sellTowerText;
+
+    // Inventory
+    @FXML private Pane inventoryPane;
+    private Boolean inventoryVisible = false;
+
+    public GameController() {
     }
 
     public void init() {
@@ -56,6 +76,8 @@ public class GameController {
         quarryTowerTooltip.setText("Cost $" + QuarryTower.COST);
         windTowerTooltip.setText("Cost $" + WindMillTower.COST);
 
+        this.setInventoryVisible(this.inventoryVisible);
+        this.showSellTowerPopup(null);
     }
 
     public Pane getMapBackgroundPane() {
@@ -74,8 +96,11 @@ public class GameController {
     private void onStartButtonMouseClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
+
+        GameStateHandler stateHandler = GameEnvironment.getGameEnvironment().getStateHandler();
         if (stateHandler.getState() != GameState.ROUND_NOT_STARTED)
             return;
+
         stateHandler.setState(GameState.ROUND_ACTIVE);
     }
 
@@ -83,8 +108,11 @@ public class GameController {
     private void onPauseButtonMouseClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
+
+        GameStateHandler stateHandler = GameEnvironment.getGameEnvironment().getStateHandler();
         if (stateHandler.getState() != GameState.ROUND_ACTIVE)
             return;
+
         stateHandler.setState(GameState.ROUND_PAUSE);
     }
 
@@ -92,8 +120,11 @@ public class GameController {
     private void onResumeButtonMouseClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
+
+        GameStateHandler stateHandler = GameEnvironment.getGameEnvironment().getStateHandler();
         if (stateHandler.getState() != GameState.ROUND_PAUSE)
             return;
+
         stateHandler.setState(GameState.ROUND_ACTIVE);
     }
 
@@ -101,16 +132,49 @@ public class GameController {
     private void onInventoryButtonMouseClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
-        inventoryPane.setVisible(!inventoryPane.isVisible());
-        inventoryPane.setDisable(!inventoryPane.isDisable());
+
+        this.inventoryVisible = !this.inventoryVisible;
+        this.setInventoryVisible(inventoryVisible);
+    }
+
+    public void setInventoryVisible(Boolean enabled) {
+        this.inventoryVisible = enabled;
+        inventoryPane.setVisible(enabled);
+        inventoryPane.setDisable(!enabled);
+    }
+
+    /**
+     * Update the appropriate elements to allow the user to sell a tower.
+     * @param tower The tower to sell. Set to `null` to hide the sell tower popup
+     */
+    public void showSellTowerPopup(Tower tower) {
+        if (tower == null) {
+            this.sellTowerPane.setVisible(false);
+            return;
+        }
+
+        this.sellTowerPane.setVisible(true);
+        this.sellTowerText.setText("Sell ($" + tower.getSellPrice() + ")");
+    }
+
+    @FXML
+    private void onSellTowerButtonClick(MouseEvent event) {
+        if (event.getButton() != MouseButton.PRIMARY)
+            return;
+
+        Map map = GameEnvironment.getGameEnvironment().getMap();
+        map.sellSelectedTower();
     }
 
     @FXML
     private void onRandomEventDialogExistClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
+
+        GameStateHandler stateHandler = GameEnvironment.getGameEnvironment().getStateHandler();
         if (stateHandler.getState() != GameState.RANDOM_EVENT_DIALOG_OPEN)
             return;
+
         stateHandler.setState(GameState.ROUND_ACTIVE);
     }
 
@@ -118,14 +182,19 @@ public class GameController {
     private void onRoundCompleteDialogExistClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
+
+        GameStateHandler stateHandler = GameEnvironment.getGameEnvironment().getStateHandler();
         if (stateHandler.getState() != GameState.ROUND_COMPLETE)
             return;
+
         stateHandler.setState(GameState.ROUND_NOT_STARTED);
     }
 
     private void onShopTowerClick(MouseEvent event, TowerType towerType) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
+
+        GameStateHandler stateHandler = GameEnvironment.getGameEnvironment().getStateHandler();
         stateHandler.tryStartingPlacingTower(towerType, event.getX(), event.getY());
     }
 
@@ -169,29 +238,36 @@ public class GameController {
         hide(pauseButton);
         hide(resumeButton);
     }
+
     public void showPauseButton() {
         hide(startButton);
         show(pauseButton);
         hide(resumeButton);
     }
+
     public void showResumeButton() {
         hide(startButton);
         hide(pauseButton);
         show(resumeButton);
     }
+
     public void showRandomEventDialog(String text) {
         randomEventTest.setText(text);
         show(randomEventPane);
     }
+
     public void hideRandomEventDialog() {
         hide(randomEventPane);
     }
+
     public void showRoundCompleteDialog() {
         show(roundCompletePane);
     }
+
     public void hideRoundCompleteDialog() {
         hide(roundCompletePane);
     }
+
     public void showGameCompleteDialog() {
         show(gameCompletePane);
     }
@@ -200,6 +276,7 @@ public class GameController {
         node.setVisible(true);
         node.setDisable(false);
     }
+
     private void hide(Node node) {
         node.setVisible(false);
         node.setDisable(true);

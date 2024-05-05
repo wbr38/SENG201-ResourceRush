@@ -15,8 +15,12 @@ import seng201.team53.items.Shop;
 
 import java.util.Arrays;
 
+/**
+ * The overarching, main class of the game
+ * This class is a Singleton; use .getGameEnvironment() to get the instance of this class and all its sub-components; 
+ */
 public class GameEnvironment {
-    private final GameStateHandler stateHandler;
+    private final GameStateHandler stateHandler = new GameStateHandler();
     private final GameController controller;
     private final AssetLoader assetLoader = new AssetLoader();
     private final RandomEvents randomEvents = new RandomEvents();
@@ -28,24 +32,38 @@ public class GameEnvironment {
     private GameRound gameRound;
     private Map map;
 
-    public GameEnvironment(GameStateHandler stateHandler, GameController controller, String playerName, int rounds, GameDifficulty difficulty) {
-        this.stateHandler = stateHandler;
+    private static GameEnvironment instance;
+
+    private GameEnvironment(GameController controller, String playerName, int rounds, GameDifficulty difficulty) {
         this.controller = controller;
         this.playerName = playerName;
         this.rounds = rounds;
         this.difficulty = difficulty;
     }
 
-    public void init() {
-        stateHandler.setGameEnvironment(this);
+    public static void init(GameController controller, String playerName, int rounds, GameDifficulty difficulty) {
+        if (instance != null)
+            throw new RuntimeException("GameEnvironment is already initialized!");
+
+        instance = new GameEnvironment(controller, playerName, rounds, difficulty);
+        instance.load();
+    }
+
+    public static GameEnvironment getGameEnvironment() {
+        if (instance == null) {
+            throw new RuntimeException("GameEnvironment has not been initialized!");
+        }
+        return instance;
+    }
+
+
+    public void load() {
         assetLoader.init();
         randomEvents.init();
         map = assetLoader.loadMap("default", "/assets/maps/map_one.json", controller.getMapBackgroundPane(), controller.getGridPane(),
                                   controller.getOverlay());
         gameRound = roundFactory.getRound(stateHandler, map, 1, assetLoader.getCartImage());
         shop.addMoney(gameRound.getStartingMoney());
-        controller.updateMoneyLabel(shop.getMoney());
-        controller.updateShopButtons(shop.getMoney());
     }
 
     public void setupNextRound() {
@@ -55,8 +73,6 @@ public class GameEnvironment {
             return;
         shop.addMoney(gameRound.getStartingMoney());
         controller.updateRoundCounter(nextRound, rounds);
-        controller.updateMoneyLabel(shop.getMoney());
-        controller.updateShopButtons(shop.getMoney());
     }
 
     public void beginRound() {
@@ -118,6 +134,10 @@ public class GameEnvironment {
                 }
             }
         });
+    }
+
+    public GameStateHandler getStateHandler() {
+        return this.stateHandler;
     }
 
     public GameController getController() {

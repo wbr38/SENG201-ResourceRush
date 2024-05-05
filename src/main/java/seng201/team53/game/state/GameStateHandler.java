@@ -9,13 +9,8 @@ import seng201.team53.items.towers.TowerType;
  * and handles transitions between different states
  */
 public class GameStateHandler {
-    private GameEnvironment game;
     private GameState state = GameState.ROUND_NOT_STARTED;
     private GameState previousState;
-
-    public void setGameEnvironment(GameEnvironment game) {
-        this.game = game;
-    }
 
     /**
      * Returns the current game state
@@ -59,20 +54,21 @@ public class GameStateHandler {
      * @return If the tower was succesfully purchased from the shop, and the placing tower process has started (handled in Map.java)
      */
     public boolean tryStartingPlacingTower(TowerType towerType, double mouseX, double mouseY) {
-        var map = game.getMap();
+        GameEnvironment gameEnv = GameEnvironment.getGameEnvironment();
+        var map = gameEnv.getMap();
 
         // User is already interacting with the map in some way
         if (map.getCurrentInteraction() != MapInteraction.NONE)
             return false;
 
         var tower = towerType.create();
-        if (!game.getShop().purchaseItem(tower)) {
-            game.getController().showNotification("Not enough money", 1.5);
+        boolean purchased = gameEnv.getShop().purchaseItem(tower);
+        if (!purchased) {
+            gameEnv.getController().showNotification("Not enough money", 1.5);
             return false;
         }
-        game.getController().updateMoneyLabel(game.getShop().getMoney());
-        game.getController().updateShopButtons(game.getShop().getMoney());
-        map.startPlacingTower(towerType.create(), mouseX, mouseY);
+        map.setInteraction(MapInteraction.PLACE_TOWER);
+        map.startPlacingTower(tower, mouseX, mouseY);
         return true;
     }
 
@@ -80,37 +76,41 @@ public class GameStateHandler {
      * Handles logic specific to the ROUND_NOT_STARTED state transition.
      */
     private void handleChangedGameStateRoundNotStarted() {
-        game.setupNextRound();
-        game.getController().hideRoundCompleteDialog();
+        GameEnvironment gameEnv = GameEnvironment.getGameEnvironment();
+        gameEnv.setupNextRound();
+        gameEnv.getController().hideRoundCompleteDialog();
     }
 
     /**
      * Handles logic specific to the ROUND_ACTIVE state transition.
      */
     private void handleChangedGameStateRoundActive() {
+        GameEnvironment gameEnv = GameEnvironment.getGameEnvironment();
         if (previousState == GameState.ROUND_NOT_STARTED) {
-            game.beginRound();
+            gameEnv.beginRound();
             return;
         }
         if (previousState == GameState.RANDOM_EVENT_DIALOG_OPEN) {
-            game.startRound();
-            game.getController().hideRandomEventDialog();
+            gameEnv.startRound();
+            gameEnv.getController().hideRandomEventDialog();
         }
-        game.resumeRound();
+        gameEnv.resumeRound();
     }
 
     /**
      * Handles logic specific to the ROUND_PAUSE state transition.
      */
     private void handleChangedGameStateRoundPause() {
-        game.pauseRound();
+        GameEnvironment gameEnv = GameEnvironment.getGameEnvironment();
+        gameEnv.pauseRound();
     }
 
     /**
      * Handles logic specific to the ROUND_COMPLETE state transition.
      */
     private void handleChangedGameStateRoundComplete() {
-        game.completeRound();
+        GameEnvironment gameEnv = GameEnvironment.getGameEnvironment();
+        gameEnv.completeRound();
     }
 
     /**
@@ -124,7 +124,8 @@ public class GameStateHandler {
      * Handles logic specific to the GAME_COMPLETE state transition (implementation pending).
      */
     private void handleChangedGameStateGameComplete() {
-        game.getController().showGameCompleteDialog();
-        game.getController().showStartButton();
+        GameEnvironment gameEnv = GameEnvironment.getGameEnvironment();
+        gameEnv.getController().showGameCompleteDialog();
+        gameEnv.getController().showStartButton();
     }
 }
