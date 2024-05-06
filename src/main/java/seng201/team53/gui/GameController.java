@@ -113,6 +113,7 @@ public class GameController {
             return;
 
         stateHandler.setState(GameState.ROUND_ACTIVE);
+        GameEnvironment.getGameEnvironment().getController().setInventoryVisible(false);
     }
 
     @FXML

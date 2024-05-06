@@ -140,6 +140,7 @@ public class GameMap {
      * @param tower The tower to be placed
      */
     public boolean startPlacingTower(Tower tower, double mouseX, double mouseY) {
+        GameEnvironment.getGameEnvironment().getController().setInventoryVisible(true);
         this.setInteraction(MapInteraction.PLACE_TOWER);
         this.selectedTower = tower;
         ImageView towerImage = selectedTower.getImageView();
