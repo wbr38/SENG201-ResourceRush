@@ -245,6 +245,7 @@ public class Map {
         if (interaction == MapInteraction.PLACE_TOWER || interaction == MapInteraction.MOVE_TOWER) {
             boolean placed = addTower(selectedTower, tile);
             if (placed) {
+                GameEnvironment.getGameEnvironment().getController().showSellTowerPopup(null);
                 setInteraction(MapInteraction.NONE);
                 stopPlacingTower();
             }
