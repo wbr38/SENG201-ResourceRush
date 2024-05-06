@@ -1,13 +1,15 @@
 package seng201.team53.gui;
 
+import java.util.HashMap;
+
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -16,12 +18,8 @@ import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.map.Map;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
-import seng201.team53.items.towers.LumberMillTower;
-import seng201.team53.items.towers.MineTower;
-import seng201.team53.items.towers.QuarryTower;
 import seng201.team53.items.towers.Tower;
 import seng201.team53.items.towers.TowerType;
-import seng201.team53.items.towers.WindMillTower;
 
 public class GameController {
     @FXML private Pane overlay;
@@ -45,14 +43,11 @@ public class GameController {
     @FXML private Button resumeButton;
 
     // Shop
-    @FXML private Button lumberTowerButton;
-    @FXML private Button mineTowerButton;
-    @FXML private Button quarryTowerButton;
-    @FXML private Button windTowerButton;
-    @FXML private Tooltip lumberTowerTooltip;
-    @FXML private Tooltip mineTowerTooltip;
-    @FXML private Tooltip quarryTowerTooltip;
-    @FXML private Tooltip windTowerTooltip;
+    private final HashMap<Button, TowerType> shopButtons = new HashMap<>();
+    @FXML private Button shopButton1;
+    @FXML private Button shopButton2;
+    @FXML private Button shopButton3;
+    @FXML private Button shopButton4;
 
     // Sell Tower popup
     @FXML private AnchorPane sellTowerPane;
@@ -66,15 +61,17 @@ public class GameController {
     }
 
     public void init() {
-        lumberTowerButton.setOnMouseClicked(e -> this.onShopTowerClick(e, TowerType.LUMBER_MILL));
-        mineTowerButton.setOnMouseClicked(e -> this.onShopTowerClick(e, TowerType.MINE));
-        quarryTowerButton.setOnMouseClicked(e -> this.onShopTowerClick(e, TowerType.QUARRY));
-        windTowerButton.setOnMouseClicked(e -> this.onShopTowerClick(e, TowerType.WIND_MILL));
 
-        lumberTowerTooltip.setText("Cost $" + LumberMillTower.COST);
-        mineTowerTooltip.setText("Cost $" + MineTower.COST);
-        quarryTowerTooltip.setText("Cost $" + QuarryTower.COST);
-        windTowerTooltip.setText("Cost $" + WindMillTower.COST);
+        shopButtons.put(shopButton1, TowerType.LUMBER_MILL);
+        shopButtons.put(shopButton2, TowerType.MINE);
+        shopButtons.put(shopButton3, TowerType.QUARRY);
+        shopButtons.put(shopButton4, TowerType.WIND_MILL);
+        
+        shopButtons.forEach((button, towerType) -> {
+            TowerButton.changeTower(button, towerType);
+            button.setOnMouseClicked(e -> this.onShopTowerClick(e, towerType));
+        });
+
 
         this.setInventoryVisible(this.inventoryVisible);
         this.showSellTowerPopup(null);
@@ -205,10 +202,10 @@ public class GameController {
      * @param money
      */
     public void updateShopButtons(int money) {
-        lumberTowerButton.setOpacity(LumberMillTower.COST > money ? 0.5 : 1.0);
-        mineTowerButton.setOpacity(MineTower.COST > money ? 0.5 : 1.0);
-        quarryTowerButton.setOpacity(QuarryTower.COST > money ? 0.5 : 1.0);
-        windTowerButton.setOpacity(WindMillTower.COST > money ? 0.5 : 1.0);
+        shopButtons.forEach((button, towerType) -> {
+            int cost = towerType.create().getCostPrice();
+            button.setOpacity(cost > money ? 0.5 : 1.0);
+        });
     }
 
     public void updateRoundCounter(int currentRound, int numberOfRounds) {
