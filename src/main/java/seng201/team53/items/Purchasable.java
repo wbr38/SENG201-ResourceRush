@@ -9,5 +9,5 @@ public interface Purchasable {
 
     int getSellPrice();
 
-    Boolean isSellable();
+    boolean isSellable();
 }

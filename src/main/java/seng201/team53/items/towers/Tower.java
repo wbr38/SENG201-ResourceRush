@@ -1,46 +1,49 @@
 package seng201.team53.items.towers;
 
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import seng201.team53.game.Tickable;
-import seng201.team53.game.map.Map;
-import seng201.team53.items.Purchasable;
-import seng201.team53.items.ResourceType;
 
-public abstract class Tower implements Purchasable, Tickable {
-    private String name;
-    private ImageView imageView;
-    public ResourceType resourceType;
-    public int resourceAmount;
-    public float reloadSpeed;
-    public int xpLevel;
+public class Tower implements Tickable {
+    private final TowerType type;
+    private final ImageView imageView;
+    private boolean broken = false;
+    private int xpLevel = 0;
 
-    Tower(
-          String name,
-          String imagePath,
-          ResourceType resourceType
-    ) {
-        this.name = name;
-        this.resourceType = resourceType;
-        this.resourceAmount = 0;
-        this.xpLevel = 0;
+    protected Tower(TowerType type, ImageView imageView) {
+        this.type = type;
+        this.imageView = imageView;
 
-        this.imageView = new ImageView(new Image(getClass().getResourceAsStream(imagePath)));
-        this.imageView.setFitWidth(Map.TILE_WIDTH);
-        this.imageView.setFitHeight(Map.TILE_HEIGHT);
+        setBroken(false);
     }
 
-    @Override
-    public String getName() {
-        return name;
+    public TowerType getType() {
+        return type;
     }
 
     public ImageView getImageView() {
         return imageView;
     }
 
+    public boolean isBroken() {
+        return broken;
+    }
+
+    public void setBroken(boolean broken) {
+        this.broken = broken;
+        imageView.setImage(broken ? type.getBrokenImage() : type.getImage());
+    }
+
+    public int getXpLevel() {
+        return xpLevel;
+    }
+
+    public void incrementXpLevel(int amount) {
+        this.xpLevel += amount;
+    }
+
     @Override
     public void tick() {
-
+        // add check to see if tower is broken
+        // give resources to carts
     }
 }
