@@ -139,6 +139,7 @@ public class Map {
      * @param tower The tower to be placed
      */
     public boolean startPlacingTower(Tower tower, double mouseX, double mouseY) {
+        GameEnvironment.getGameEnvironment().getController().setInventoryVisible(true);
         this.setInteraction(MapInteraction.PLACE_TOWER);
         this.selectedTower = tower;
         ImageView towerImage = selectedTower.getImageView();
@@ -160,6 +161,7 @@ public class Map {
      */
     public void stopPlacingTower() {
         setInteraction(MapInteraction.NONE);
+        GameEnvironment.getGameEnvironment().getController().setInventoryVisible(false);
         overlay.setOnMouseMoved(null);
         overlay.getChildren().remove(selectedTower.getImageView());
         selectedTower = null;
