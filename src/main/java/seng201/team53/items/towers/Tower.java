@@ -43,6 +43,7 @@ public class Tower implements Tickable {
 
     @Override
     public void tick() {
-
+        // add check to see if tower is broken
+        // give resources to carts
     }
 }

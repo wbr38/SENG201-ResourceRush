@@ -76,8 +76,9 @@ public class GameEnvironment {
     }
 
     public void beginRound() {
-        var randomEvent = randomEvents.requestRandomEvent(difficulty);
+        var randomEvent = randomEvents.requestRandomEvent();
         if (randomEvent != null) {
+            randomEvent.apply();
             stateHandler.setState(GameState.RANDOM_EVENT_DIALOG_OPEN);
             controller.showRandomEventDialog(randomEvent.getClass().getSimpleName());
             return;
