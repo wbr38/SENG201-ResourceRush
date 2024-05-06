@@ -42,29 +42,41 @@ public class AssetLoader {
      * @return The loaded map
      */
     public Map loadMap(String name, String path, Pane mapBackgroundPane, GridPane gridPane, Pane overlay) {
-        try {
-            var json = (JSONObject) readJsonResource(path);
-            var backgroundImage = readImage((String) json.get("background"));
-            var startPosition = (JSONObject) json.get("start_position");
-            var startPositionX = (int) (long) startPosition.get("y");
-            var startPositionY = (int) (long) startPosition.get("x");
-            var endPosition = (JSONObject) json.get("end_position");
-            var endPositionX = (int) (long) endPosition.get("y");
-            var endPositionY = (int) (long) endPosition.get("x");
-            var mapMatrix = (JSONArray) json.get("map_matrix");
-            var tiles = readMapMatrix(mapMatrix);
-            var background = new ImageView(backgroundImage);
-            mapBackgroundPane.getChildren().clear();
-            background.setFitWidth(mapBackgroundPane.getPrefWidth());
-            background.setFitHeight(mapBackgroundPane.getPrefHeight());
-            mapBackgroundPane.getChildren().add(background);
-            return new Map(name, tiles, startPositionX, startPositionY, endPositionX, endPositionY, gridPane, overlay);
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
+        var json = (JSONObject) readJsonResource(path);
+        var backgroundImage = readImage((String) json.get("background"));
+        var startPosition = (JSONObject) json.get("start_position");
+        var startPositionX = (int) (long) startPosition.get("y");
+        var startPositionY = (int) (long) startPosition.get("x");
+        var endPosition = (JSONObject) json.get("end_position");
+        var endPositionX = (int) (long) endPosition.get("y");
+        var endPositionY = (int) (long) endPosition.get("x");
+        var mapMatrix = (JSONArray) json.get("map_matrix");
+        var tiles = readMapMatrix(mapMatrix);
+        var background = new ImageView(backgroundImage);
+        mapBackgroundPane.getChildren().clear();
+        background.setFitWidth(mapBackgroundPane.getPrefWidth());
+        background.setFitHeight(mapBackgroundPane.getPrefHeight());
+        mapBackgroundPane.getChildren().add(background);
+        return new Map(name, tiles, startPositionX, startPositionY, endPositionX, endPositionY, gridPane, overlay);
     }
     public Image getCartImage() {
         return cartImage;
+    }
+
+    /**
+     * Reads an image resource from a given path
+     * @param path The path to the image resource
+     * @return The loaded image
+     */
+    // TODO - probably alg being static cause its just a utility
+    public static Image readImage(String path) {
+        try (var resource = AssetLoader.class.getResourceAsStream(path)) {
+            if (resource == null)
+                throw new RuntimeException("Could not read resource '" + path + "'.");
+            return new Image(resource);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -128,20 +140,6 @@ public class AssetLoader {
             return jsonParser.parse(inputStreamReader);
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Reads an image resource from a given path
-     * @param path The path to the image resource
-     * @return The loaded image
-     * @throws IOException If an I/O error occurs
-     */
-    private Image readImage(String path) throws IOException {
-        try (var resource = getClass().getResourceAsStream(path)) {
-            if (resource == null)
-                throw new RuntimeException("Could not read resource '" + path + "'.");
-            return new Image(resource);
         }
     }
 }

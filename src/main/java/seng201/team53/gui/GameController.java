@@ -16,12 +16,8 @@ import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.map.Map;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
-import seng201.team53.items.towers.LumberMillTower;
-import seng201.team53.items.towers.MineTower;
-import seng201.team53.items.towers.QuarryTower;
 import seng201.team53.items.towers.Tower;
 import seng201.team53.items.towers.TowerType;
-import seng201.team53.items.towers.WindMillTower;
 
 public class GameController {
     @FXML private Pane overlay;
@@ -71,10 +67,10 @@ public class GameController {
         quarryTowerButton.setOnMouseClicked(e -> this.onShopTowerClick(e, TowerType.QUARRY));
         windTowerButton.setOnMouseClicked(e -> this.onShopTowerClick(e, TowerType.WIND_MILL));
 
-        lumberTowerTooltip.setText("Cost $" + LumberMillTower.COST);
-        mineTowerTooltip.setText("Cost $" + MineTower.COST);
-        quarryTowerTooltip.setText("Cost $" + QuarryTower.COST);
-        windTowerTooltip.setText("Cost $" + WindMillTower.COST);
+        lumberTowerTooltip.setText("Cost $" + TowerType.LUMBER_MILL.getCostPrice());
+        mineTowerTooltip.setText("Cost $" + TowerType.MINE.getCostPrice());
+        quarryTowerTooltip.setText("Cost $" + TowerType.QUARRY.getCostPrice());
+        windTowerTooltip.setText("Cost $" + TowerType.WIND_MILL.getCostPrice());
 
         this.setInventoryVisible(this.inventoryVisible);
         this.showSellTowerPopup(null);
@@ -154,7 +150,7 @@ public class GameController {
         }
 
         this.sellTowerPane.setVisible(true);
-        this.sellTowerText.setText("Sell ($" + tower.getSellPrice() + ")");
+        this.sellTowerText.setText("Sell ($" + tower.getType().getSellPrice() + ")");
     }
 
     @FXML
@@ -205,10 +201,10 @@ public class GameController {
      * @param money
      */
     public void updateShopButtons(int money) {
-        lumberTowerButton.setOpacity(LumberMillTower.COST > money ? 0.5 : 1.0);
-        mineTowerButton.setOpacity(MineTower.COST > money ? 0.5 : 1.0);
-        quarryTowerButton.setOpacity(QuarryTower.COST > money ? 0.5 : 1.0);
-        windTowerButton.setOpacity(WindMillTower.COST > money ? 0.5 : 1.0);
+        lumberTowerButton.setOpacity(TowerType.LUMBER_MILL.getCostPrice() > money ? 0.5 : 1.0);
+        mineTowerButton.setOpacity(TowerType.MINE.getCostPrice() > money ? 0.5 : 1.0);
+        quarryTowerButton.setOpacity(TowerType.QUARRY.getCostPrice() > money ? 0.5 : 1.0);
+        windTowerButton.setOpacity(TowerType.WIND_MILL.getCostPrice() > money ? 0.5 : 1.0);
     }
 
     public void updateRoundCounter(int currentRound, int numberOfRounds) {

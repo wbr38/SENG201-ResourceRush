@@ -20,7 +20,6 @@ import seng201.team53.service.PathFinderService;
  * This class represents a map in the game. It stores information about the map grid, tiles, and pathfinding
  * A map consists of a 2D array of tiles, where each tile represents a specific location on the map and holds
  * information about its properties (buildable, path, and the tower if there is a tower placed on this tile)
- * The map also calculate paths for carts to navigate the map using a depth-first search algorithm
  */
 public class Map {
     public static final int TILE_HEIGHT = 40;
@@ -169,7 +168,7 @@ public class Map {
             return;
 
         Shop shop = GameEnvironment.getGameEnvironment().getShop();
-        shop.sellItem(this.selectedTower);
+        shop.sellItem(this.selectedTower.getType());
 
         this.setInteraction(MapInteraction.NONE);
         GameEnvironment.getGameEnvironment().getController().showSellTowerPopup(null);
