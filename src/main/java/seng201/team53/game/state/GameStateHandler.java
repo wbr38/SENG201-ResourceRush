@@ -67,7 +67,6 @@ public class GameStateHandler {
             gameEnv.getController().showNotification("Not enough money", 1.5);
             return false;
         }
-        map.setInteraction(MapInteraction.PLACE_TOWER);
         map.startPlacingTower(tower, mouseX, mouseY);
         return true;
     }

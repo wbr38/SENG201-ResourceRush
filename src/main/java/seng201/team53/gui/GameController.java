@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -54,24 +53,38 @@ public class GameController {
     @FXML private Text sellTowerText;
 
     // Inventory
-    @FXML private Pane inventoryPane;
-    private Boolean inventoryVisible = false;
+    private Boolean inventoryVisible = true;
+    @FXML private AnchorPane inventoryPane;
+    private final HashMap<Button, TowerType> inventoryButtons = new HashMap<>();
+    @FXML private Button inventoryButton1;
+    @FXML private Button inventoryButton2;
+    @FXML private Button inventoryButton3;
+    @FXML private Button inventoryButton4;
 
     public GameController() {
     }
 
     public void init() {
 
+        // Set shop buttons
         shopButtons.put(shopButton1, TowerType.LUMBER_MILL);
         shopButtons.put(shopButton2, TowerType.MINE);
         shopButtons.put(shopButton3, TowerType.QUARRY);
         shopButtons.put(shopButton4, TowerType.WIND_MILL);
-        
         shopButtons.forEach((button, towerType) -> {
             TowerButton.changeTower(button, towerType);
             button.setOnMouseClicked(e -> this.onShopTowerClick(e, towerType));
         });
 
+        // Set inventory buttons
+        inventoryButtons.put(inventoryButton1, null);
+        inventoryButtons.put(inventoryButton2, null);
+        inventoryButtons.put(inventoryButton3, null);
+        inventoryButtons.put(inventoryButton4, null);
+        inventoryButtons.forEach((button, towerType) -> {
+            TowerButton.changeTower(button, towerType);
+            button.setOnMouseClicked(e -> this.onInventoryButtonClick(e, button));
+        });
 
         this.setInventoryVisible(this.inventoryVisible);
         this.showSellTowerPopup(null);
@@ -185,6 +198,13 @@ public class GameController {
             return;
 
         stateHandler.setState(GameState.ROUND_NOT_STARTED);
+    }
+
+    private void onInventoryButtonClick(MouseEvent event, Button towerButton) {
+        if (event.getButton() != MouseButton.PRIMARY)
+            return;
+
+        GameEnvironment.getGameEnvironment().getInventory().handleInventoryTowerClick(towerButton, event.getX(), event.getY());
     }
 
     private void onShopTowerClick(MouseEvent event, TowerType towerType) {

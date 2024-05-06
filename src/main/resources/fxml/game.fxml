@@ -62,70 +62,6 @@
 		  <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <AnchorPane fx:id="inventoryPane" layoutX="160.0" layoutY="530.0" prefHeight="95.0" prefWidth="480.0">
-         <children>
-            <ImageView fitHeight="55.0" fitWidth="80.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_top_left.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="55.0" fitWidth="80.0" layoutY="55.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_bottom_left.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="80.0" layoutY="55.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_bottom_center.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="160.0" layoutY="55.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_bottom_center.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="240.0" layoutY="55.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_bottom_center.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="320.0" layoutY="55.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_bottom_center.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="400.0" layoutY="55.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_bottom_right.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="400.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_top_right.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="80.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_top_center.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="160.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_top_center.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="240.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_top_center.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="320.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_top_center.png" />
-               </image>
-            </ImageView>
-         </children>
-      </AnchorPane>
       <AnchorPane fx:id="overlay" prefHeight="640.0" prefWidth="800.0">
          <children>
              <Text fx:id="notificationLabel" disable="true" fill="RED" layoutX="167.0" layoutY="80.0" stroke="#323232" strokeType="OUTSIDE" strokeWidth="1.5" text="Notification Text" textAlignment="CENTER" visible="false" wrappingWidth="465.9830722808838">
@@ -556,5 +492,121 @@
             </Text>
          </children>
       </Pane>
+      <AnchorPane fx:id="inventoryAnchorPane" layoutX="160.0" layoutY="530.0" prefHeight="95.0" prefWidth="480.0">
+         <children>
+            <ImageView fitHeight="55.0" fitWidth="80.0">
+               <image>
+                  <Image url="@../assets/decoration/wood_tile_top_left.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutY="55.0">
+               <image>
+                  <Image url="@../assets/decoration/wood_tile_bottom_left.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="80.0" layoutY="55.0">
+               <image>
+                  <Image url="@../assets/decoration/wood_tile_bottom_center.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="160.0" layoutY="55.0">
+               <image>
+                  <Image url="@../assets/decoration/wood_tile_bottom_center.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="240.0" layoutY="55.0">
+               <image>
+                  <Image url="@../assets/decoration/wood_tile_bottom_center.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="320.0" layoutY="55.0">
+               <image>
+                  <Image url="@../assets/decoration/wood_tile_bottom_center.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="400.0" layoutY="55.0">
+               <image>
+                  <Image url="@../assets/decoration/wood_tile_bottom_right.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="400.0">
+               <image>
+                  <Image url="@../assets/decoration/wood_tile_top_right.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="80.0">
+               <image>
+                  <Image url="@../assets/decoration/wood_tile_top_center.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="160.0">
+               <image>
+                  <Image url="@../assets/decoration/wood_tile_top_center.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="240.0">
+               <image>
+                  <Image url="@../assets/decoration/wood_tile_top_center.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="55.0" fitWidth="80.0" layoutX="320.0">
+               <image>
+                  <Image url="@../assets/decoration/wood_tile_top_center.png" />
+               </image>
+            </ImageView>
+            <FlowPane alignment="CENTER" focusTraversable="true" layoutX="1.0" prefHeight="107.0" prefWidth="478.0">
+               <children>
+                  <Button fx:id="inventoryButton1" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
+                     <graphic>
+                        <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/items/wood_tower.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip fx:id="mineTowerTooltip1" showDelay="10ms" text="Cost: $999" />
+                     </tooltip>
+                  </Button>
+                  <Button fx:id="inventoryButton2" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
+                     <graphic>
+                        <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/items/wood_tower.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip fx:id="quarryTowerTooltip1" showDelay="10ms" text="Cost: $999" />
+                     </tooltip>
+                  </Button>
+                  <Button fx:id="inventoryButton3" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
+                     <tooltip>
+                        <Tooltip fx:id="windTowerTooltip1" showDelay="10ms" text="Cost: $999" />
+                     </tooltip>
+                     <graphic>
+                        <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/items/wood_tower.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="inventoryButton4" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
+                     <graphic>
+                        <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/items/wood_tower.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip fx:id="mineTowerTooltip11" showDelay="10ms" text="Cost: $999" />
+                     </tooltip>
+                  </Button>
+               </children>
+            </FlowPane>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

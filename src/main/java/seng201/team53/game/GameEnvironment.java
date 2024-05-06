@@ -11,6 +11,7 @@ import seng201.team53.game.round.GameRoundFactory;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.gui.GameController;
+import seng201.team53.items.Inventory;
 import seng201.team53.items.Shop;
 
 import java.util.Arrays;
@@ -26,6 +27,7 @@ public class GameEnvironment {
     private final RandomEvents randomEvents = new RandomEvents();
     private final GameRoundFactory roundFactory = new GameRoundFactory();
     private final Shop shop = new Shop();
+    private final Inventory inventory = new Inventory();
     private final String playerName;
     private final int rounds;
     private GameDifficulty difficulty;
@@ -154,6 +156,10 @@ public class GameEnvironment {
 
     public Shop getShop() {
         return shop;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 
     public GameDifficulty getDifficulty() {

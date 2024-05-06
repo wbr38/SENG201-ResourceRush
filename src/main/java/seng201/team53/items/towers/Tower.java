@@ -14,16 +14,19 @@ public abstract class Tower implements Purchasable, Tickable {
     public int resourceAmount;
     public float reloadSpeed;
     public int xpLevel;
+    private final TowerType type;
 
     Tower(
           String name,
           String imagePath,
-          ResourceType resourceType
+          ResourceType resourceType,
+          TowerType type
     ) {
         this.name = name;
         this.resourceType = resourceType;
         this.resourceAmount = 0;
         this.xpLevel = 0;
+        this.type = type;
 
         this.imageView = new ImageView(new Image(getClass().getResourceAsStream(imagePath)));
         this.imageView.setFitWidth(Map.TILE_WIDTH);
@@ -37,6 +40,10 @@ public abstract class Tower implements Purchasable, Tickable {
 
     public ImageView getImageView() {
         return imageView;
+    }
+
+    public TowerType getType() {
+        return type;
     }
 
     @Override

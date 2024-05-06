@@ -10,7 +10,8 @@ public class WindMillTower extends Tower {
         super(
                 "Wind Mill",
                 "/assets/items/wind_mill_tower.png",
-                ResourceType.ORE);
+                ResourceType.ORE,
+                TowerType.WIND_MILL);
     }
 
     @Override

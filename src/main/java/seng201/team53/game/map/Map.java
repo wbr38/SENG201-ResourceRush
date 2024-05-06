@@ -140,6 +140,7 @@ public class Map {
      * @param tower The tower to be placed
      */
     public boolean startPlacingTower(Tower tower, double mouseX, double mouseY) {
+        this.setInteraction(MapInteraction.PLACE_TOWER);
         this.selectedTower = tower;
         ImageView towerImage = selectedTower.getImageView();
         // start it off screen
@@ -158,7 +159,8 @@ public class Map {
      * Stops the process of placing a tower on the map. This method removes the visual representation of the tower
      * and resets the map interaction state
      */
-    private void stopPlacingTower() {
+    public void stopPlacingTower() {
+        setInteraction(MapInteraction.NONE);
         overlay.setOnMouseMoved(null);
         overlay.getChildren().remove(selectedTower.getImageView());
         selectedTower = null;
@@ -174,7 +176,6 @@ public class Map {
         Shop shop = GameEnvironment.getGameEnvironment().getShop();
         shop.sellItem(this.selectedTower);
 
-        this.setInteraction(MapInteraction.NONE);
         GameEnvironment.getGameEnvironment().getController().showSellTowerPopup(null);
         stopPlacingTower();
     }
@@ -232,7 +233,6 @@ public class Map {
 
         // NONE - If the user is not currently interacting with something, and selects a tower, then start moving the tower.
         if (interaction == MapInteraction.NONE && tileTower != null) {
-            this.setInteraction(MapInteraction.MOVE_TOWER);
             startPlacingTower(tileTower, event.getX(), event.getY());
 
             // Show sell tower stuff
@@ -242,17 +242,15 @@ public class Map {
         }
 
         // PLACE_TOWER - User was placing a tower and selected the tile to place the tower on.
-        if (interaction == MapInteraction.PLACE_TOWER || interaction == MapInteraction.MOVE_TOWER) {
+        if (interaction == MapInteraction.PLACE_TOWER) {
             boolean placed = addTower(selectedTower, tile);
             if (placed) {
                 GameEnvironment.getGameEnvironment().getController().showSellTowerPopup(null);
-                setInteraction(MapInteraction.NONE);
                 stopPlacingTower();
             }
             return;
         }
     }
-
 
     public GridPane getGridPane() {
         return gridPane;
@@ -260,5 +258,9 @@ public class Map {
 
     public Pane getOverlay() {
         return overlay;
+    }
+
+    public Tower getSelectedTower() {
+        return selectedTower;
     }
 }
