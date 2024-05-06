@@ -61,13 +61,13 @@ public class GameStateHandler {
         if (map.getCurrentInteraction() != MapInteraction.NONE)
             return false;
 
+        var tower = towerType.create();
         boolean purchased = gameEnv.getShop().purchaseItem(towerType);
         if (!purchased) {
             gameEnv.getController().showNotification("Not enough money", 1.5);
             return false;
         }
-        map.setInteraction(MapInteraction.PLACE_TOWER);
-        map.startPlacingTower(towerType.create(), mouseX, mouseY);
+        map.startPlacingTower(tower, mouseX, mouseY);
         return true;
     }
 
