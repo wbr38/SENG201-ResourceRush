@@ -1,12 +1,7 @@
 package seng201.team53.game.event;
 
-import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.event.type.RandomEvent;
 import seng201.team53.game.event.type.RandomEventBrokenTower;
-import seng201.team53.game.event.type.RandomEventTowerStatsDecrease;
-import seng201.team53.game.event.type.RandomEventTowerStatsIncrease;
-import seng201.team53.game.map.Map;
-import seng201.team53.game.round.GameRound;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +13,10 @@ public class RandomEvents {
     private final List<RandomEvent> randomEvents = new ArrayList<>();
 
     public RandomEvent requestRandomEvent() {
-        /*var difficulty = getGameEnvironment().getDifficulty();
+        var difficulty = getGameEnvironment().getDifficulty();
         double randomDouble = ThreadLocalRandom.current().nextDouble();
         if (randomDouble > difficulty.getRandomEventOdds())
-            return null;*/
+            return null;
 
         var availableRandonEvents = randomEvents.stream().filter(RandomEvent::isAvailable).toList();
         if (availableRandonEvents.isEmpty())
