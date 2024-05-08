@@ -29,7 +29,7 @@ public class Map {
     private final Polyline polylinePath;
     private final int pathLength;
     /** A mapping of towers on this map, and the tile they are placed on */
-    private final HashMap<Tower, Tile> towers = new HashMap<>();
+    private final java.util.Map<Tower, Tile> towers = new HashMap<>();
     private final int startX;
     private final int startY;
     private final int endX;

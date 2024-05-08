@@ -1,25 +1,26 @@
 package seng201.team53.game.assets;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import seng201.team53.game.map.Map;
 import seng201.team53.game.map.Tile;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashMap;
 
 /**
  * This class is responsible for loading the tile templates, game maps, and cart image
  */
 public class AssetLoader {
-    private final HashMap<Integer, TileTemplate> tileTemplates = new HashMap<>();
+    private final java.util.Map<Integer, TileTemplate> tileTemplates = new HashMap<>();
     private final JSONParser jsonParser = new JSONParser();
     private Image cartImage;
 
@@ -42,15 +43,15 @@ public class AssetLoader {
      * @return The loaded map
      */
     public Map loadMap(String name, String path, Pane mapBackgroundPane, GridPane gridPane, Pane overlay) {
-        var json = (JSONObject) readJsonResource(path);
-        var backgroundImage = readImage((String) json.get("background"));
-        var startPosition = (JSONObject) json.get("start_position");
-        var startPositionX = (int) (long) startPosition.get("y");
-        var startPositionY = (int) (long) startPosition.get("x");
-        var endPosition = (JSONObject) json.get("end_position");
-        var endPositionX = (int) (long) endPosition.get("y");
-        var endPositionY = (int) (long) endPosition.get("x");
-        var mapMatrix = (JSONArray) json.get("map_matrix");
+        var json = (JSONObject)readJsonResource(path);
+        var backgroundImage = readImage((String)json.get("background"));
+        var startPosition = (JSONObject)json.get("start_position");
+        var startPositionX = (int)(long)startPosition.get("y");
+        var startPositionY = (int)(long)startPosition.get("x");
+        var endPosition = (JSONObject)json.get("end_position");
+        var endPositionX = (int)(long)endPosition.get("y");
+        var endPositionY = (int)(long)endPosition.get("x");
+        var mapMatrix = (JSONArray)json.get("map_matrix");
         var tiles = readMapMatrix(mapMatrix);
         var background = new ImageView(backgroundImage);
         mapBackgroundPane.getChildren().clear();
@@ -59,6 +60,7 @@ public class AssetLoader {
         mapBackgroundPane.getChildren().add(background);
         return new Map(name, tiles, startPositionX, startPositionY, endPositionX, endPositionY, gridPane, overlay);
     }
+
     public Image getCartImage() {
         return cartImage;
     }
@@ -106,7 +108,7 @@ public class AssetLoader {
         int lastRowSize = -1;
         var tiles = new Tile[mapMatrix.size()][];
         for (int y = 0; y < mapMatrix.size(); y++) {
-            var innerArray = (JSONArray) mapMatrix.get(y);
+            var innerArray = (JSONArray)mapMatrix.get(y);
             // ensure every row has same amount of columns otherwise we get errors later
             if (lastRowSize == -1) {
                 lastRowSize = innerArray.size();
@@ -115,7 +117,7 @@ public class AssetLoader {
             }
             tiles[y] = new Tile[innerArray.size()];
             for (int x = 0; x < innerArray.size(); x++) {
-                var tileId = (int) (long) innerArray.get(x);
+                var tileId = (int)(long)innerArray.get(x);
                 var tileTemplate = tileTemplates.get(tileId);
                 if (tileTemplate == null)
                     throw new RuntimeException("Missing tile template for id '" + tileId + "'");

@@ -1,18 +1,11 @@
 package seng201.team53.game.event;
 
-import seng201.team53.game.GameDifficulty;
-import seng201.team53.game.event.type.RandomEvent;
-import seng201.team53.game.event.type.RandomEventBrokenTower;
-import seng201.team53.game.event.type.RandomEventTowerStatsDecrease;
-import seng201.team53.game.event.type.RandomEventTowerStatsIncrease;
-import seng201.team53.game.map.Map;
-import seng201.team53.game.round.GameRound;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static seng201.team53.game.GameEnvironment.getGameEnvironment;
+import seng201.team53.game.event.type.RandomEvent;
+import seng201.team53.game.event.type.RandomEventBrokenTower;
 
 public class RandomEvents {
     private final List<RandomEvent> randomEvents = new ArrayList<>();
