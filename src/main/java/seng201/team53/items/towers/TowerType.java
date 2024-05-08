@@ -7,6 +7,8 @@ import seng201.team53.game.map.Map;
 import seng201.team53.items.Purchasable;
 import seng201.team53.items.ResourceType;
 
+import java.time.Duration;
+
 public enum TowerType implements Purchasable {
     LUMBER_MILL("Lumber Mill",
             "A Lumber Mill produces wood",
@@ -16,7 +18,7 @@ public enum TowerType implements Purchasable {
             100,
             50,
             1,
-            1),
+            Duration.ofSeconds(1)),
     MINE("Mine",
             "A Mine produces ores",
             ResourceType.STONE,
@@ -25,7 +27,7 @@ public enum TowerType implements Purchasable {
             120,
             50,
             1,
-            1),
+            Duration.ofSeconds(1)),
     QUARRY("Quarry",
             "A Quarry produces stone",
             ResourceType.ORE,
@@ -34,7 +36,7 @@ public enum TowerType implements Purchasable {
             150,
             50,
             1,
-            1),
+            Duration.ofSeconds(1)),
     WIND_MILL("Windmill",
             "A wind mill produces energy",
             ResourceType.ENERGY,
@@ -43,7 +45,7 @@ public enum TowerType implements Purchasable {
             200,
             50,
             1,
-            1);
+            Duration.ofSeconds(1));
 
     private final String name;
     private final String description;
@@ -53,9 +55,9 @@ public enum TowerType implements Purchasable {
     private final int costPrice;
     private final int sellPrice;
     private final int resourceAmount;
-    private final float reloadSpeed;
+    private final Duration reloadSpeed;
 
-    TowerType(String name, String description, ResourceType resourceType, String imagePath, String brokenImagePath, int costPrice, int sellPrice, int resourceAmount, float reloadSpeed) {
+    TowerType(String name, String description, ResourceType resourceType, String imagePath, String brokenImagePath, int costPrice, int sellPrice, int resourceAmount, Duration reloadSpeed) {
         this.name = name;
         this.description = description;
         this.resourceType = resourceType;
@@ -87,6 +89,10 @@ public enum TowerType implements Purchasable {
 
     public Image getBrokenImage() {
         return brokenImage;
+    }
+
+    public Duration getReloadSpeed() {
+        return reloadSpeed;
     }
 
     @Override
