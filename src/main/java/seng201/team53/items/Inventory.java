@@ -13,7 +13,7 @@ import seng201.team53.items.towers.Tower;
 public class Inventory {
 
     // A mapping of inventory tower buttons -> tower (or null)
-    private HashMap<Button, Tower> reserveTowers = new HashMap<>();
+    private java.util.Map<Button, Tower> reserveTowers = new HashMap<>();
 
     public void handleInventoryTowerClick(Button towerButton, double mouseX, double mouseY) {
         Map map = GameEnvironment.getGameEnvironment().getMap();

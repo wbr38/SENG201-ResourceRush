@@ -1,6 +1,7 @@
 package seng201.team53.items;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import seng201.team53.exceptions.ItemNotFoundException;
 import seng201.team53.game.GameEnvironment;
@@ -10,7 +11,7 @@ public class Shop {
 
     private int money = 100;
 
-    public ArrayList<Purchasable> items = new ArrayList<>();
+    public List<Purchasable> items = new ArrayList<>();
 
     /**
      * Attempt to purchase an item from the shop

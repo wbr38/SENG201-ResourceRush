@@ -42,7 +42,7 @@ public class GameController {
     @FXML private Button resumeButton;
 
     // Shop
-    private final HashMap<Button, TowerType> shopButtons = new HashMap<>();
+    private final java.util.Map<Button, TowerType> shopButtons = new HashMap<>();
     @FXML private Button shopButton1;
     @FXML private Button shopButton2;
     @FXML private Button shopButton3;
@@ -55,7 +55,7 @@ public class GameController {
     // Inventory
     private Boolean inventoryVisible = false;
     @FXML private AnchorPane inventoryPane;
-    private final HashMap<Button, TowerType> inventoryButtons = new HashMap<>();
+    private final java.util.Map<Button, TowerType> inventoryButtons = new HashMap<>();
     @FXML private Button inventoryButton1;
     @FXML private Button inventoryButton2;
     @FXML private Button inventoryButton3;
