@@ -3,18 +3,28 @@ package seng201.team53.game.round;
 import javafx.scene.image.Image;
 import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.game.map.Map;
+import seng201.team53.items.ResourceType;
 
 import java.util.EnumSet;
 
-import static seng201.team53.items.ResourceType.WOOD;
-
 public class GameRoundFactory {
     public GameRound getRound(GameStateHandler stateHandler, Map map, int roundNumber, Image cartImage) {
-        final int startingMoney = 100;
-        return new GameRound(stateHandler, map, roundNumber, startingMoney) {{
-            addCart(cartImage, 10, 15, EnumSet.of(WOOD), 0);
-            addCart(cartImage, 10, 15, EnumSet.of(WOOD), 10);
-            addCart(cartImage, 10, 15, EnumSet.of(WOOD), 20);
-        }};
+        int startingMoney = 2000 - (roundNumber * 10);
+        float velocity = 5 + (roundNumber * 2);
+        var round = new GameRound(stateHandler, map, roundNumber, startingMoney);
+        int counter = 0;
+        for (int i = 0; i < roundNumber; i++) {
+            var resourceTypes = switch (i % 4) {
+                case 0 -> EnumSet.of(ResourceType.WOOD);
+                case 1 -> EnumSet.of(ResourceType.ORE);
+                case 2 -> EnumSet.of(ResourceType.STONE);
+                default -> EnumSet.of(ResourceType.ENERGY);
+            };
+            for (int j = 0; j <= 1; j++) {
+                round.addCart(cartImage, 10, velocity, resourceTypes, counter * 10);
+                counter++;
+            }
+        }
+        return round;
     }
 }

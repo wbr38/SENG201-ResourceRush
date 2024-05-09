@@ -22,6 +22,7 @@ public class AssetLoader {
     private final HashMap<Integer, TileTemplate> tileTemplates = new HashMap<>();
     private final JSONParser jsonParser = new JSONParser();
     private Image cartImage;
+    private Image fullCartImage;
 
     /**
      * Initializes the MapLoader by loading the tiles
@@ -62,6 +63,9 @@ public class AssetLoader {
     public Image getCartImage() {
         return cartImage;
     }
+    public Image getFullCartImage() {
+        return fullCartImage;
+    }
 
     /**
      * Reads an image resource from a given path
@@ -95,6 +99,7 @@ public class AssetLoader {
      */
     private void loadCartImage() throws IOException {
         cartImage = readImage("/assets/items/cart.png");
+        fullCartImage = readImage("/assets/items/cart_full.png");
     }
 
     /**

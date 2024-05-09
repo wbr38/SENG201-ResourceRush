@@ -2,8 +2,14 @@ package seng201.team53.game.round;
 
 import javafx.animation.Interpolator;
 import javafx.animation.PathTransition;
+import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import seng201.team53.game.GameLoop;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
@@ -57,19 +63,26 @@ public class GameRound implements Tickable {
             stateHandler.setState(GameState.ROUND_COMPLETE);
         }
     }
+
     @Override
     public void tick() {
         map.getTowers().forEach(Tower::tick);
         carts.forEach(cart -> {
             if (cart.getSpawnAfterTicks() == cart.getLifetimeTicks()) {
                 var polylinePath = map.getPolylinePath();
+                var capacityLabel = new Label();
+                capacityLabel.setFont(Font.font("System Regular", 16));
+                capacityLabel.setTextFill(Color.WHITE);
+
                 var imageView = new ImageView(cart.getImage());
+                var pane = new StackPane();
                 imageView.setX(polylinePath.getPoints().get(1));
                 imageView.setY(polylinePath.getPoints().get(0));
-                map.getOverlay().getChildren().add(imageView);
+                map.getOverlay().getChildren().add(pane);
+                pane.getChildren().addAll(imageView, capacityLabel);
 
                 var pathTransition = new PathTransition();
-                pathTransition.setNode(imageView);
+                pathTransition.setNode(pane);
                 pathTransition.setDuration(map.calculatePathDuration(cart.getVelocity()));
                 pathTransition.setPath(polylinePath);
                 pathTransition.setInterpolator(Interpolator.LINEAR);
@@ -78,11 +91,21 @@ public class GameRound implements Tickable {
                     addCartCompletedPath();
                     cart.setCompletedPath(true);
                     cart.setPathTransition(null);
-                    map.getOverlay().getChildren().remove(imageView);
+                    cart.setCapacityLabel(null);
+                    map.getOverlay().getChildren().remove(pane);
                 });
                 cart.setPathTransition(pathTransition);
+                cart.setCapacityLabel(capacityLabel);
+                cart.setImageView(imageView);
+                cart.update();
             }
             cart.tick();
+        });
+        map.getTowers().forEach(tower -> {
+            tower.tick();
+            if (tower.tryGenerate()) {
+                carts.forEach(cart -> cart.addResource(tower.getType().getResourceType()));
+            }
         });
     }
     public void start() {

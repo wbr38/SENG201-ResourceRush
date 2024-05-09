@@ -1,10 +1,14 @@
 package seng201.team53.items;
 
 import javafx.animation.PathTransition;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import seng201.team53.game.Tickable;
 
 import java.util.EnumSet;
+
+import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
 public class Cart implements Tickable {
     private final int maxCapacity;
@@ -15,6 +19,8 @@ public class Cart implements Tickable {
     private int currentCapacity;
     private int lifetimeTicks = 0;
     private PathTransition pathTransition;
+    private Label capacityLabel;
+    private ImageView imageView;
     private boolean completedPath = false;
 
     public Cart(int maxCapacity, float velocity, EnumSet<ResourceType> acceptedResources, int spawnAfterTicks, Image image) {
@@ -70,6 +76,32 @@ public class Cart implements Tickable {
 
     public boolean isCompletedPath() {
         return completedPath;
+    }
+
+    public void addResource(ResourceType generatedResourceType) {
+        if (currentCapacity == maxCapacity)
+            return;
+        if (!acceptedResources.contains(generatedResourceType))
+            return;
+        currentCapacity++;
+        update();
+    }
+
+    public void setCapacityLabel(Label capacityLabel) {
+        this.capacityLabel = capacityLabel;
+    }
+    public void update() {
+        if (capacityLabel == null || imageView == null)
+            return;
+        capacityLabel.setText(currentCapacity + "/" + maxCapacity);
+        if (isFull()) {
+            var fullCartImage = getGameEnvironment().getAssetLoader().getFullCartImage();
+            imageView.setImage(fullCartImage);
+        }
+    }
+
+    public void setImageView(ImageView imageView) {
+        this.imageView = imageView;
     }
 
     @Override

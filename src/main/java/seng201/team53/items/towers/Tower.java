@@ -57,15 +57,17 @@ public class Tower implements Tickable {
         this.xpLevel += amount;
     }
 
-    @Override
-    public void tick() {
-        if (isBroken())
-            return;
-
-        lifetimeTicks++;
-        if (System.currentTimeMillis() - lastGenerateTime >= type.getReloadSpeed().toMillis()) {
+    public boolean tryGenerate() {
+        if (!broken && System.currentTimeMillis() - lastGenerateTime >= type.getReloadSpeed().toMillis()) {
             lastGenerateTime  = System.currentTimeMillis();
             glowAnimation.play();
+            return true;
         }
+        return false;
+    }
+
+    @Override
+    public void tick() {
+        lifetimeTicks++;
     }
 }
