@@ -6,8 +6,8 @@ import seng201.team53.game.map.Tile;
 import java.awt.*;
 import java.util.Stack;
 
-import static seng201.team53.game.map.Map.TILE_HEIGHT;
-import static seng201.team53.game.map.Map.TILE_WIDTH;
+import static seng201.team53.game.map.GameMap.TILE_HEIGHT;
+import static seng201.team53.game.map.GameMap.TILE_WIDTH;
 
 public class PathFinderService {
     public static final int[] X_DIRECTIONS = {-1, 0, 1, 0};

@@ -2,13 +2,13 @@ package seng201.team53.game.round;
 
 import javafx.scene.image.Image;
 import seng201.team53.game.state.GameStateHandler;
-import seng201.team53.game.map.Map;
+import seng201.team53.game.map.GameMap;
 import seng201.team53.items.ResourceType;
 
 import java.util.EnumSet;
 
 public class GameRoundFactory {
-    public GameRound getRound(GameStateHandler stateHandler, Map map, int roundNumber, Image cartImage) {
+    public GameRound getRound(GameStateHandler stateHandler, GameMap map, int roundNumber, Image cartImage) {
         int startingMoney = 2000 - (roundNumber * 10);
         float velocity = 5 + (roundNumber * 2);
         var round = new GameRound(stateHandler, map, roundNumber, startingMoney);

@@ -2,11 +2,9 @@ package seng201.team53.game.round;
 
 import javafx.animation.Interpolator;
 import javafx.animation.PathTransition;
-import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -14,7 +12,7 @@ import seng201.team53.game.GameLoop;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.game.Tickable;
-import seng201.team53.game.map.Map;
+import seng201.team53.game.map.GameMap;
 import seng201.team53.items.Cart;
 import seng201.team53.items.ResourceType;
 import seng201.team53.items.towers.Tower;
@@ -25,14 +23,14 @@ import java.util.List;
 
 public class GameRound implements Tickable {
     private final GameStateHandler stateHandler;
-    private final Map map;
+    private final GameMap map;
     private final int roundNumber;
     private final List<Cart> carts = new ArrayList<>();
     private final int startingMoney;
     private GameLoop gameLoop;
     private int cartsCompletedPath = 0;
 
-    public GameRound(GameStateHandler stateHandler, Map map, int roundNumber, int startingMoney) {
+    public GameRound(GameStateHandler stateHandler, GameMap map, int roundNumber, int startingMoney) {
         this.stateHandler = stateHandler;
         this.map = map;
         this.roundNumber = roundNumber;

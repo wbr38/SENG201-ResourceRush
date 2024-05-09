@@ -2,6 +2,7 @@ package seng201.team53.game.map;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -21,7 +22,7 @@ import seng201.team53.service.PathFinderService;
  * A map consists of a 2D array of tiles, where each tile represents a specific location on the map and holds
  * information about its properties (buildable, path, and the tower if there is a tower placed on this tile)
  */
-public class Map {
+public class GameMap {
     public static final int TILE_HEIGHT = 40;
     public static final int TILE_WIDTH = 40;
     private final String name;
@@ -29,7 +30,7 @@ public class Map {
     private final Polyline polylinePath;
     private final int pathLength;
     /** A mapping of towers on this map, and the tile they are placed on */
-    private final java.util.Map<Tower, Tile> towers = new HashMap<>();
+    private final Map<Tower, Tile> towers = new HashMap<>();
     private final int startX;
     private final int startY;
     private final int endX;
@@ -48,7 +49,7 @@ public class Map {
      * @param endX The paths ending grid x co-ordinate
      * @param endY The paths ending grid y co-ordinate
      */
-    public Map(String name, Tile[][] tiles, int startX, int startY, int endX, int endY, GridPane gridPane, Pane overlay) {
+    public GameMap(String name, Tile[][] tiles, int startX, int startY, int endX, int endY, GridPane gridPane, Pane overlay) {
         this.name = name;
         this.tiles = tiles;
         this.startX = startX;

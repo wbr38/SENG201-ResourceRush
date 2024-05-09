@@ -2,21 +2,22 @@ package seng201.team53.items;
 
 import java.util.HashMap;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Objects;
 
 import javafx.scene.control.Button;
 import seng201.team53.game.GameEnvironment;
-import seng201.team53.game.map.Map;
+import seng201.team53.game.map.GameMap;
 import seng201.team53.gui.TowerButton;
 import seng201.team53.items.towers.Tower;
 
 public class Inventory {
 
     // A mapping of inventory tower buttons -> tower (or null)
-    private java.util.Map<Button, Tower> reserveTowers = new HashMap<>();
+    private Map<Button, Tower> reserveTowers = new HashMap<>();
 
     public void handleInventoryTowerClick(Button towerButton, double mouseX, double mouseY) {
-        Map map = GameEnvironment.getGameEnvironment().getMap();
+        GameMap map = GameEnvironment.getGameEnvironment().getMap();
         Tower selectedTower = map.getSelectedTower();
         Tower occupiedTower = reserveTowers.get(towerButton);
 

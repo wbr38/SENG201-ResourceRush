@@ -3,6 +3,7 @@ package seng201.team53.game.assets;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -13,14 +14,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import seng201.team53.game.map.Map;
+import seng201.team53.game.map.GameMap;
 import seng201.team53.game.map.Tile;
 
 /**
  * This class is responsible for loading the tile templates, game maps, and cart image
  */
 public class AssetLoader {
-    private final java.util.Map<Integer, TileTemplate> tileTemplates = new HashMap<>();
+    private final Map<Integer, TileTemplate> tileTemplates = new HashMap<>();
     private final JSONParser jsonParser = new JSONParser();
     private Image cartImage;
     private Image fullCartImage;
@@ -43,7 +44,7 @@ public class AssetLoader {
      * @param path The path to the JSON file resource
      * @return The loaded map
      */
-    public Map loadMap(String name, String path, Pane mapBackgroundPane, GridPane gridPane, Pane overlay) {
+    public GameMap loadMap(String name, String path, Pane mapBackgroundPane, GridPane gridPane, Pane overlay) {
         var json = (JSONObject)readJsonResource(path);
         var backgroundImage = readImage((String)json.get("background"));
         var startPosition = (JSONObject)json.get("start_position");
@@ -59,7 +60,7 @@ public class AssetLoader {
         background.setFitWidth(mapBackgroundPane.getPrefWidth());
         background.setFitHeight(mapBackgroundPane.getPrefHeight());
         mapBackgroundPane.getChildren().add(background);
-        return new Map(name, tiles, startPositionX, startPositionY, endPositionX, endPositionY, gridPane, overlay);
+        return new GameMap(name, tiles, startPositionX, startPositionY, endPositionX, endPositionY, gridPane, overlay);
     }
 
     public Image getCartImage() {

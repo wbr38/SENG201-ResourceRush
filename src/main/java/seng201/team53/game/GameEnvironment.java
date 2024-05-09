@@ -4,7 +4,7 @@ import javafx.scene.input.MouseButton;
 import seng201.team53.exceptions.TileNotFoundException;
 import seng201.team53.game.assets.AssetLoader;
 import seng201.team53.game.event.RandomEvents;
-import seng201.team53.game.map.Map;
+import seng201.team53.game.map.GameMap;
 import seng201.team53.game.map.Tile;
 import seng201.team53.game.round.GameRound;
 import seng201.team53.game.round.GameRoundFactory;
@@ -32,7 +32,7 @@ public class GameEnvironment {
     private final int rounds;
     private GameDifficulty difficulty;
     private GameRound gameRound;
-    private Map map;
+    private GameMap map;
 
     private static GameEnvironment instance;
 
@@ -179,7 +179,7 @@ public class GameEnvironment {
         return gameRound;
     }
 
-    public Map getMap() {
+    public GameMap getMap() {
         return map;
     }
 }

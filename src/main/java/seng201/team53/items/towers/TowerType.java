@@ -3,7 +3,7 @@ package seng201.team53.items.towers;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import seng201.team53.game.assets.AssetLoader;
-import seng201.team53.game.map.Map;
+import seng201.team53.game.map.GameMap;
 import seng201.team53.items.Purchasable;
 import seng201.team53.items.ResourceType;
 
@@ -112,8 +112,8 @@ public enum TowerType implements Purchasable {
 
     public Tower create() {
         var imageView = new ImageView();
-        imageView.setFitHeight(Map.TILE_HEIGHT);
-        imageView.setFitWidth(Map.TILE_WIDTH);
+        imageView.setFitHeight(GameMap.TILE_HEIGHT);
+        imageView.setFitWidth(GameMap.TILE_WIDTH);
         imageView.setImage(this.image);
         return new Tower(this, imageView);
     }

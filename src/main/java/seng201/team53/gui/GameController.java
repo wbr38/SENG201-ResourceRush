@@ -1,6 +1,7 @@
 package seng201.team53.gui;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
@@ -14,7 +15,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import seng201.team53.game.GameEnvironment;
-import seng201.team53.game.map.Map;
+import seng201.team53.game.map.GameMap;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.items.towers.Tower;
@@ -42,7 +43,7 @@ public class GameController {
     @FXML private Button resumeButton;
 
     // Shop
-    private final java.util.Map<Button, TowerType> shopButtons = new HashMap<>();
+    private final Map<Button, TowerType> shopButtons = new HashMap<>();
     @FXML private Button shopButton1;
     @FXML private Button shopButton2;
     @FXML private Button shopButton3;
@@ -55,7 +56,7 @@ public class GameController {
     // Inventory
     private Boolean inventoryVisible = false;
     @FXML private AnchorPane inventoryPane;
-    private final java.util.Map<Button, TowerType> inventoryButtons = new HashMap<>();
+    private final Map<Button, TowerType> inventoryButtons = new HashMap<>();
     @FXML private Button inventoryButton1;
     @FXML private Button inventoryButton2;
     @FXML private Button inventoryButton3;
@@ -172,7 +173,7 @@ public class GameController {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
-        Map map = GameEnvironment.getGameEnvironment().getMap();
+        GameMap map = GameEnvironment.getGameEnvironment().getMap();
         map.sellSelectedTower();
     }
 
