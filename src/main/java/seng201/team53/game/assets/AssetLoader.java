@@ -43,7 +43,7 @@ public class AssetLoader {
      * @param path The path to the JSON file resource
      * @return The loaded map
      */
-    public GameMap loadMap(String name, String path, Pane mapBackgroundPane, GridPane gridPane, Pane overlay) {
+    public GameMap loadMap(String name, String path, Pane mapBackgroundPane) {
         var json = (JSONObject)readJsonResource(path);
         var backgroundImage = readImage((String)json.get("background"));
         var startPosition = (JSONObject)json.get("start_position");
@@ -59,7 +59,7 @@ public class AssetLoader {
         background.setFitWidth(mapBackgroundPane.getPrefWidth());
         background.setFitHeight(mapBackgroundPane.getPrefHeight());
         mapBackgroundPane.getChildren().add(background);
-        return new GameMap(name, tiles, startPositionX, startPositionY, endPositionX, endPositionY, gridPane, overlay);
+        return new GameMap(name, tiles, startPositionX, startPositionY, endPositionX, endPositionY);
     }
 
     public Image getCartImage() {
