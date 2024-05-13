@@ -1,7 +1,5 @@
 package seng201.team53.game.event.type;
 
-import seng201.team53.items.towers.Tower;
-
 import java.util.concurrent.ThreadLocalRandom;
 
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;

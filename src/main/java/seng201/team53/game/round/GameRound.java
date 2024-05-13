@@ -9,10 +9,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import seng201.team53.game.GameLoop;
-import seng201.team53.game.state.GameState;
-import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.game.Tickable;
 import seng201.team53.game.map.GameMap;
+import seng201.team53.game.state.GameState;
+import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.items.Cart;
 import seng201.team53.items.ResourceType;
 import seng201.team53.items.towers.Tower;
@@ -20,6 +20,8 @@ import seng201.team53.items.towers.Tower;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+
+import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
 public class GameRound implements Tickable {
     private final GameStateHandler stateHandler;
@@ -74,9 +76,10 @@ public class GameRound implements Tickable {
 
                 var imageView = new ImageView(cart.getImage());
                 var pane = new StackPane();
+                var overlay = getGameEnvironment().getController().getOverlay();
                 imageView.setX(polylinePath.getPoints().get(1));
                 imageView.setY(polylinePath.getPoints().get(0));
-                map.getOverlay().getChildren().add(pane);
+                overlay.getChildren().add(pane);
                 pane.getChildren().addAll(imageView, capacityLabel);
 
                 var pathTransition = new PathTransition();
@@ -90,7 +93,7 @@ public class GameRound implements Tickable {
                     cart.setCompletedPath(true);
                     cart.setPathTransition(null);
                     cart.setCapacityLabel(null);
-                    map.getOverlay().getChildren().remove(pane);
+                    overlay.getChildren().remove(pane);
                 });
                 cart.setPathTransition(pathTransition);
                 cart.setCapacityLabel(capacityLabel);

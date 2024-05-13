@@ -1,8 +1,5 @@
 package seng201.team53.gui;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -18,8 +15,10 @@ import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.map.GameMap;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
-import seng201.team53.items.towers.Tower;
 import seng201.team53.items.towers.TowerType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameController {
     @FXML private Pane overlay;
@@ -62,8 +61,8 @@ public class GameController {
     @FXML private Button inventoryButton3;
     @FXML private Button inventoryButton4;
 
-    public GameController() {
-    }
+    // sub-controllers
+    private final MapInteractionController mapInteractionController = new MapInteractionController(this);
 
     public void init() {
 
@@ -156,16 +155,16 @@ public class GameController {
 
     /**
      * Update the appropriate elements to allow the user to sell a tower.
-     * @param tower The tower to sell. Set to `null` to hide the sell tower popup
+     * @param towerType The tower type to sell. Set to `null` to hide the sell tower popup
      */
-    public void showSellTowerPopup(Tower tower) {
-        if (tower == null) {
+    public void showSellTowerPopup(TowerType towerType) {
+        if (towerType == null) {
             this.sellTowerPane.setVisible(false);
             return;
         }
 
         this.sellTowerPane.setVisible(true);
-        this.sellTowerText.setText("Sell ($" + tower.getType().getSellPrice() + ")");
+        this.sellTowerText.setText("Sell ($" + towerType.getSellPrice() + ")");
     }
 
     @FXML
@@ -174,7 +173,7 @@ public class GameController {
             return;
 
         GameMap map = GameEnvironment.getGameEnvironment().getMap();
-        map.sellSelectedTower();
+        //map.sellSelectedTower();
     }
 
     @FXML
@@ -212,8 +211,11 @@ public class GameController {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
-        GameStateHandler stateHandler = GameEnvironment.getGameEnvironment().getStateHandler();
-        stateHandler.tryStartingPlacingTower(towerType, event.getX(), event.getY());
+        mapInteractionController.startPlacingTower(towerType);
+        // prob do a call to shop?
+//        GameStateHandler stateHandler = GameEnvironment.getGameEnvironment().getStateHandler();
+//        stateHandler.tryStartingPlacingTower(towerType, event.getX(), event.getY());
+
     }
 
     /**

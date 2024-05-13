@@ -1,8 +1,6 @@
 package seng201.team53.game.state;
 
 import seng201.team53.game.GameEnvironment;
-import seng201.team53.game.map.MapInteraction;
-import seng201.team53.items.towers.TowerType;
 
 /**
  * This class manages the game state within the game environment. It keeps track of the current game state
@@ -46,29 +44,6 @@ public class GameStateHandler {
             case RANDOM_EVENT_DIALOG_OPEN -> handleChangedGameStateRandomEventDialogOpen();
             case GAME_COMPLETE -> handleChangedGameStateGameComplete();
         }
-    }
-
-    /**
-     * Try to start the process of placing a new tower onto the map.
-     * @param towerType The type of tower to purchase.
-     * @return If the tower was succesfully purchased from the shop, and the placing tower process has started (handled in Map.java)
-     */
-    public boolean tryStartingPlacingTower(TowerType towerType, double mouseX, double mouseY) {
-        GameEnvironment gameEnv = GameEnvironment.getGameEnvironment();
-        var map = gameEnv.getMap();
-
-        // User is already interacting with the map in some way
-        if (map.getCurrentInteraction() != MapInteraction.NONE)
-            return false;
-
-        var tower = towerType.create();
-        boolean purchased = gameEnv.getShop().purchaseItem(towerType);
-        if (!purchased) {
-            gameEnv.getController().showNotification("Not enough money", 1.5);
-            return false;
-        }
-        map.startPlacingTower(tower, mouseX, mouseY);
-        return true;
     }
 
     /**

@@ -10,7 +10,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
-import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.service.NameValidatorService;
 
 public class MainController {
