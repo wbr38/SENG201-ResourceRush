@@ -1,12 +1,12 @@
 package seng201.team53.game.event;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
-
 import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.event.type.RandomEvent;
 import seng201.team53.game.event.type.RandomEventBrokenTower;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomEvents {
     private final List<RandomEvent> randomEvents = new ArrayList<>();

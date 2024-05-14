@@ -1,21 +1,14 @@
 package seng201.team53.game.map;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.shape.Polyline;
 import javafx.util.Duration;
 import seng201.team53.exceptions.TileNotFoundException;
-import seng201.team53.game.GameEnvironment;
-import seng201.team53.items.Shop;
 import seng201.team53.items.towers.Tower;
 import seng201.team53.service.PathFinderService;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class represents a map in the game. It stores information about the map grid, tiles, and pathfinding
@@ -31,14 +24,6 @@ public class GameMap {
     private final int pathLength;
     /** A mapping of towers on this map, and the tile they are placed on */
     private final Map<Tower, Tile> towers = new HashMap<>();
-    private final int startX;
-    private final int startY;
-    private final int endX;
-    private final int endY;
-    private final GridPane gridPane;
-    private final Pane overlay;
-    private MapInteraction currentInteraction = MapInteraction.NONE;
-    private Tower selectedTower;
 
     /**
      * Constructs a new Map with the specified properties
@@ -49,16 +34,9 @@ public class GameMap {
      * @param endX The paths ending grid x co-ordinate
      * @param endY The paths ending grid y co-ordinate
      */
-    public GameMap(String name, Tile[][] tiles, int startX, int startY, int endX, int endY, GridPane gridPane, Pane overlay) {
+    public GameMap(String name, Tile[][] tiles, int startX, int startY, int endX, int endY) {
         this.name = name;
         this.tiles = tiles;
-        this.startX = startX;
-        this.startY = startY;
-        this.endX = endX;
-        this.endY = endY;
-        this.gridPane = gridPane;
-        this.overlay = overlay;
-        this.overlay.setOnMouseClicked(this::onMouseClicked);
 
         var pathFinderService = new PathFinderService();
         pathFinderService.findPath(tiles, startX, startY, endX, endY);
@@ -117,151 +95,25 @@ public class GameMap {
         return towers.keySet();
     }
 
-    /**
-     * @return The current map interation
-     */
-    public MapInteraction getCurrentInteraction() {
-        return currentInteraction;
+    public void addTower(Tower tower, Tile tile) {
+        towers.put(tower, tile);
     }
 
-    /**
-     * Sets the current map interaction state and handle grid display
-     * @param interaction The new map interation state to set
-     */
-    public void setInteraction(MapInteraction interaction) {
-        currentInteraction = interaction;
-        gridPane.setGridLinesVisible(interaction != MapInteraction.NONE);
-    }
-
-    /**
-     * Begins the process of placing a tower on the map. This method begins a
-     * visual representation of the tower
-     * that follows the mouse curser and sets the map interaction state
-     * @param tower The tower to be placed
-     */
-    public boolean startPlacingTower(Tower tower, double mouseX, double mouseY) {
-        GameEnvironment.getGameEnvironment().getController().setInventoryVisible(true);
-        this.setInteraction(MapInteraction.PLACE_TOWER);
-        this.selectedTower = tower;
-        ImageView towerImage = selectedTower.getImageView();
-        // start it off screen
-        towerImage.setX(mouseX - 20);
-        towerImage.setY(mouseY - 20);
-        overlay.getChildren().add(towerImage);
-        towerImage.toBack(); // otherwise the image will appear ontop of buttons
-        overlay.setOnMouseMoved(event -> {
-            towerImage.setX(event.getX() - 20);
-            towerImage.setY(event.getY() - 20);
-        });
-        return true;
-    }
-
-    /**
-     * Stops the process of placing a tower on the map. This method removes the visual representation of the tower
-     * and resets the map interaction state
-     */
-    public void stopPlacingTower() {
-        setInteraction(MapInteraction.NONE);
-        overlay.setOnMouseMoved(null);
-        overlay.getChildren().remove(selectedTower.getImageView());
-        selectedTower = null;
+    public void removeTower(Tower tower) {
+        towers.remove(tower);
     }
 
     /**
      * Sell the tower the player has currently selected / is moving
      */
-    public void sellSelectedTower() {
-        if (this.selectedTower == null)
-            return;
-
-        Shop shop = GameEnvironment.getGameEnvironment().getShop();
-        shop.sellItem(this.selectedTower.getType());
-
-        GameEnvironment.getGameEnvironment().getController().showSellTowerPopup(null);
-        stopPlacingTower();
-    }
-
-    /**
-     * Try place the tower onto the map on the given tile.
-     * @param tower The tower to place
-     * @param tile The tile to place the tower on
-     * @return Whether the Tower was added to the map/placed on the tile. Will return false if the given tile is not buildable or part of the cart's
-     *         path.
-     */
-    private boolean addTower(Tower tower, Tile tile) {
-
-        // Tile is not buildable or already occupied
-        if (!tile.isBuildable() || tile.getTower() != null)
-            return false;
-
-        var imageView = tower.getImageView();
-        gridPane.add(imageView, tile.getX(), tile.getY());
-        towers.put(selectedTower, tile);
-        tile.setTower(selectedTower);
-        return true;
-    }
-
-    private boolean removeTower(Tower tower) {
-        // Remove the tower from the map
-        gridPane.getChildren().remove(tower.getImageView());
-        Tile tile = towers.get(tower);
-        tile.setTower(null);
-        towers.remove(tower);
-        return true;
-    }
-
-    /**
-     * Handle map interactions when the user clicks their mouse on the screen.
-     */
-    private void onMouseClicked(MouseEvent event) {
-        // Only care about left clicking
-        if (event.getButton() != MouseButton.PRIMARY)
-            return;
-
-        int mouseX = (int)Math.round(event.getSceneX());
-        int mouseY = (int)Math.round(event.getSceneY());
-
-        Tile tile;
-        try {
-            tile = this.getTileFromScreenPosition(mouseX, mouseY);
-        } catch (TileNotFoundException e) {
-            return;
-        }
-
-        Tower tileTower = tile.getTower();
-
-        MapInteraction interaction = this.getCurrentInteraction();
-
-        // NONE - If the user is not currently interacting with something, and selects a tower, then start moving the tower.
-        if (interaction == MapInteraction.NONE && tileTower != null) {
-            startPlacingTower(tileTower, event.getX(), event.getY());
-
-            // Show sell tower stuff
-            GameEnvironment.getGameEnvironment().getController().showSellTowerPopup(selectedTower);
-            removeTower(tileTower);
-            return;
-        }
-
-        // PLACE_TOWER - User was placing a tower and selected the tile to place the tower on.
-        if (interaction == MapInteraction.PLACE_TOWER) {
-            boolean placed = addTower(selectedTower, tile);
-            if (placed) {
-                GameEnvironment.getGameEnvironment().getController().showSellTowerPopup(null);
-                stopPlacingTower();
-            }
-            return;
-        }
-    }
-
-    public GridPane getGridPane() {
-        return gridPane;
-    }
-
-    public Pane getOverlay() {
-        return overlay;
-    }
-
-    public Tower getSelectedTower() {
-        return selectedTower;
-    }
+//    public void sellSelectedTower() {
+//        if (this.selectedTower == null)
+//            return;
+//
+//        Shop shop = GameEnvironment.getGameEnvironment().getShop();
+//        shop.sellItem(this.selectedTower.getType());
+//
+//        GameEnvironment.getGameEnvironment().getController().showSellTowerPopup(null);
+//        stopPlacingTower();
+//    }
 }

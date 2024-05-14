@@ -62,8 +62,7 @@ public class GameEnvironment {
     public void load() {
         assetLoader.init();
         randomEvents.init();
-        map = assetLoader.loadMap("default", "/assets/maps/map_one.json", controller.getMapBackgroundPane(), controller.getGridPane(),
-                                  controller.getOverlay());
+        map = assetLoader.loadMap("default", "/assets/maps/map_one.json", controller.getMapBackgroundPane());
         gameRound = roundFactory.getRound(stateHandler, map, 1, assetLoader.getCartImage());
 
         GameDifficulty difficulty = GameEnvironment.getGameEnvironment().getDifficulty();
