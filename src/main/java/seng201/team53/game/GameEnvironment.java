@@ -65,7 +65,9 @@ public class GameEnvironment {
         map = assetLoader.loadMap("default", "/assets/maps/map_one.json", controller.getMapBackgroundPane(), controller.getGridPane(),
                                   controller.getOverlay());
         gameRound = roundFactory.getRound(stateHandler, map, 1, assetLoader.getCartImage());
-        shop.addMoney(gameRound.getStartingMoney());
+
+        GameDifficulty difficulty = GameEnvironment.getGameEnvironment().getDifficulty();
+        shop.addMoney(difficulty.getStartingMoney());
     }
 
     public void setupNextRound() {
@@ -73,7 +75,8 @@ public class GameEnvironment {
         gameRound = roundFactory.getRound(stateHandler, map, nextRound, assetLoader.getCartImage());
         if (gameRound == null)
             return;
-        shop.addMoney(gameRound.getStartingMoney());
+    
+        shop.addMoney(gameRound.getMoneyEarned());
         controller.updateRoundCounter(nextRound, rounds);
     }
 

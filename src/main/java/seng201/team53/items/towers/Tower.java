@@ -6,6 +6,8 @@ import javafx.animation.Timeline;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
+import seng201.team53.game.GameDifficulty;
+import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.Tickable;
 
 public class Tower implements Tickable {
@@ -24,9 +26,9 @@ public class Tower implements Tickable {
         var glow = new Glow();
         glow.setLevel(0);
         glowAnimation = new Timeline(
-                new KeyFrame(Duration.ZERO, new KeyValue(glow.levelProperty(), 0)),
-                new KeyFrame(Duration.millis(250), new KeyValue(glow.levelProperty(), 0.8)),
-                new KeyFrame(Duration.millis(500), new KeyValue(glow.levelProperty(), 0)));
+            new KeyFrame(Duration.ZERO, new KeyValue(glow.levelProperty(), 0)),
+            new KeyFrame(Duration.millis(250), new KeyValue(glow.levelProperty(), 0.8)),
+            new KeyFrame(Duration.millis(500), new KeyValue(glow.levelProperty(), 0)));
         glowAnimation.setCycleCount(1);
         imageView.setEffect(glow);
         setBroken(false);
@@ -57,13 +59,24 @@ public class Tower implements Tickable {
         this.xpLevel += amount;
     }
 
-    public boolean tryGenerate() {
-        if (!broken && System.currentTimeMillis() - lastGenerateTime >= type.getReloadSpeed().toMillis()) {
-            lastGenerateTime  = System.currentTimeMillis();
-            glowAnimation.play();
-            return true;
-        }
-        return false;
+    /**
+     * @return True if this tower is ready to generate now, or false if it needs more time to reload. 
+     */
+    public boolean canGenerate() {
+        if (broken)
+            return false;
+
+        GameDifficulty difficulty = GameEnvironment.getGameEnvironment().getDifficulty();
+        long reloadSpeed = type.getReloadSpeed().toMillis();
+        reloadSpeed /= difficulty.getTowerReloadModifier();
+
+        long deltaTime = System.currentTimeMillis() - lastGenerateTime;
+        if (deltaTime < reloadSpeed)
+            return false;
+
+        glowAnimation.play();
+        lastGenerateTime = System.currentTimeMillis();
+        return true;
     }
 
     @Override

@@ -66,6 +66,7 @@ public class AssetLoader {
     public Image getCartImage() {
         return cartImage;
     }
+
     public Image getFullCartImage() {
         return fullCartImage;
     }

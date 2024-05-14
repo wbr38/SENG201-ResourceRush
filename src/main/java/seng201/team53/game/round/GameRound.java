@@ -8,6 +8,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import seng201.team53.game.GameDifficulty;
+import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.GameLoop;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
@@ -26,31 +28,34 @@ public class GameRound implements Tickable {
     private final GameMap map;
     private final int roundNumber;
     private final List<Cart> carts = new ArrayList<>();
-    private final int startingMoney;
     private GameLoop gameLoop;
     private int cartsCompletedPath = 0;
 
-    public GameRound(GameStateHandler stateHandler, GameMap map, int roundNumber, int startingMoney) {
+    public GameRound(GameStateHandler stateHandler, GameMap map, int roundNumber) {
         this.stateHandler = stateHandler;
         this.map = map;
         this.roundNumber = roundNumber;
-        this.startingMoney = startingMoney;
     }
 
     public int getRoundNumber() {
         return roundNumber;
     }
 
-    public int getStartingMoney() {
-        return startingMoney;
+    /**
+     * @return The amount of money the player should earn for reaching this round.
+     */
+    public int getMoneyEarned() {
+        GameDifficulty difficulty = GameEnvironment.getGameEnvironment().getDifficulty();
+        int moneyEarned = (int)Math.round(this.getRoundNumber() * difficulty.getMoneyEarnMultiplier());
+        return moneyEarned;
     }
 
     public void addCart(Image image, int maxCapacity, float velocity, EnumSet<ResourceType> acceptedResources, int spawnAfterTicks) {
         var cart = new Cart(maxCapacity,
-                velocity,
-                acceptedResources,
-                spawnAfterTicks,
-                image);
+            velocity,
+            acceptedResources,
+            spawnAfterTicks,
+            image);
         carts.add(cart);
     }
 
@@ -99,19 +104,23 @@ public class GameRound implements Tickable {
             }
             cart.tick();
         });
+        
+        // Fill carts 
         map.getTowers().forEach(tower -> {
             tower.tick();
-            if (tower.tryGenerate()) {
+            if (tower.canGenerate()) {
                 carts.forEach(cart -> cart.addResource(tower.getType().getResourceType()));
             }
         });
     }
+
     public void start() {
         if (gameLoop != null)
             throw new IllegalStateException("Game round has already started and we cannot have duplicate game loops");
         gameLoop = new GameLoop(this);
         play();
     }
+
     public void play() {
         gameLoop.start();
         carts.forEach(cart -> {

@@ -81,8 +81,10 @@ public class Cart implements Tickable {
     public void addResource(ResourceType generatedResourceType) {
         if (currentCapacity == maxCapacity)
             return;
+
         if (!acceptedResources.contains(generatedResourceType))
             return;
+
         currentCapacity++;
         update();
     }
