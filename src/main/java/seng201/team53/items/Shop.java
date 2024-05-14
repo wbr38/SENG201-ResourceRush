@@ -11,7 +11,11 @@ public class Shop {
 
     private int money = 100;
 
-    public List<Purchasable> items = new ArrayList<>();
+    public List<Purchasable> inventory = new ArrayList<>();
+
+    public void init() {
+
+    }
 
     /**
      * Attempt to purchase an item from the shop
@@ -27,17 +31,17 @@ public class Shop {
             return false;
 
         this.subtractMoney(cost);
-        this.items.add(item);
+        this.inventory.add(item);
         return true;
     }
 
     public void sellItem(Purchasable item) throws ItemNotFoundException {
-        if (!this.items.contains(item)) {
+        if (!this.inventory.contains(item)) {
             throw new ItemNotFoundException("Tried to sell a " + item.getName() + " item that we do not own!");
         }
 
         int sellPrice = item.getSellPrice();
-        this.items.remove(item);
+        this.inventory.remove(item);
         this.addMoney(sellPrice);
     }
 
