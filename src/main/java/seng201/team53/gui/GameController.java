@@ -112,7 +112,8 @@ public class GameController {
             return;
 
         stateHandler.setState(GameState.ROUND_ACTIVE);
-        GameEnvironment.getGameEnvironment().getController().setInventoryVisible(false);
+        this.setInventoryVisible(false);
+        this.showSellTowerPopup(null);
     }
 
     @FXML
