@@ -14,6 +14,7 @@ import javafx.util.Duration;
 import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
+import seng201.team53.items.UpgradeItem;
 import seng201.team53.items.towers.TowerType;
 
 import java.util.HashMap;
@@ -47,6 +48,12 @@ public class GameController {
     @FXML private Button shopButton3;
     @FXML private Button shopButton4;
 
+    private final Map<Button, UpgradeItem> shopItemsButtons = new HashMap<>();
+    @FXML private Button shopItemButton1;
+    @FXML private Button shopItemButton2;
+    @FXML private Button shopItemButton3;
+    @FXML private Button shopItemButton4;
+
     // Sell Tower popup
     @FXML private AnchorPane sellTowerPane;
     @FXML private Text sellTowerText;
@@ -74,6 +81,15 @@ public class GameController {
         shopButtons.forEach((button, towerType) -> {
             TowerButton.changeTower(button, towerType);
             button.setOnMouseClicked(e -> this.onShopTowerClick(e, towerType));
+        });
+
+        // Set shop item buttons
+        shopItemsButtons.put(shopItemButton1, UpgradeItem.REPAIR_TOWER);
+        shopItemsButtons.put(shopItemButton2, UpgradeItem.TEMP_FASTER_TOWER_RELOAD);
+        shopItemsButtons.put(shopItemButton3, UpgradeItem.TEMP_SLOWER_CART);
+        shopItemsButtons.put(shopItemButton4, UpgradeItem.FILL_CART);
+        shopItemsButtons.forEach((button, upgradeItem) -> {
+            TowerButton.changeImage(button, upgradeItem);
         });
 
         // Set inventory buttons

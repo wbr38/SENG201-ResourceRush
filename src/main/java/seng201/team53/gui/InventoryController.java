@@ -3,7 +3,9 @@ package seng201.team53.gui;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import seng201.team53.game.GameEnvironment;
 import seng201.team53.items.towers.Tower;
 

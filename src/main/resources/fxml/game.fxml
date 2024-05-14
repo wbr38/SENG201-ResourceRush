@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng201.team53.gui.GameController">
    <children>
       <Pane fx:id="mapBackgroundPane" prefHeight="640.0" prefWidth="800.0" />
@@ -281,152 +294,227 @@
                   </Button>
                </children>
             </AnchorPane>
-         </children>
-      </AnchorPane>
-      <Pane layoutX="650.0" layoutY="55.0" prefHeight="581.0" prefWidth="150.0">
-         <children>
-            <ImageView fitHeight="80.0" fitWidth="75.0" layoutY="391.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_bottom_left.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="75.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_top_right.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="80.0" fitWidth="75.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_top_left.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="75.0" layoutY="158.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_center_right.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="75.0" layoutY="231.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_center_right.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="75.0" layoutY="311.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_center_right.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="75.0" layoutY="391.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_bottom_right.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="80.0" fitWidth="75.0" layoutY="158.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_center_left.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="80.0" fitWidth="75.0" layoutY="231.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_center_left.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="80.0" fitWidth="75.0" layoutY="311.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_center_left.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="75.0" layoutY="78.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_center_right.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="80.0" fitWidth="75.0" layoutY="78.0">
-               <image>
-                  <Image url="@../assets/decoration/wood_tile_center_left.png" />
-               </image>
-            </ImageView>
-            <Text fill="WHITE" layoutX="28.0" layoutY="45.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="Shop">
-               <font>
-                  <Font name="Expo M" size="36.0" />
-               </font>
-            </Text>
-            <ScrollPane hbarPolicy="NEVER" layoutX="11.0" layoutY="70.0" prefHeight="388.0" prefWidth="128.0" style="-fx-background-color: transparent;">
-               <content>
-                  <FlowPane alignment="CENTER" prefHeight="384.0" prefWidth="125.0">
-                     <children>
-                        <Button fx:id="shopButton1" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
-                           <graphic>
-                              <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../assets/items/wood_tower.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <tooltip>
-                              <Tooltip showDelay="10ms" text="Cost: $999" />
-                           </tooltip>
-                        </Button>
-                        <Button fx:id="shopButton2" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
-                           <graphic>
-                              <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../assets/items/wood_tower.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <tooltip>
-                              <Tooltip showDelay="10ms" text="Cost: $999" />
-                           </tooltip>
-                        </Button>
-                        <Button fx:id="shopButton3" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
-                           <graphic>
-                              <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../assets/items/wood_tower.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <tooltip>
-                              <Tooltip showDelay="10ms" text="Cost: $999" />
-                           </tooltip>
-                        </Button>
-                        <Button fx:id="shopButton4" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
-                           <graphic>
-                              <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../assets/items/wood_tower.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <tooltip>
-                              <Tooltip showDelay="10ms" text="Cost: $999" />
-                           </tooltip>
-                        </Button>
-                     </children>
-                  </FlowPane>
-               </content></ScrollPane>
-            <Button fx:id="pauseButton" layoutX="16.0" layoutY="477.0" mnemonicParsing="false" onMouseClicked="#onPauseButtonMouseClick" prefHeight="51.0" prefWidth="119.0" style="-fx-background-color: #e09860; -fx-border-color: #8a5c38; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Pause">
-               <font>
-                  <Font name="Expo M" size="24.0" />
-               </font>
-            </Button>
-            <Button fx:id="startButton" layoutX="16.0" layoutY="477.0" mnemonicParsing="false" onMouseClicked="#onStartButtonMouseClick" prefHeight="51.0" prefWidth="119.0" style="-fx-background-color: #60b3e0; -fx-border-color: #2485ba; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Start">
-               <font>
-                  <Font name="Expo M" size="24.0" />
-               </font>
-            </Button>
-            <Button fx:id="resumeButton" disable="true" layoutX="16.0" layoutY="477.0" mnemonicParsing="false" onMouseClicked="#onResumeButtonMouseClick" prefHeight="51.0" prefWidth="119.0" style="-fx-background-color: #e09860; -fx-border-color: #8a5c38; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Resume" visible="false">
-               <font>
-                  <Font name="Expo M" size="21.0" />
-               </font>
-            </Button>
-            <Button layoutX="16.0" layoutY="536.0" mnemonicParsing="false" onMouseClicked="#onInventoryButtonMouseClick" prefHeight="40.0" prefWidth="119.0" style="-fx-background-color: #60b3e0; -fx-border-color: #2485ba; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Inventory">
+            <Button layoutX="666.0" layoutY="596.0" mnemonicParsing="false" onMouseClicked="#onInventoryButtonMouseClick" prefHeight="40.0" prefWidth="119.0" style="-fx-background-color: #60b3e0; -fx-border-color: #2485ba; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Inventory">
                <font>
                   <Font name="Expo M" size="18.0" />
                </font>
             </Button>
+            <Pane layoutX="650.0" layoutY="28.0" prefHeight="577.0" prefWidth="150.0">
+               <children>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutY="431.0">
+                     <image>
+                        <Image url="@../assets/decoration/wood_tile_bottom_left.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="75.0">
+                     <image>
+                        <Image url="@../assets/decoration/wood_tile_top_right.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0">
+                     <image>
+                        <Image url="@../assets/decoration/wood_tile_top_left.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="75.0" layoutY="158.0">
+                     <image>
+                        <Image url="@../assets/decoration/wood_tile_center_right.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="75.0" layoutY="231.0">
+                     <image>
+                        <Image url="@../assets/decoration/wood_tile_center_right.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="75.0" layoutY="311.0">
+                     <image>
+                        <Image url="@../assets/decoration/wood_tile_center_right.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="75.0" layoutY="431.0">
+                     <image>
+                        <Image url="@../assets/decoration/wood_tile_bottom_right.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutY="158.0">
+                     <image>
+                        <Image url="@../assets/decoration/wood_tile_center_left.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutY="231.0">
+                     <image>
+                        <Image url="@../assets/decoration/wood_tile_center_left.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutY="311.0">
+                     <image>
+                        <Image url="@../assets/decoration/wood_tile_center_left.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="75.0" layoutY="78.0">
+                     <image>
+                        <Image url="@../assets/decoration/wood_tile_center_right.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutY="78.0">
+                     <image>
+                        <Image url="@../assets/decoration/wood_tile_center_left.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="75.0" layoutY="391.0">
+                     <image>
+                        <Image url="@../assets/decoration/wood_tile_center_right.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutY="391.0">
+                     <image>
+                        <Image url="@../assets/decoration/wood_tile_center_left.png" />
+                     </image>
+                  </ImageView>
+                  <Text fill="WHITE" layoutX="28.0" layoutY="45.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="Shop">
+                     <font>
+                        <Font name="Expo M" size="36.0" />
+                     </font>
+                  </Text>
+                  <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="58.0" prefHeight="430.0" prefWidth="123.0" style="-fx-background-color: transparent;">
+                     <content>
+                        <TabPane prefHeight="422.0" prefWidth="119.0" tabClosingPolicy="UNAVAILABLE">
+                          <tabs>
+                            <Tab text="Towers">
+                                 <content>
+                                    <FlowPane alignment="CENTER" prefHeight="390.0" prefWidth="119.0">
+                                       <children>
+                                          <Button fx:id="shopButton1" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
+                                             <graphic>
+                                                <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../assets/items/wood_tower.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                             <tooltip>
+                                                <Tooltip showDelay="10ms" text="Cost: $999" />
+                                             </tooltip>
+                                          </Button>
+                                          <Button fx:id="shopButton2" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
+                                             <graphic>
+                                                <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../assets/items/wood_tower.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                             <tooltip>
+                                                <Tooltip showDelay="10ms" text="Cost: $999" />
+                                             </tooltip>
+                                          </Button>
+                                          <Button fx:id="shopButton3" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
+                                             <graphic>
+                                                <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../assets/items/wood_tower.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                             <tooltip>
+                                                <Tooltip showDelay="10ms" text="Cost: $999" />
+                                             </tooltip>
+                                          </Button>
+                                          <Button fx:id="shopButton4" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
+                                             <graphic>
+                                                <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../assets/items/wood_tower.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                             <tooltip>
+                                                <Tooltip showDelay="10ms" text="Cost: $999" />
+                                             </tooltip>
+                                          </Button>
+                                       </children>
+                                    </FlowPane>
+                                 </content>
+                              </Tab>
+                              <Tab text="Items">
+                                 <content>
+                                    <FlowPane alignment="CENTER" prefHeight="390.0" prefWidth="119.0">
+                                       <children>
+                                          <Button fx:id="shopItemButton1" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
+                                             <graphic>
+                                                <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../assets/items/wood_tower.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                             <tooltip>
+                                                <Tooltip showDelay="10ms" text="Cost: $999" />
+                                             </tooltip>
+                                          </Button>
+                                          <Button fx:id="shopItemButton2" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
+                                             <graphic>
+                                                <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../assets/items/wood_tower.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                             <tooltip>
+                                                <Tooltip showDelay="10ms" text="Cost: $999" />
+                                             </tooltip>
+                                          </Button>
+                                          <Button fx:id="shopItemButton3" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
+                                             <graphic>
+                                                <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../assets/items/wood_tower.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                             <tooltip>
+                                                <Tooltip showDelay="10ms" text="Cost: $999" />
+                                             </tooltip>
+                                          </Button>
+                                          <Button fx:id="shopItemButton4" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
+                                             <graphic>
+                                                <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../assets/items/wood_tower.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                             <tooltip>
+                                                <Tooltip showDelay="10ms" text="Cost: $999" />
+                                             </tooltip>
+                                          </Button>
+                                       </children>
+                                    </FlowPane>
+                                 </content>
+                              </Tab>
+                          </tabs>
+                        </TabPane>
+                     </content>
+                  </ScrollPane>
+                  <Button fx:id="pauseButton" layoutX="16.0" layoutY="518.0" mnemonicParsing="false" onMouseClicked="#onPauseButtonMouseClick" prefHeight="51.0" prefWidth="119.0" style="-fx-background-color: #e09860; -fx-border-color: #8a5c38; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Pause">
+                     <font>
+                        <Font name="Expo M" size="24.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="startButton" layoutX="16.0" layoutY="518.0" mnemonicParsing="false" onMouseClicked="#onStartButtonMouseClick" prefHeight="56.0" prefWidth="119.0" style="-fx-background-color: #60b3e0; -fx-border-color: #2485ba; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Start">
+                     <font>
+                        <Font name="Expo M" size="24.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="resumeButton" disable="true" layoutX="16.0" layoutY="518.0" mnemonicParsing="false" onMouseClicked="#onResumeButtonMouseClick" prefHeight="51.0" prefWidth="119.0" style="-fx-background-color: #e09860; -fx-border-color: #8a5c38; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Resume" visible="false">
+                     <font>
+                        <Font name="Expo M" size="21.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
          </children>
-      </Pane>
+      </AnchorPane>
       <Pane layoutX="175.0" layoutY="-40.0">
          <children>
             <ImageView fitHeight="80.0" fitWidth="75.0">

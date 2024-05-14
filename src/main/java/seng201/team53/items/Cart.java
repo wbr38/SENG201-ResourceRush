@@ -43,6 +43,11 @@ public class Cart implements Tickable {
         return this.getCapacity() >= this.getMaxCapacity();
     }
 
+    public void fill() {
+        this.currentCapacity = maxCapacity;
+        update();
+    }
+
     public float getVelocity() {
         return velocity;
     }
