@@ -16,6 +16,32 @@ public class Tile {
         this.y = y;
     }
 
+    /**
+     * @return Whether a Tower can be placed on this tile.
+     */
+    public boolean canPlaceTower() {
+        Tower tower = this.getTower();
+        return (
+            this.isBuildable()
+            && !this.isPath()
+            && tower == null
+        );
+    }
+
+    /**
+     * @return If the tower occupying this tile (if there is one) can be moved.
+     */
+    public boolean canMoveTower() {
+        Tower tower = this.getTower();
+        return (
+            tower != null
+            && !tower.isBroken()
+        );
+    }
+
+    /**
+     * @return Whether items can be placed onto this tile
+     */
     public boolean isBuildable() {
         return buildable & !path;
     }

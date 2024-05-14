@@ -22,6 +22,7 @@ public class GameMap {
     private final Tile[][] tiles;
     private final Polyline polylinePath;
     private final int pathLength;
+    private MapInteraction interaction = MapInteraction.NONE;
     /** A mapping of towers on this map, and the tile they are placed on */
     private final Map<Tower, Tile> towers = new HashMap<>();
 
@@ -97,23 +98,20 @@ public class GameMap {
 
     public void addTower(Tower tower, Tile tile) {
         towers.put(tower, tile);
+        tile.setTower(tower);
     }
 
-    public void removeTower(Tower tower) {
+    public void removeTower(Tile tile) {
+        Tower tower = tile.getTower();
         towers.remove(tower);
+        tile.setTower(null);
     }
 
-    /**
-     * Sell the tower the player has currently selected / is moving
-     */
-//    public void sellSelectedTower() {
-//        if (this.selectedTower == null)
-//            return;
-//
-//        Shop shop = GameEnvironment.getGameEnvironment().getShop();
-//        shop.sellItem(this.selectedTower.getType());
-//
-//        GameEnvironment.getGameEnvironment().getController().showSellTowerPopup(null);
-//        stopPlacingTower();
-//    }
+    public MapInteraction getInteraction() {
+        return interaction;
+    }
+
+    public void setInteraction(MapInteraction interaction) {
+        this.interaction = interaction;
+    }
 }

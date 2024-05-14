@@ -276,7 +276,7 @@
                   </Text>
                   <Button layoutX="18.0" layoutY="45.0" mnemonicParsing="false" onMouseClicked="#onSellTowerButtonClick" prefHeight="51.0" prefWidth="119.0" style="-fx-background-color: #60b3e0; -fx-border-color: #2485ba; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Sell Tower">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="24.0" />
                      </font>
                   </Button>
                </children>

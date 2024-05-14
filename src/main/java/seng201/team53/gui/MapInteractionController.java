@@ -1,117 +1,183 @@
 package seng201.team53.gui;
 
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import seng201.team53.exceptions.TileNotFoundException;
+import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.map.GameMap;
 import seng201.team53.game.map.MapInteraction;
 import seng201.team53.game.map.Tile;
+import seng201.team53.items.Shop;
 import seng201.team53.items.towers.Tower;
 import seng201.team53.items.towers.TowerType;
-import seng201.team53.service.MapInteractionService;
-
-import java.util.function.Supplier;
-
-import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
 public class MapInteractionController {
     private final GameController gameController;
-    private final MapInteractionService mapInteractionService = new MapInteractionService();
-    private ImageView towerImageView;
-    private Supplier<Tower> onPlaceSupplier;
+
+    private Tower selectedTower;
 
     public MapInteractionController(GameController gameController) {
         this.gameController = gameController;
     }
 
-    public void placeTowerAtTile(Tile tile) {
-        if (!mapInteractionService.canPlaceTowerAt(tile))
-            return;
+    public void init() {
+        Pane overlay = gameController.getOverlay();
 
-        mapInteractionService.placeTower(onPlaceSupplier.get(), tile);
-        gameController.getOverlay().getChildren().remove(towerImageView); // todo - find a work around, gets called at stopTowerMethod but throw an error without being removed from the overlay first
-        gameController.getGridPane().add(towerImageView, tile.getX(), tile.getY());
-        stopTowerMovement();
+        // NOTE: using setOnMouseClicked will overwrite previous event listeners
+        // Maybe there's something like addEventHandler we could use, if other classes end up needing to use overlay.setOnMouseClicked
+        overlay.setOnMouseClicked(this::onOverlayClicked);
     }
 
-    public void startPlacingTower(TowerType towerType) {
-        if (mapInteractionService.getInteraction() != MapInteraction.NONE)
+    public void placeSelectedTower(Tile tile) {
+        if (!tile.canPlaceTower())
             return;
 
-        beginTowerMovement(towerType, towerType.getImage(), towerType::create);
+        Tower tower = this.getSelectedTower();
+
+        // Add tower to map
+        GameMap map = GameEnvironment.getGameEnvironment().getMap();
+        map.addTower(tower, tile);
+
+        // Add the tower image to the map's tile
+        ImageView towerImage = tower.getImageView();
+        gameController.getOverlay().getChildren().remove(towerImage);
+        gameController.getGridPane().add(towerImage, tile.getX(), tile.getY());
+        stopMovingTower();
     }
 
-    public void startMovingTowerAtTile(Tile tile) {
-        if (!mapInteractionService.canMoveTowerAt(tile))
+    /**
+     * Attempt to purchase the given TowerType from the shop. If successful, the user will begin placing the newly purchased tower.
+     * @param towerType The TowerType to purchase and start placing.
+     */
+    public void tryPurchaseTower(TowerType towerType) {
+        GameMap map = GameEnvironment.getGameEnvironment().getMap();
+        if (map.getInteraction() != MapInteraction.NONE)
             return;
 
-        var tower = tile.getTower();
-        removeTower(tower, tile);
-        beginTowerMovement(tower.getType(), tower.getType().getImage(), () -> tower);
+        Boolean purchased = GameEnvironment.getGameEnvironment().getShop().purchaseItem(towerType);
+        if (!purchased)
+            return;
+
+        Tower tower = towerType.create();
+        startMovingTower(tower);
     }
 
-    private void beginTowerMovement(TowerType towerType, Image towerImage, Supplier<Tower> onPlaceSupplier) {
-        this.towerImageView = new ImageView(towerImage);
-        this.onPlaceSupplier = onPlaceSupplier;
+    /**
+     * Sell the tower the player has currently selected / is moving
+     */
+    public void sellSelectedTower() {
+        Tower tower = this.getSelectedTower();
+        // if (tower == null)
+        // return;
 
-        var overlay = gameController.getOverlay();
+        Shop shop = GameEnvironment.getGameEnvironment().getShop();
+        shop.sellItem(tower.getType());
+
+        stopMovingTower();
+    }
+
+    public void moveTower(Tile tile) {
+        if (!tile.canMoveTower())
+            return;
+
+        // Remove the tower from the map and start placing it again
+        Tower tower = tile.getTower();
+        removeTower(tile);
+        startMovingTower(tower);
+    }
+
+    public void startMovingTower(Tower tower) {
+        this.selectedTower = tower;
+
         var gridPane = gameController.getGridPane();
+        var overlay = gameController.getOverlay();
         gridPane.setGridLinesVisible(true);
-        towerImageView.toBack();
-        towerImageView.setFitHeight(GameMap.TILE_HEIGHT);
-        towerImageView.setFitWidth(GameMap.TILE_WIDTH);
-        overlay.getChildren().add(towerImageView);
-        overlay.setOnMouseMoved(this::onSelectedTowerMouseMove);
-        overlay.setOnMouseClicked(this::onSelectedTowerMouseClick);
-        gameController.showSellTowerPopup(towerType);
+        gameController.showSellTowerPopup(tower.getType());
         gameController.setInventoryVisible(true);
-        mapInteractionService.setInteraction(MapInteraction.PLACE_TOWER);
+
+        // Add tower image to overlay, to appear as if the user is dragging the tower
+        ImageView towerImage = tower.getImageView();
+        towerImage.toBack();
+        towerImage.setFitHeight(GameMap.TILE_HEIGHT);
+        towerImage.setFitWidth(GameMap.TILE_WIDTH);
+        overlay.getChildren().add(towerImage);
+        overlay.setOnMouseMoved(this::onSelectedTowerMouseMove);
+
+        GameMap map = GameEnvironment.getGameEnvironment().getMap();
+        map.setInteraction(MapInteraction.PLACE_TOWER);
     }
 
-    private void stopTowerMovement() {
+    /**
+     * Stop moving the selected tower
+     */
+    public void stopMovingTower() {
+        Tower tower = this.selectedTower;
+        this.selectedTower = null;
         var overlay = gameController.getOverlay();
         var gridPane = gameController.getGridPane();
         gridPane.setGridLinesVisible(false);
         overlay.setOnMouseMoved(null);
-        overlay.setOnMouseClicked(null);
-        overlay.getChildren().remove(towerImageView);
-        this.towerImageView = null;
-        this.onPlaceSupplier = null;
-        mapInteractionService.setInteraction(MapInteraction.NONE);
+        overlay.getChildren().remove(tower.getImageView());
+
+        GameMap map = GameEnvironment.getGameEnvironment().getMap();
+        map.setInteraction(MapInteraction.NONE);
     }
 
-    private void removeTower(Tower tower, Tile tile) {
+    private void removeTower(Tile tile) {
+        Tower tower = tile.getTower();
+
+        // Remove the tower's image from the map
         var gridPane = gameController.getGridPane();
         gridPane.getChildren().remove(tower.getImageView());
-        mapInteractionService.removeTower(tower, tile);
+
+        // Remove the tower from the map & tile
+        GameMap map = GameEnvironment.getGameEnvironment().getMap();
+        map.removeTower(tile);
     }
 
     private void onSelectedTowerMouseMove(MouseEvent event) {
-        towerImageView.setX(event.getX() - ((double) GameMap.TILE_HEIGHT / 2));
-        towerImageView.setY(event.getY() - ((double) GameMap.TILE_WIDTH / 2));
+        Tower tower = this.getSelectedTower();
+        if (tower == null)
+            return;
+
+        ImageView towerImage = tower.getImageView();
+        towerImage.setX(event.getX() - ((double)GameMap.TILE_HEIGHT / 2));
+        towerImage.setY(event.getY() - ((double)GameMap.TILE_WIDTH / 2));
     }
 
-    private void onSelectedTowerMouseClick(MouseEvent event) {
+    private void onOverlayClicked(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
-        var map = getGameEnvironment().getMap();
-        var interaction = mapInteractionService.getInteraction();
+        GameMap map = GameEnvironment.getGameEnvironment().getMap();
+        MapInteraction interaction = map.getInteraction();
         Tile tile;
         try {
-            tile = map.getTileFromScreenPosition((int) event.getSceneX(),(int) event.getSceneY());
+            tile = map.getTileFromScreenPosition((int)event.getSceneX(), (int)event.getSceneY());
         } catch (TileNotFoundException e) {
             return;
         }
 
-        if (interaction == MapInteraction.NONE) {
-            startMovingTowerAtTile(tile);
-            return;
+        switch (interaction) {
+            // User is not selected a tower, and clicked a tile.
+            // If there is a tower on this tile, start moving it.
+            case NONE:
+                moveTower(tile);
+                return;
+
+            // User has a tower selected and clicked a tower to place it onto
+            case PLACE_TOWER:
+                placeSelectedTower(tile);
+                return;
+
+            default:
+                break;
         }
-        if (interaction == MapInteraction.PLACE_TOWER) {
-            placeTowerAtTile(tile);
-        }
+    }
+
+    public Tower getSelectedTower() {
+        return selectedTower;
     }
 }

@@ -12,7 +12,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import seng201.team53.game.GameEnvironment;
-import seng201.team53.game.map.GameMap;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.items.towers.TowerType;
@@ -63,6 +62,7 @@ public class GameController {
 
     // sub-controllers
     private final MapInteractionController mapInteractionController = new MapInteractionController(this);
+    private final InventoryController inventoryController = new InventoryController();
 
     public void init() {
 
@@ -88,6 +88,8 @@ public class GameController {
 
         this.setInventoryVisible(this.inventoryVisible);
         this.showSellTowerPopup(null);
+
+        this.mapInteractionController.init();
     }
 
     public Pane getMapBackgroundPane() {
@@ -167,6 +169,7 @@ public class GameController {
 
         this.sellTowerPane.setVisible(true);
         this.sellTowerText.setText("Sell ($" + towerType.getSellPrice() + ")");
+        this.sellTowerPane.toFront();
     }
 
     @FXML
@@ -174,8 +177,8 @@ public class GameController {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
-        GameMap map = GameEnvironment.getGameEnvironment().getMap();
-        //map.sellSelectedTower();
+        this.mapInteractionController.sellSelectedTower();
+        this.showSellTowerPopup(null);
     }
 
     @FXML
@@ -206,18 +209,14 @@ public class GameController {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
-        GameEnvironment.getGameEnvironment().getInventory().handleInventoryTowerClick(towerButton, event.getX(), event.getY());
+        this.inventoryController.handleInventoryTowerClick(towerButton);
     }
 
     private void onShopTowerClick(MouseEvent event, TowerType towerType) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
-        mapInteractionController.startPlacingTower(towerType);
-        // prob do a call to shop?
-//        GameStateHandler stateHandler = GameEnvironment.getGameEnvironment().getStateHandler();
-//        stateHandler.tryStartingPlacingTower(towerType, event.getX(), event.getY());
-
+        mapInteractionController.tryPurchaseTower(towerType);
     }
 
     /**
@@ -302,5 +301,9 @@ public class GameController {
     private void hide(Node node) {
         node.setVisible(false);
         node.setDisable(true);
+    }
+
+    public MapInteractionController getMapInteractionController() {
+        return mapInteractionController;
     }
 }
