@@ -299,7 +299,7 @@
                   <Font name="Expo M" size="18.0" />
                </font>
             </Button>
-            <Pane layoutX="650.0" layoutY="28.0" prefHeight="577.0" prefWidth="150.0">
+            <Pane layoutX="650.0" layoutY="28.0" prefHeight="512.0" prefWidth="150.0">
                <children>
                   <ImageView fitHeight="80.0" fitWidth="75.0" layoutY="431.0">
                      <image>

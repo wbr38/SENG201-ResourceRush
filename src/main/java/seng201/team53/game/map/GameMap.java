@@ -101,8 +101,8 @@ public class GameMap {
         tile.setTower(tower);
     }
 
-    public void removeTower(Tile tile) {
-        Tower tower = tile.getTower();
+    public void removeTower(Tower tower) {
+        Tile tile = towers.get(tower);
         towers.remove(tower);
         tile.setTower(null);
     }

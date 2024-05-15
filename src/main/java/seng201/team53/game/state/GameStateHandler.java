@@ -33,6 +33,7 @@ public class GameStateHandler {
      * @param gameState The new game state to set.
      */
     public void setState(GameState gameState) {
+        System.out.println(gameState.name());
         this.previousState = this.state;
         this.state = gameState;
 

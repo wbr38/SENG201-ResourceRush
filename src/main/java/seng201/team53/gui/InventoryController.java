@@ -3,19 +3,22 @@ package seng201.team53.gui;
 import java.util.HashMap;
 import java.util.Map;
 
-import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import seng201.team53.game.GameEnvironment;
 import seng201.team53.items.towers.Tower;
 
 public class InventoryController {
-
+    private final GameController gameController;
+    private final MapInteractionController interactionController;
     // A mapping of inventory tower buttons -> tower (or null)
     private Map<Button, Tower> reserveTowers = new HashMap<>();
 
+    public InventoryController(GameController gameController, MapInteractionController interactionController) {
+        this.gameController = gameController;
+        this.interactionController = interactionController;
+    }
+
     public void handleInventoryTowerClick(Button towerButton) {
-        MapInteractionController interactionController = GameEnvironment.getGameEnvironment().getController().getMapInteractionController();
         Tower selectedTower = interactionController.getSelectedTower();
 
         // User has a tower selected, they are trying to place a tower into inventory
@@ -43,9 +46,8 @@ public class InventoryController {
         reserveTowers.put(towerButton, tower);
 
         // Tower was previously being selected/moved, and is now placed into inventory
-        MapInteractionController interactionController = GameEnvironment.getGameEnvironment().getController().getMapInteractionController();
-        interactionController.stopMovingTower();
-        return;
+
+        interactionController.stopFollowingMouse();
     }
 
     private void retrieveTower(Button towerButton) {
@@ -55,7 +57,7 @@ public class InventoryController {
 
         reserveTowers.put(towerButton, null);
         TowerButton.changeTower(towerButton, null);
-        MapInteractionController interactionController = GameEnvironment.getGameEnvironment().getController().getMapInteractionController();
         interactionController.startMovingTower(occupiedTower);
+        interactionController.startFollowingMouse(occupiedTower.getImageView());
     }
 }

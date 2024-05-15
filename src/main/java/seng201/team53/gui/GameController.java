@@ -11,14 +11,16 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
-import seng201.team53.items.UpgradeItem;
+import seng201.team53.items.Purchasable;
 import seng201.team53.items.towers.TowerType;
+import seng201.team53.items.upgrade.UpgradeItem;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
 public class GameController {
     @FXML private Pane overlay;
@@ -69,7 +71,7 @@ public class GameController {
 
     // sub-controllers
     private final MapInteractionController mapInteractionController = new MapInteractionController(this);
-    private final InventoryController inventoryController = new InventoryController();
+    private final InventoryController inventoryController = new InventoryController(this, mapInteractionController);
 
     public void init() {
 
@@ -80,16 +82,17 @@ public class GameController {
         shopButtons.put(shopButton4, TowerType.WIND_MILL);
         shopButtons.forEach((button, towerType) -> {
             TowerButton.changeTower(button, towerType);
-            button.setOnMouseClicked(e -> this.onShopTowerClick(e, towerType));
+            button.setOnMouseClicked(e -> this.onShopButtonClick(e, towerType));
         });
 
         // Set shop item buttons
-        shopItemsButtons.put(shopItemButton1, UpgradeItem.REPAIR_TOWER);
-        shopItemsButtons.put(shopItemButton2, UpgradeItem.TEMP_FASTER_TOWER_RELOAD);
-        shopItemsButtons.put(shopItemButton3, UpgradeItem.TEMP_SLOWER_CART);
-        shopItemsButtons.put(shopItemButton4, UpgradeItem.FILL_CART);
+        shopItemsButtons.put(shopItemButton1, UpgradeItem.Type.REPAIR_TOWER);
+        shopItemsButtons.put(shopItemButton2, UpgradeItem.Type.TEMP_FASTER_TOWER_RELOAD);
+        shopItemsButtons.put(shopItemButton3, UpgradeItem.Type.TEMP_SLOWER_CART);
+        shopItemsButtons.put(shopItemButton4, UpgradeItem.Type.FILL_CART);
         shopItemsButtons.forEach((button, upgradeItem) -> {
             TowerButton.changeImage(button, upgradeItem);
+            button.setOnMouseClicked(e -> this.onShopButtonClick(e, upgradeItem));
         });
 
         // Set inventory buttons
@@ -105,6 +108,7 @@ public class GameController {
         this.setInventoryVisible(this.inventoryVisible);
         this.showSellTowerPopup(null);
 
+        //this.mapInteractionController.init();
         this.mapInteractionController.init();
     }
 
@@ -125,7 +129,7 @@ public class GameController {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
-        GameStateHandler stateHandler = GameEnvironment.getGameEnvironment().getStateHandler();
+        GameStateHandler stateHandler = getGameEnvironment().getStateHandler();
         if (stateHandler.getState() != GameState.ROUND_NOT_STARTED)
             return;
 
@@ -136,13 +140,15 @@ public class GameController {
 
     @FXML
     private void onPauseButtonMouseClick(MouseEvent event) {
+        System.out.println("called");
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
-        GameStateHandler stateHandler = GameEnvironment.getGameEnvironment().getStateHandler();
+        GameStateHandler stateHandler = getGameEnvironment().getStateHandler();
         if (stateHandler.getState() != GameState.ROUND_ACTIVE)
             return;
 
+        getGameEnvironment().pauseRound();
         stateHandler.setState(GameState.ROUND_PAUSE);
     }
 
@@ -151,10 +157,11 @@ public class GameController {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
-        GameStateHandler stateHandler = GameEnvironment.getGameEnvironment().getStateHandler();
+        GameStateHandler stateHandler = getGameEnvironment().getStateHandler();
         if (stateHandler.getState() != GameState.ROUND_PAUSE)
             return;
 
+        getGameEnvironment().resumeRound();
         stateHandler.setState(GameState.ROUND_ACTIVE);
     }
 
@@ -193,7 +200,7 @@ public class GameController {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
-        this.mapInteractionController.sellSelectedTower();
+        //this.mapInteractionController.sellSelectedTower();
         this.showSellTowerPopup(null);
     }
 
@@ -202,7 +209,7 @@ public class GameController {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
-        GameStateHandler stateHandler = GameEnvironment.getGameEnvironment().getStateHandler();
+        GameStateHandler stateHandler = getGameEnvironment().getStateHandler();
         if (stateHandler.getState() != GameState.RANDOM_EVENT_DIALOG_OPEN)
             return;
 
@@ -214,7 +221,7 @@ public class GameController {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
-        GameStateHandler stateHandler = GameEnvironment.getGameEnvironment().getStateHandler();
+        GameStateHandler stateHandler = getGameEnvironment().getStateHandler();
         if (stateHandler.getState() != GameState.ROUND_COMPLETE)
             return;
 
@@ -228,11 +235,11 @@ public class GameController {
         this.inventoryController.handleInventoryTowerClick(towerButton);
     }
 
-    private void onShopTowerClick(MouseEvent event, TowerType towerType) {
+    private void onShopButtonClick(MouseEvent event, Purchasable purchasable) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
-        mapInteractionController.tryPurchaseTower(towerType);
+        mapInteractionController.tryPurchase(purchasable);
     }
 
     /**

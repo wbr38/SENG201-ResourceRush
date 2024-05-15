@@ -5,12 +5,13 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import seng201.team53.game.Tickable;
+import seng201.team53.items.upgrade.Upgradeable;
 
 import java.util.EnumSet;
 
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
-public class Cart implements Tickable {
+public class Cart implements Tickable, Upgradeable {
     private final int maxCapacity;
     private final float velocity;
     private final EnumSet<ResourceType> acceptedResources;
@@ -62,6 +63,10 @@ public class Cart implements Tickable {
 
     public int getLifetimeTicks() {
         return lifetimeTicks;
+    }
+
+    public ImageView getImageView() {
+        return imageView;
     }
 
     public void setCompletedPath(boolean completedPath) {

@@ -9,12 +9,13 @@ import java.util.List;
 
 public class Shop {
 
-    private int money = 100;
+    private int money = 10000; // todo - temp just setting this high for testing
 
     public List<Purchasable> inventory = new ArrayList<>();
 
-    public void init() {
-
+    public boolean canPurchaseItem(Purchasable item){
+        var cost = item.getCostPrice();
+        return cost < this.money;
     }
 
     /**
@@ -24,15 +25,10 @@ public class Shop {
      *         player's money was adjusted. False if the player did not have enough
      *         balance to purchase the item.
      */
-    public boolean purchaseItem(Purchasable item) {
+    public void purchaseItem(Purchasable item) {
         var cost = item.getCostPrice();
-
-        if (cost > this.money)
-            return false;
-
         this.subtractMoney(cost);
         this.inventory.add(item);
-        return true;
     }
 
     public void sellItem(Purchasable item) throws ItemNotFoundException {

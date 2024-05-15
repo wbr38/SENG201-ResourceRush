@@ -18,10 +18,10 @@ import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.items.Cart;
 import seng201.team53.items.ResourceType;
 import seng201.team53.items.towers.Tower;
+import seng201.team53.items.upgrade.Upgradeable;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
+import java.util.function.Consumer;
 
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
@@ -30,8 +30,10 @@ public class GameRound implements Tickable {
     private final GameMap map;
     private final int roundNumber;
     private final List<Cart> carts = new ArrayList<>();
+    private final Map<Integer, Runnable> tempUpgradeExpireActions = new HashMap<>();
     private GameLoop gameLoop;
     private int cartsCompletedPath = 0;
+    private int lifetimeTicks = 0;
 
     public GameRound(GameStateHandler stateHandler, GameMap map, int roundNumber) {
         this.stateHandler = stateHandler;
@@ -51,6 +53,29 @@ public class GameRound implements Tickable {
         int moneyEarned = (int)Math.round(this.getRoundNumber() * difficulty.getMoneyEarnMultiplier());
         return moneyEarned;
     }
+
+    public List<Cart> getCarts() {
+        return carts;
+    }
+
+    public Cart findCartAtScreenPosition(int screenX, int screenY) {
+        for (Cart cart : carts) {
+            var imageView = cart.getImageView();
+            if (imageView == null) // cart hasn't spawned on screen yet
+                continue;
+
+            var pointInScene = imageView.localToScene(imageView.getX(), imageView.getY());
+            double sceneX = pointInScene.getX();
+            double sceneY = pointInScene.getY();
+            if (sceneX <= screenX &&
+                    (sceneX +  40) > screenX &&
+                    sceneY <= screenY &&
+                    (sceneY +  40) > screenY)
+                return cart;
+        }
+        return null;
+    }
+
 
     public void addCart(Image image, int maxCapacity, float velocity, EnumSet<ResourceType> acceptedResources, int spawnAfterTicks) {
         var cart = new Cart(maxCapacity,
@@ -115,6 +140,12 @@ public class GameRound implements Tickable {
                 carts.forEach(cart -> cart.addResource(tower.getType().getResourceType()));
             }
         });
+
+        var expireAction = tempUpgradeExpireActions.remove(lifetimeTicks);
+        if (expireAction != null)
+            expireAction.run();
+
+        lifetimeTicks++;
     }
 
     public void start() {
@@ -138,5 +169,10 @@ public class GameRound implements Tickable {
             if (!cart.isCompletedPath() && cart.getPathTransition() != null)
                 cart.getPathTransition().pause();
         });
+    }
+
+    public void addTempUpgradeExpireAction(int expireAfterSeconds, Runnable action) {
+        int ticks = expireAfterSeconds * GameLoop.TICKS_PER_SECOND;
+        tempUpgradeExpireActions.put(lifetimeTicks + ticks, action);
     }
 }
