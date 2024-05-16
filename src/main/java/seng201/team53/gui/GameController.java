@@ -44,13 +44,15 @@ public class GameController {
     @FXML private Button resumeButton;
 
     // Shop
-    private final Map<Button, TowerType> shopButtons = new HashMap<>();
-    @FXML private Button shopButton1;
-    @FXML private Button shopButton2;
-    @FXML private Button shopButton3;
-    @FXML private Button shopButton4;
+    private final Map<Button, Purchasable> shopButtons = new HashMap<>();
+    
+    // Shop tower buttons
+    @FXML private Button shopTowerButton1;
+    @FXML private Button shopTowerButton2;
+    @FXML private Button shopTowerButton3;
+    @FXML private Button shopTowerButton4;
 
-    private final Map<Button, UpgradeItem> shopItemsButtons = new HashMap<>();
+    // Shop upgrade item buttons
     @FXML private Button shopItemButton1;
     @FXML private Button shopItemButton2;
     @FXML private Button shopItemButton3;
@@ -75,24 +77,21 @@ public class GameController {
 
     public void init() {
 
-        // Set shop buttons
-        shopButtons.put(shopButton1, TowerType.LUMBER_MILL);
-        shopButtons.put(shopButton2, TowerType.MINE);
-        shopButtons.put(shopButton3, TowerType.QUARRY);
-        shopButtons.put(shopButton4, TowerType.WIND_MILL);
-        shopButtons.forEach((button, towerType) -> {
-            TowerButton.changeTower(button, towerType);
-            button.setOnMouseClicked(e -> this.onShopButtonClick(e, towerType));
-        });
+        // Set shop tower buttons
+        shopButtons.put(shopTowerButton1, TowerType.LUMBER_MILL);
+        shopButtons.put(shopTowerButton2, TowerType.MINE);
+        shopButtons.put(shopTowerButton3, TowerType.QUARRY);
+        shopButtons.put(shopTowerButton4, TowerType.WIND_MILL);
 
-        // Set shop item buttons
-        shopItemsButtons.put(shopItemButton1, UpgradeItem.Type.REPAIR_TOWER);
-        shopItemsButtons.put(shopItemButton2, UpgradeItem.Type.TEMP_FASTER_TOWER_RELOAD);
-        shopItemsButtons.put(shopItemButton3, UpgradeItem.Type.TEMP_SLOWER_CART);
-        shopItemsButtons.put(shopItemButton4, UpgradeItem.Type.FILL_CART);
-        shopItemsButtons.forEach((button, upgradeItem) -> {
-            TowerButton.changeImage(button, upgradeItem);
-            button.setOnMouseClicked(e -> this.onShopButtonClick(e, upgradeItem));
+        // Set shop upgrade item buttons
+        shopButtons.put(shopItemButton1, UpgradeItem.Type.REPAIR_TOWER);
+        shopButtons.put(shopItemButton2, UpgradeItem.Type.TEMP_FASTER_TOWER_RELOAD);
+        shopButtons.put(shopItemButton3, UpgradeItem.Type.TEMP_SLOWER_CART);
+        shopButtons.put(shopItemButton4, UpgradeItem.Type.FILL_CART);
+
+        shopButtons.forEach((button, purchaseable) -> {
+            ShopButton.changeItem(button, purchaseable);
+            button.setOnMouseClicked(e -> this.onShopButtonClick(e, purchaseable));
         });
 
         // Set inventory buttons
@@ -101,14 +100,14 @@ public class GameController {
         inventoryButtons.put(inventoryButton3, null);
         inventoryButtons.put(inventoryButton4, null);
         inventoryButtons.forEach((button, towerType) -> {
-            TowerButton.changeTower(button, towerType);
+            ShopButton.changeItem(button, towerType);
             button.setOnMouseClicked(e -> this.onInventoryButtonClick(e, button));
         });
 
         this.setInventoryVisible(this.inventoryVisible);
         this.showSellTowerPopup(null);
 
-        //this.mapInteractionController.init();
+        // this.mapInteractionController.init();
         this.mapInteractionController.init();
     }
 
@@ -200,7 +199,7 @@ public class GameController {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
-        //this.mapInteractionController.sellSelectedTower();
+        // this.mapInteractionController.sellSelectedTower();
         this.showSellTowerPopup(null);
     }
 
@@ -245,7 +244,6 @@ public class GameController {
     /**
      * Update the opacity of the shop buttons/items if the user has enough money
      * to purchase each one
-     *
      * @param money
      */
     public void updateShopButtons(int money) {

@@ -10,7 +10,7 @@ import seng201.team53.items.ResourceType;
 import java.time.Duration;
 
 public enum TowerType implements Purchasable {
-    LUMBER_MILL("Lumber Mill",
+    LUMBER_MILL("Lumber Mill Tower",
             "A Lumber Mill produces wood",
             ResourceType.WOOD,
             "/assets/items/wood_tower.png",
@@ -19,7 +19,7 @@ public enum TowerType implements Purchasable {
             50,
             1,
             Duration.ofSeconds(1)),
-    MINE("Mine",
+    MINE("Mine Tower",
             "A Mine produces ores",
             ResourceType.STONE,
             "/assets/items/stone_tower.png",
@@ -28,7 +28,7 @@ public enum TowerType implements Purchasable {
             50,
             1,
             Duration.ofSeconds(1)),
-    QUARRY("Quarry",
+    QUARRY("Quarry Tower",
             "A Quarry produces stone",
             ResourceType.ORE,
             "/assets/items/quarry_tower.png",
@@ -37,7 +37,7 @@ public enum TowerType implements Purchasable {
             50,
             1,
             Duration.ofSeconds(1)),
-    WIND_MILL("Windmill",
+    WIND_MILL("Windmill Tower",
             "A wind mill produces energy",
             ResourceType.ENERGY,
             "/assets/items/wind_turbine_tower.png",

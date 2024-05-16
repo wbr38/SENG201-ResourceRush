@@ -11,5 +11,7 @@ public interface Purchasable {
 
     int getSellPrice();
 
+    Image getImage();
+
     boolean isSellable();
 }

@@ -42,7 +42,7 @@ public class InventoryController {
         }
 
         // Place tower into inventory
-        TowerButton.changeTower(towerButton, tower.getType());
+        ShopButton.changeItem(towerButton, tower.getType());
         reserveTowers.put(towerButton, tower);
 
         // Tower was previously being selected/moved, and is now placed into inventory
@@ -56,7 +56,7 @@ public class InventoryController {
             return;
 
         reserveTowers.put(towerButton, null);
-        TowerButton.changeTower(towerButton, null);
+        ShopButton.changeItem(towerButton, null);
         interactionController.startMovingTower(occupiedTower);
         interactionController.startFollowingMouse(occupiedTower.getImageView());
     }
