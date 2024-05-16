@@ -12,8 +12,7 @@ import java.util.Map;
 
 /**
  * This class represents a map in the game. It stores information about the map grid, tiles, and pathfinding
- * A map consists of a 2D array of tiles, where each tile represents a specific location on the map and holds
- * information about its properties (buildable, path, and the tower if there is a tower placed on this tile)
+ * A map consists of a 2D array of tiles, where each tile represents a specific location on the map
  */
 public class GameMap {
     public static final int TILE_HEIGHT = 40;
@@ -21,10 +20,9 @@ public class GameMap {
     private final String name;
     private final Tile[][] tiles;
     private final Polyline polylinePath;
+    private final Map<Tower, Tile> towers = new HashMap<>();
     private final int pathLength;
     private MapInteraction interaction = MapInteraction.NONE;
-    /** A mapping of towers on this map, and the tile they are placed on */
-    private final Map<Tower, Tile> towers = new HashMap<>();
 
     /**
      * Constructs a new Map with the specified properties
@@ -84,33 +82,55 @@ public class GameMap {
         return polylinePath;
     }
 
+    /**
+     * Calculates the duration it takes to travel the path at a given velocity
+     * @param velocity the speed in tiles per second which the path should be travelled at
+     * @return the duration object representing the time it will take to travel the path
+     */
     public Duration calculatePathDuration(float velocity) {
         float duration = pathLength / velocity;
         return Duration.seconds(duration);
     }
 
     /**
-     * @return The list of towers currently placed on the map
+     * @return Retrieves the collect of towers currently placed on the map
      */
     public Collection<Tower> getTowers() {
         return towers.keySet();
     }
 
+    /**
+     * Adds a tower to the map
+     * @param tower The tower object to be placed on the map
+     * @param tile The tile object where the tower is to be placed
+     */
     public void addTower(Tower tower, Tile tile) {
         towers.put(tower, tile);
         tile.setTower(tower);
     }
 
+    /**
+     * Removes a tower from the map
+     * @param tower The tower object to be removed from the map
+     */
     public void removeTower(Tower tower) {
         Tile tile = towers.get(tower);
         towers.remove(tower);
         tile.setTower(null);
     }
 
+    /**
+     * Retrieves the current map interaction state
+     * @return The map interaction state
+     */
     public MapInteraction getInteraction() {
         return interaction;
     }
 
+    /**
+     * Sets the current map interaction state
+     * @param interaction The new map interaction state
+     */
     public void setInteraction(MapInteraction interaction) {
         this.interaction = interaction;
     }
