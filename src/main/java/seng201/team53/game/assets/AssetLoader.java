@@ -2,7 +2,6 @@ package seng201.team53.game.assets;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -17,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This class is responsible for loading the tile templates, game maps, and cart image
+ * This class is responsible for loading the tile templates, game maps, and images
  */
 public class AssetLoader {
     private final Map<Integer, TileTemplate> tileTemplates = new HashMap<>();
@@ -62,10 +61,18 @@ public class AssetLoader {
         return new GameMap(name, tiles, startPositionX, startPositionY, endPositionX, endPositionY);
     }
 
+    /**
+     * Retrieves the image of the cart
+     * @return the image representing the cart
+     */
     public Image getCartImage() {
         return cartImage;
     }
 
+    /**
+     * Retrieves the image of the full cart
+     * @return the image representing the full cart
+     */
     public Image getFullCartImage() {
         return fullCartImage;
     }
@@ -75,7 +82,6 @@ public class AssetLoader {
      * @param path The path to the image resource
      * @return The loaded image
      */
-    // TODO - probably alg being static cause its just a utility
     public static Image readImage(String path) {
         try (var resource = AssetLoader.class.getResourceAsStream(path)) {
             if (resource == null)
