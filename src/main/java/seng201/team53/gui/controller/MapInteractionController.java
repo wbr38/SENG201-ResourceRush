@@ -1,4 +1,4 @@
-package seng201.team53.gui;
+package seng201.team53.gui.controller;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -26,7 +26,6 @@ public class MapInteractionController {
     private UpgradeItem selectedUpgradeItem;
     private ImageView selectedImageView;
 
-
     public MapInteractionController(GameController gameController) {
         this.gameController = gameController;
     }
@@ -47,11 +46,11 @@ public class MapInteractionController {
         if (!gameEnvironment.getShop().canPurchaseItem(purchasable))
             return;
 
-        var round = getGameEnvironment().getRound();
         if (purchasable instanceof TowerType towerType) {
             startMovingTower(towerType.create());
             startFollowingMouse(selectedTower.getImageView());
             map.setInteraction(MapInteraction.PLACE_TOWER);
+            gameController.showSellTowerPopup(towerType);
         } else if (purchasable instanceof UpgradeItem upgradeItem) {
             List<Upgradeable> applicableItems = upgradeItem.getApplicableItems();
             if (applicableItems.isEmpty()) {
@@ -64,7 +63,6 @@ public class MapInteractionController {
         }
         if (getGameEnvironment().getStateHandler().getState() == GameState.ROUND_ACTIVE) {
             gameEnvironment.pauseRound(); // make it easier to click a cart or tower
-            gameController.showResumeButton();
             getGameEnvironment().getStateHandler().setState(GameState.ROUND_PAUSE);
         }
     }
@@ -141,7 +139,6 @@ public class MapInteractionController {
     }
 
     private void onMouseMove(MouseEvent event) {
-        System.out.println(System.currentTimeMillis() + " called");
         selectedImageView.setX(event.getSceneX() - ((double)GameMap.TILE_HEIGHT / 2));
         selectedImageView.setY(event.getSceneY() - ((double)GameMap.TILE_WIDTH / 2));
     }

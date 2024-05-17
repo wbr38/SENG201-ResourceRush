@@ -1,5 +1,7 @@
 package seng201.team53.game;
 
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.input.MouseButton;
 import seng201.team53.exceptions.TileNotFoundException;
 import seng201.team53.game.assets.AssetLoader;
@@ -10,7 +12,7 @@ import seng201.team53.game.round.GameRound;
 import seng201.team53.game.round.GameRoundFactory;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
-import seng201.team53.gui.GameController;
+import seng201.team53.gui.controller.GameController;
 import seng201.team53.items.Shop;
 
 import java.util.Arrays;
@@ -29,7 +31,7 @@ public class GameEnvironment {
     private final String playerName;
     private final int rounds;
     private GameDifficulty difficulty;
-    private GameRound gameRound;
+    private final Property<GameRound> gameRoundProperty = new SimpleObjectProperty<>();
     private GameMap map;
 
     private static GameEnvironment instance;
@@ -61,20 +63,16 @@ public class GameEnvironment {
         assetLoader.init();
         randomEvents.init();
         map = assetLoader.loadMap("default", "/assets/maps/map_one.json", controller.getMapBackgroundPane());
-        gameRound = roundFactory.getRound(stateHandler, map, 1, assetLoader.getCartImage());
+        setRound(roundFactory.getRound(stateHandler, map, 1, assetLoader.getCartImage()));
 
         GameDifficulty difficulty = GameEnvironment.getGameEnvironment().getDifficulty();
         shop.addMoney(difficulty.getStartingMoney());
     }
 
     public void setupNextRound() {
-        int nextRound = gameRound.getRoundNumber() + 1;
-        gameRound = roundFactory.getRound(stateHandler, map, nextRound, assetLoader.getCartImage());
-        if (gameRound == null)
-            return;
-    
-        shop.addMoney(gameRound.getMoneyEarned());
-        controller.updateRoundCounter(nextRound, rounds);
+        int nextRound = getRound().getRoundNumber() + 1;
+        setRound(roundFactory.getRound(stateHandler, map, nextRound, assetLoader.getCartImage()));
+        shop.addMoney(getRound().getMoneyEarned());
     }
 
     public void beginRound() {
@@ -89,27 +87,21 @@ public class GameEnvironment {
     }
 
     public void startRound() {
-        gameRound.start();
-        controller.showPauseButton();
+        getRound().start();
     }
 
     public void pauseRound() {
-        gameRound.pause();
-        controller.showResumeButton();
+        getRound().pause();
     }
 
     public void resumeRound() {
-        gameRound.play();
-        controller.showPauseButton();
+        getRound().play();
     }
 
     public void completeRound() {
-        if (gameRound.getRoundNumber() == rounds) {
+        if (getRound().getRoundNumber() == rounds) {
             stateHandler.setState(GameState.GAME_COMPLETE);
-            return;
         }
-        controller.showStartButton();
-        controller.showRoundCompleteDialog();
     }
 
     // to create the path and buildable matrix stuff
@@ -159,6 +151,18 @@ public class GameEnvironment {
         return shop;
     }
 
+    public Property<GameRound> getRoundProperty() {
+        return gameRoundProperty;
+    }
+
+    public GameRound getRound() {
+        return gameRoundProperty.getValue();
+    }
+
+    private void setRound(GameRound round) {
+        gameRoundProperty.setValue(round);
+    }
+
     public GameDifficulty getDifficulty() {
         return difficulty;
     }
@@ -171,9 +175,6 @@ public class GameEnvironment {
         return rounds;
     }
 
-    public GameRound getRound() {
-        return gameRound;
-    }
 
     public GameMap getMap() {
         return map;

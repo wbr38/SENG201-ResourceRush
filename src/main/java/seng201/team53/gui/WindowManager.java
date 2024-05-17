@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import seng201.team53.gui.controller.GameController;
+import seng201.team53.gui.controller.MainController;
 
 import java.io.IOException;
 
@@ -40,7 +42,6 @@ public class WindowManager {
             Parent setupParent = setupLoader.load();
             GameController controller = setupLoader.getController();
             pane.getChildren().add(setupParent);
-            controller.init();
             stage.setTitle("ResourceRush Game");
             return controller;
         } catch (IOException e) {

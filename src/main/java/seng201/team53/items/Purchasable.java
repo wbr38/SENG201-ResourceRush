@@ -7,6 +7,8 @@ public interface Purchasable {
 
     String getDescription();
 
+    Image getImage();
+
     int getCostPrice();
 
     int getSellPrice();

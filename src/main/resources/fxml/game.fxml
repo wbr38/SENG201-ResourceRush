@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng201.team53.gui.GameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng201.team53.gui.controller.GameController">
    <children>
       <Pane fx:id="mapBackgroundPane" prefHeight="640.0" prefWidth="800.0" />
       <GridPane fx:id="gridPane">
@@ -384,7 +384,7 @@
                                  <content>
                                     <FlowPane alignment="CENTER" prefHeight="390.0" prefWidth="119.0">
                                        <children>
-                                          <Button fx:id="shopButton1" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
+                                          <Button fx:id="shopTowerButton1" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
                                              <graphic>
                                                 <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -396,7 +396,7 @@
                                                 <Tooltip showDelay="10ms" text="Cost: $999" />
                                              </tooltip>
                                           </Button>
-                                          <Button fx:id="shopButton2" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
+                                          <Button fx:id="shopTowerButton2" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
                                              <graphic>
                                                 <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -408,7 +408,7 @@
                                                 <Tooltip showDelay="10ms" text="Cost: $999" />
                                              </tooltip>
                                           </Button>
-                                          <Button fx:id="shopButton3" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
+                                          <Button fx:id="shopTowerButton3" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
                                              <graphic>
                                                 <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -420,7 +420,7 @@
                                                 <Tooltip showDelay="10ms" text="Cost: $999" />
                                              </tooltip>
                                           </Button>
-                                          <Button fx:id="shopButton4" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
+                                          <Button fx:id="shopTowerButton4" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="96.0" prefWidth="110.0" text="Example Tower">
                                              <graphic>
                                                 <ImageView fitHeight="61.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>

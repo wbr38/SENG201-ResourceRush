@@ -1,9 +1,10 @@
-package seng201.team53.gui;
+package seng201.team53.gui.controller;
 
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -15,10 +16,6 @@ import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.items.Purchasable;
 import seng201.team53.items.towers.TowerType;
-import seng201.team53.items.upgrade.UpgradeItem;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
@@ -34,7 +31,7 @@ public class GameController {
     @FXML private Text randomEventTest;
 
     // Info section (top-middle of screen)
-    @FXML private Text moneyLabel;
+    @FXML protected Text moneyLabel;
     @FXML private Text roundCounterLabel;
     @FXML private Text notificationLabel;
     private PauseTransition notificationPause;
@@ -44,72 +41,69 @@ public class GameController {
     @FXML private Button resumeButton;
 
     // Shop
-    private final Map<Button, TowerType> shopButtons = new HashMap<>();
-    @FXML private Button shopButton1;
-    @FXML private Button shopButton2;
-    @FXML private Button shopButton3;
-    @FXML private Button shopButton4;
+    //protected final Map<Button, TowerType> shopButtons = new HashMap<>();
+    @FXML protected Button shopTowerButton1;
+    @FXML protected Button shopTowerButton2;
+    @FXML protected Button shopTowerButton3;
+    @FXML protected Button shopTowerButton4;
 
-    private final Map<Button, UpgradeItem> shopItemsButtons = new HashMap<>();
-    @FXML private Button shopItemButton1;
-    @FXML private Button shopItemButton2;
-    @FXML private Button shopItemButton3;
-    @FXML private Button shopItemButton4;
+    @FXML protected Button shopItemButton1;
+    @FXML protected Button shopItemButton2;
+    @FXML protected Button shopItemButton3;
+    @FXML protected Button shopItemButton4;
 
     // Sell Tower popup
-    @FXML private AnchorPane sellTowerPane;
+    @FXML protected AnchorPane sellTowerPane;
     @FXML private Text sellTowerText;
 
     // Inventory
     private Boolean inventoryVisible = false;
     @FXML private AnchorPane inventoryPane;
-    private final Map<Button, TowerType> inventoryButtons = new HashMap<>();
-    @FXML private Button inventoryButton1;
-    @FXML private Button inventoryButton2;
-    @FXML private Button inventoryButton3;
-    @FXML private Button inventoryButton4;
+    @FXML protected Button inventoryButton1;
+    @FXML protected Button inventoryButton2;
+    @FXML protected Button inventoryButton3;
+    @FXML protected Button inventoryButton4;
 
     // sub-controllers
     private final MapInteractionController mapInteractionController = new MapInteractionController(this);
     private final InventoryController inventoryController = new InventoryController(this, mapInteractionController);
+    private final ShopController shopController = new ShopController(this);
 
     public void init() {
-
-        // Set shop buttons
-        shopButtons.put(shopButton1, TowerType.LUMBER_MILL);
-        shopButtons.put(shopButton2, TowerType.MINE);
-        shopButtons.put(shopButton3, TowerType.QUARRY);
-        shopButtons.put(shopButton4, TowerType.WIND_MILL);
-        shopButtons.forEach((button, towerType) -> {
-            TowerButton.changeTower(button, towerType);
-            button.setOnMouseClicked(e -> this.onShopButtonClick(e, towerType));
-        });
-
-        // Set shop item buttons
-        shopItemsButtons.put(shopItemButton1, UpgradeItem.Type.REPAIR_TOWER);
-        shopItemsButtons.put(shopItemButton2, UpgradeItem.Type.TEMP_FASTER_TOWER_RELOAD);
-        shopItemsButtons.put(shopItemButton3, UpgradeItem.Type.TEMP_SLOWER_CART);
-        shopItemsButtons.put(shopItemButton4, UpgradeItem.Type.FILL_CART);
-        shopItemsButtons.forEach((button, upgradeItem) -> {
-            TowerButton.changeImage(button, upgradeItem);
-            button.setOnMouseClicked(e -> this.onShopButtonClick(e, upgradeItem));
-        });
-
         // Set inventory buttons
-        inventoryButtons.put(inventoryButton1, null);
-        inventoryButtons.put(inventoryButton2, null);
-        inventoryButtons.put(inventoryButton3, null);
-        inventoryButtons.put(inventoryButton4, null);
-        inventoryButtons.forEach((button, towerType) -> {
-            TowerButton.changeTower(button, towerType);
-            button.setOnMouseClicked(e -> this.onInventoryButtonClick(e, button));
-        });
-
         this.setInventoryVisible(this.inventoryVisible);
         this.showSellTowerPopup(null);
 
-        //this.mapInteractionController.init();
-        this.mapInteractionController.init();
+        var rounds = getGameEnvironment().getRounds();
+        getGameEnvironment().getRoundProperty().addListener(($, oldRound, newRound) ->
+                roundCounterLabel.setText(newRound.getRoundNumber() + "/" + rounds));
+
+        var stateHandler = getGameEnvironment().getStateHandler();
+        stateHandler.getGameStateProperty().addListener(($, oldState, newState) -> {
+            switch (newState) {
+                case RANDOM_EVENT_DIALOG_OPEN -> showStartButton();
+                case ROUND_ACTIVE -> showPauseButton();
+                case ROUND_PAUSE -> showResumeButton();
+                case ROUND_NOT_STARTED -> {
+                    showStartButton();
+                    hide(roundCompletePane);
+                }
+                case ROUND_COMPLETE -> {
+                    showStartButton();
+                    show(roundCompletePane);
+                }
+                case GAME_COMPLETE -> {
+                    showStartButton();
+                    show(gameCompletePane);
+                }
+            }
+            if (oldState == GameState.RANDOM_EVENT_DIALOG_OPEN)
+                hide(randomEventPane);
+        });
+
+        shopController.init();
+        mapInteractionController.init();
+        inventoryController.init();
     }
 
     public Pane getMapBackgroundPane() {
@@ -140,7 +134,6 @@ public class GameController {
 
     @FXML
     private void onPauseButtonMouseClick(MouseEvent event) {
-        System.out.println("called");
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
@@ -186,13 +179,13 @@ public class GameController {
      */
     public void showSellTowerPopup(TowerType towerType) {
         if (towerType == null) {
-            this.sellTowerPane.setVisible(false);
+            hide(sellTowerPane);
             return;
         }
 
-        this.sellTowerPane.setVisible(true);
-        this.sellTowerText.setText("Sell ($" + towerType.getSellPrice() + ")");
-        this.sellTowerPane.toFront();
+        sellTowerText.setText("Sell ($" + towerType.getSellPrice() + ")");
+        sellTowerPane.toFront();
+        show(sellTowerPane);
     }
 
     @FXML
@@ -228,41 +221,6 @@ public class GameController {
         stateHandler.setState(GameState.ROUND_NOT_STARTED);
     }
 
-    private void onInventoryButtonClick(MouseEvent event, Button towerButton) {
-        if (event.getButton() != MouseButton.PRIMARY)
-            return;
-
-        this.inventoryController.handleInventoryTowerClick(towerButton);
-    }
-
-    private void onShopButtonClick(MouseEvent event, Purchasable purchasable) {
-        if (event.getButton() != MouseButton.PRIMARY)
-            return;
-
-        mapInteractionController.tryPurchase(purchasable);
-    }
-
-    /**
-     * Update the opacity of the shop buttons/items if the user has enough money
-     * to purchase each one
-     *
-     * @param money
-     */
-    public void updateShopButtons(int money) {
-        shopButtons.forEach((button, towerType) -> {
-            int cost = towerType.getCostPrice();
-            button.setOpacity(cost > money ? 0.5 : 1.0);
-        });
-    }
-
-    public void updateRoundCounter(int currentRound, int numberOfRounds) {
-        roundCounterLabel.setText(currentRound + "/" + numberOfRounds);
-    }
-
-    public void updateMoneyLabel(int money) {
-        moneyLabel.setText("$" + money);
-    }
-
     public void showNotification(String text, double duration) {
         notificationLabel.setText(text);
         show(notificationLabel);
@@ -277,19 +235,19 @@ public class GameController {
         notificationPause.play();
     }
 
-    public void showStartButton() {
+    private void showStartButton() {
         show(startButton);
         hide(pauseButton);
         hide(resumeButton);
     }
 
-    public void showPauseButton() {
+    private void showPauseButton() {
         hide(startButton);
         show(pauseButton);
         hide(resumeButton);
     }
 
-    public void showResumeButton() {
+    private void showResumeButton() {
         hide(startButton);
         hide(pauseButton);
         show(resumeButton);
@@ -300,22 +258,6 @@ public class GameController {
         show(randomEventPane);
     }
 
-    public void hideRandomEventDialog() {
-        hide(randomEventPane);
-    }
-
-    public void showRoundCompleteDialog() {
-        show(roundCompletePane);
-    }
-
-    public void hideRoundCompleteDialog() {
-        hide(roundCompletePane);
-    }
-
-    public void showGameCompleteDialog() {
-        show(gameCompletePane);
-    }
-
     private void show(Node node) {
         node.setVisible(true);
         node.setDisable(false);
@@ -324,6 +266,21 @@ public class GameController {
     private void hide(Node node) {
         node.setVisible(false);
         node.setDisable(true);
+    }
+
+    public void updateButton(Button button, Purchasable purchasable) {
+        if (purchasable == null) {
+            button.setGraphic(null);
+            button.getTooltip().setText("");
+            button.setText("Add Tower");
+            return;
+        }
+        ImageView imageView = new ImageView(purchasable.getImage());
+        imageView.setFitWidth(60);
+        imageView.setFitHeight(60);
+        button.getTooltip().setText("Cost $" + purchasable.getCostPrice());
+        button.setGraphic(imageView);
+        button.setText(purchasable.getName());
     }
 
     public MapInteractionController getMapInteractionController() {
