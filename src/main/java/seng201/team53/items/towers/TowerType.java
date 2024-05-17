@@ -57,12 +57,12 @@ public enum TowerType implements Purchasable {
     private final int resourceAmount;
     private final Duration reloadSpeed;
 
-    TowerType(String name, String description, ResourceType resourceType, String imagePath, String brokenImagePath, int costPrice, int sellPrice, int resourceAmount, Duration reloadSpeed) {
+    TowerType(String name, String description, ResourceType resourceType, String imagePath, String brokenImagePath, int costPrice,
+              int resourceAmount, Duration reloadSpeed) {
         this.name = name;
         this.description = description;
         this.resourceType = resourceType;
         this.costPrice = costPrice;
-        this.sellPrice = sellPrice;
         this.resourceAmount = resourceAmount;
         this.reloadSpeed = reloadSpeed;
         this.image = AssetLoader.readImage(imagePath);
@@ -102,6 +102,8 @@ public enum TowerType implements Purchasable {
 
     @Override
     public int getSellPrice() {
+        GameDifficulty difficulty = GameEnvironment.getGameEnvironment().getDifficulty();
+        int sellPrice = (int)Math.round(costPrice * difficulty.getSellPriceModifier());
         return sellPrice;
     }
 

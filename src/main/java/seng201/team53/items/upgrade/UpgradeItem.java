@@ -49,7 +49,9 @@ public abstract class UpgradeItem implements Purchasable {
 
     @Override
     public int getSellPrice() {
-        throw new IllegalStateException("An upgrade item cannot be sold");
+        GameDifficulty difficulty = GameEnvironment.getGameEnvironment().getDifficulty();
+        int sellPrice = (int)Math.round(costPrice * difficulty.getSellPriceModifier());
+        return sellPrice;
     }
 
     @Override

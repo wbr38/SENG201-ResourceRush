@@ -4,7 +4,8 @@ public enum GameDifficulty {
     EASY(
          "Easy",
          400,
-         2.0,
+         200.0,
+         1.0,
          1.5,
          0.7f,
          0.25),
@@ -13,6 +14,7 @@ public enum GameDifficulty {
            "Normal",
            300,
            100.0,
+           0.75,
            1.0,
            1.0f,
            0.35),
@@ -20,7 +22,8 @@ public enum GameDifficulty {
     HARD(
          "Hard",
          200,
-         2.0,
+         200.0,
+         0.5,
          0.75,
          1.25f,
          0.45);
@@ -28,6 +31,7 @@ public enum GameDifficulty {
     private final String name;
     private final int startingMoney;
     private final double moneyEarnMultiplier;
+    private final double sellPriceModifier;
     private final double towerReloadModifier;
     private final float cartVelocityMultiplier;
     private final double randomEventOdds;
@@ -36,6 +40,7 @@ public enum GameDifficulty {
                    String name,
                    int startingMoney,
                    double moneyEarnMultiplier,
+                   double sellPriceModifier,
                    double towerReloadMultiplier,
                    float cartVelocityMultiplier,
                    double randomEventOdds
@@ -43,6 +48,7 @@ public enum GameDifficulty {
         this.name = name;
         this.startingMoney = startingMoney;
         this.moneyEarnMultiplier = moneyEarnMultiplier;
+        this.sellPriceModifier = sellPriceModifier;
         this.towerReloadModifier = towerReloadMultiplier;
         this.cartVelocityMultiplier = cartVelocityMultiplier;
         this.randomEventOdds = randomEventOdds;
@@ -65,10 +71,17 @@ public enum GameDifficulty {
     public double getMoneyEarnMultiplier() {
         return moneyEarnMultiplier;
     }
+    
+    /**
+     * @return The sell back price of items in the shop is calculated by dividing the cost price by this number. 
+     */
+    public double getSellPriceModifier() {
+        return sellPriceModifier;
+    }
 
     /**
      * @return The number that each tower's reload speed will be divided by.
-     * Increasing this value will result in towers reloading quicker.
+     *         Increasing this value will result in towers reloading quicker.
      */
     public double getTowerReloadModifier() {
         return towerReloadModifier;
