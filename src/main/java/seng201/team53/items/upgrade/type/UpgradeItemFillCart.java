@@ -1,6 +1,7 @@
 package seng201.team53.items.upgrade.type;
 
 import seng201.team53.items.Cart;
+import seng201.team53.items.Purchasable;
 import seng201.team53.items.upgrade.UpgradeItem;
 import seng201.team53.items.upgrade.Upgradeable;
 
@@ -30,5 +31,15 @@ public class UpgradeItemFillCart extends UpgradeItem {
     @Override
     public void apply(Upgradeable upgradeable) {
         ((Cart) upgradeable).fill();
+    }
+
+    @Override
+    public Purchasable<UpgradeItem> getPurchasableType() {
+        return this;
+    }
+
+    @Override
+    public UpgradeItem create() {
+        return new UpgradeItemFillCart();
     }
 }

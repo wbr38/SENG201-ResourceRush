@@ -1,5 +1,13 @@
 package seng201.team53.game.round;
 
+import static seng201.team53.game.GameEnvironment.getGameEnvironment;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javafx.animation.Interpolator;
 import javafx.animation.PathTransition;
 import javafx.scene.control.Label;
@@ -18,12 +26,6 @@ import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.items.Cart;
 import seng201.team53.items.ResourceType;
 import seng201.team53.items.towers.Tower;
-import seng201.team53.items.upgrade.Upgradeable;
-
-import java.util.*;
-import java.util.function.Consumer;
-
-import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
 public class GameRound implements Tickable {
     private final GameStateHandler stateHandler;
@@ -137,7 +139,7 @@ public class GameRound implements Tickable {
         map.getTowers().forEach(tower -> {
             tower.tick();
             if (tower.canGenerate()) {
-                carts.forEach(cart -> cart.addResource(tower.getType().getResourceType()));
+                carts.forEach(cart -> cart.addResource(tower.getPurchasableType().getResourceType()));
             }
         });
 

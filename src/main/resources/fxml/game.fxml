@@ -260,7 +260,7 @@
                   </ImageView>
                </children>
             </Pane>
-            <AnchorPane fx:id="sellTowerPane" layoutX="3.0" layoutY="529.0" prefHeight="110.0" prefWidth="148.0">
+            <AnchorPane fx:id="sellItemPane" layoutX="3.0" layoutY="529.0" prefHeight="110.0" prefWidth="148.0">
                <children>
                   <ImageView fitHeight="55.0" fitWidth="80.0" visible="false">
                      <image>
@@ -282,14 +282,14 @@
                         <Image url="@../assets/decoration/wood_tile_top_right.png" />
                      </image>
                   </ImageView>
-                  <Text fx:id="sellTowerText" fill="WHITE" layoutX="21.0" layoutY="35.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="Sell ($300)">
+                  <Text fx:id="sellItemText" fill="WHITE" layoutX="21.0" layoutY="35.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="Sell ($300)">
                      <font>
                         <Font size="26.0" />
                      </font>
                   </Text>
-                  <Button layoutX="18.0" layoutY="45.0" mnemonicParsing="false" onMouseClicked="#onSellTowerButtonClick" prefHeight="51.0" prefWidth="119.0" style="-fx-background-color: #60b3e0; -fx-border-color: #2485ba; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Sell Tower">
+                  <Button layoutX="18.0" layoutY="45.0" mnemonicParsing="false" onMouseClicked="#onSellItemButtonClick" prefHeight="51.0" prefWidth="119.0" style="-fx-background-color: #60b3e0; -fx-border-color: #2485ba; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Sell Item">
                      <font>
-                        <Font size="24.0" />
+                        <Font size="18.0" />
                      </font>
                   </Button>
                </children>

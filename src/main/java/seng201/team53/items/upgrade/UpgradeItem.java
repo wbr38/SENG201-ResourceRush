@@ -1,7 +1,10 @@
 package seng201.team53.items.upgrade;
 
 import javafx.scene.image.Image;
+import seng201.team53.game.GameDifficulty;
+import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.assets.AssetLoader;
+import seng201.team53.items.Item;
 import seng201.team53.items.Purchasable;
 import seng201.team53.items.upgrade.type.UpgradeItemFasterReload;
 import seng201.team53.items.upgrade.type.UpgradeItemFillCart;
@@ -11,7 +14,7 @@ import seng201.team53.items.upgrade.type.UpgradeItemSlowerCart;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class UpgradeItem implements Purchasable {
+public abstract class UpgradeItem extends Purchasable<UpgradeItem> implements Item<UpgradeItem> { 
     private final String name;
     private final String description;
     private final Image image;
@@ -76,9 +79,9 @@ public abstract class UpgradeItem implements Purchasable {
     public abstract void apply(Upgradeable upgradable);
 
     public interface Type {
-        UpgradeItem REPAIR_TOWER = new UpgradeItemRepairTower();
-        UpgradeItem TEMP_FASTER_TOWER_RELOAD = new UpgradeItemFasterReload();
-        UpgradeItem TEMP_SLOWER_CART = new UpgradeItemSlowerCart();
-        UpgradeItem FILL_CART = new UpgradeItemFillCart();
+        Purchasable<UpgradeItem> REPAIR_TOWER = new UpgradeItemRepairTower();
+        Purchasable<UpgradeItem> TEMP_FASTER_TOWER_RELOAD = new UpgradeItemFasterReload();
+        Purchasable<UpgradeItem> TEMP_SLOWER_CART = new UpgradeItemSlowerCart();
+        Purchasable<UpgradeItem> FILL_CART = new UpgradeItemFillCart();
     }
 }

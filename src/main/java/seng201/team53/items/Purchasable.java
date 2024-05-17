@@ -2,16 +2,23 @@ package seng201.team53.items;
 
 import javafx.scene.image.Image;
 
-public interface Purchasable {
-    String getName();
+/**
+ * Represents an item that is purchasable from the shop.
+ * Contains constant information used in the shop: name, cost, etc.
+ * Use .create() to create an actual instance of the item.
+ */
+public abstract class Purchasable<I extends Item<?>> {
+    public abstract String getName();
 
-    String getDescription();
+    public abstract String getDescription();
 
-    int getCostPrice();
+    public abstract int getCostPrice();
 
-    int getSellPrice();
+    public abstract int getSellPrice();
 
-    Image getImage();
+    public abstract Image getImage();
 
-    boolean isSellable();
+    public abstract boolean isSellable();
+
+    public abstract I create();
 }

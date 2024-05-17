@@ -4,19 +4,9 @@ import seng201.team53.exceptions.ItemNotFoundException;
 import seng201.team53.game.GameEnvironment;
 import seng201.team53.gui.GameController;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Shop {
 
-    private int money = 10000; // todo - temp just setting this high for testing
-
-    public List<Purchasable> inventory = new ArrayList<>();
-
-    public boolean canPurchaseItem(Purchasable item){
-        var cost = item.getCostPrice();
-        return cost < this.money;
-    }
+    private int money = 0;
 
     /**
      * Attempt to purchase an item from the shop
@@ -25,19 +15,19 @@ public class Shop {
      *         player's money was adjusted. False if the player did not have enough
      *         balance to purchase the item.
      */
-    public void purchaseItem(Purchasable item) {
-        var cost = item.getCostPrice();
+    public boolean purchaseItem(Purchasable<?> item) {
+        int cost = item.getCostPrice();
+
+        if (cost > this.money)
+            return false;
+
         this.subtractMoney(cost);
-        this.inventory.add(item);
+        return true;
     }
 
-    public void sellItem(Purchasable item) throws ItemNotFoundException {
-        if (!this.inventory.contains(item)) {
-            throw new ItemNotFoundException("Tried to sell a " + item.getName() + " item that we do not own!");
-        }
 
+    public void sellItem(Purchasable<?> item) throws ItemNotFoundException {
         int sellPrice = item.getSellPrice();
-        this.inventory.remove(item);
         this.addMoney(sellPrice);
     }
 

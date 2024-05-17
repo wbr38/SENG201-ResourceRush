@@ -1,61 +1,27 @@
 package seng201.team53.items.towers;
 
+import java.time.Duration;
+
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import seng201.team53.game.GameDifficulty;
+import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.assets.AssetLoader;
-import seng201.team53.game.map.GameMap;
 import seng201.team53.items.Purchasable;
 import seng201.team53.items.ResourceType;
 
-import java.time.Duration;
+public class TowerType extends Purchasable<Tower> {
 
-public enum TowerType implements Purchasable {
-    LUMBER_MILL("Lumber Mill Tower",
-            "A Lumber Mill produces wood",
-            ResourceType.WOOD,
-            "/assets/items/wood_tower.png",
-            "/assets/items/wood_tower_broken.png",
-            100,
-            50,
-            1,
-            Duration.ofSeconds(1)),
-    MINE("Mine Tower",
-            "A Mine produces ores",
-            ResourceType.STONE,
-            "/assets/items/stone_tower.png",
-            "/assets/items/stone_tower_broken.png",
-            120,
-            50,
-            1,
-            Duration.ofSeconds(1)),
-    QUARRY("Quarry Tower",
-            "A Quarry produces stone",
-            ResourceType.ORE,
-            "/assets/items/quarry_tower.png",
-            "/assets/items/quarry_tower_broken.png",
-            150,
-            50,
-            1,
-            Duration.ofSeconds(1)),
-    WIND_MILL("Windmill Tower",
-            "A wind mill produces energy",
-            ResourceType.ENERGY,
-            "/assets/items/wind_turbine_tower.png",
-            "/assets/items/wind_turbine_tower_broken.png",
-            200,
-            50,
-            1,
-            Duration.ofSeconds(1));
+    protected final String name;
+    protected final String description;
+    protected final ResourceType resourceType;
+    protected final String imagePath;
+    protected final String brokenImagepath;
+    protected final int costPrice;
+    protected final int resourceAmount;
+    protected final Duration reloadSpeed;
 
-    private final String name;
-    private final String description;
-    private final ResourceType resourceType;
     private final Image image;
     private final Image brokenImage;
-    private final int costPrice;
-    private final int sellPrice;
-    private final int resourceAmount;
-    private final Duration reloadSpeed;
 
     TowerType(String name, String description, ResourceType resourceType, String imagePath, String brokenImagePath, int costPrice,
               int resourceAmount, Duration reloadSpeed) {
@@ -65,6 +31,10 @@ public enum TowerType implements Purchasable {
         this.costPrice = costPrice;
         this.resourceAmount = resourceAmount;
         this.reloadSpeed = reloadSpeed;
+
+        this.imagePath = imagePath;
+        this.brokenImagepath = brokenImagePath;
+
         this.image = AssetLoader.readImage(imagePath);
         this.brokenImage = AssetLoader.readImage(brokenImagePath);
     }
@@ -113,10 +83,6 @@ public enum TowerType implements Purchasable {
     }
 
     public Tower create() {
-        var imageView = new ImageView();
-        imageView.setFitHeight(GameMap.TILE_HEIGHT);
-        imageView.setFitWidth(GameMap.TILE_WIDTH);
-        imageView.setImage(this.image);
-        return new Tower(this, imageView);
+        return new Tower(this);
     }
 }

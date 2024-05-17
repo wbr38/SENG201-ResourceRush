@@ -13,7 +13,9 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
+import seng201.team53.items.Item;
 import seng201.team53.items.Purchasable;
+import seng201.team53.items.towers.Tower;
 import seng201.team53.items.towers.TowerType;
 import seng201.team53.items.upgrade.UpgradeItem;
 
@@ -44,7 +46,7 @@ public class GameController {
     @FXML private Button resumeButton;
 
     // Shop
-    private final Map<Button, Purchasable> shopButtons = new HashMap<>();
+    private final Map<Button, Purchasable<?>> shopButtons = new HashMap<>();
     
     // Shop tower buttons
     @FXML private Button shopTowerButton1;
@@ -58,9 +60,9 @@ public class GameController {
     @FXML private Button shopItemButton3;
     @FXML private Button shopItemButton4;
 
-    // Sell Tower popup
-    @FXML private AnchorPane sellTowerPane;
-    @FXML private Text sellTowerText;
+    // Sell item popup
+    @FXML private AnchorPane sellItemPane;
+    @FXML private Text sellItemText;
 
     // Inventory
     private Boolean inventoryVisible = false;
@@ -78,10 +80,10 @@ public class GameController {
     public void init() {
 
         // Set shop tower buttons
-        shopButtons.put(shopTowerButton1, TowerType.LUMBER_MILL);
-        shopButtons.put(shopTowerButton2, TowerType.MINE);
-        shopButtons.put(shopTowerButton3, TowerType.QUARRY);
-        shopButtons.put(shopTowerButton4, TowerType.WIND_MILL);
+        shopButtons.put(shopTowerButton1, Tower.Type.LUMBER_MILL);
+        shopButtons.put(shopTowerButton2, Tower.Type.MINE);
+        shopButtons.put(shopTowerButton3, Tower.Type.QUARRY);
+        shopButtons.put(shopTowerButton4, Tower.Type.WIND_MILL);
 
         // Set shop upgrade item buttons
         shopButtons.put(shopItemButton1, UpgradeItem.Type.REPAIR_TOWER);
@@ -89,9 +91,9 @@ public class GameController {
         shopButtons.put(shopItemButton3, UpgradeItem.Type.TEMP_SLOWER_CART);
         shopButtons.put(shopItemButton4, UpgradeItem.Type.FILL_CART);
 
-        shopButtons.forEach((button, purchaseable) -> {
-            ShopButton.changeItem(button, purchaseable);
-            button.setOnMouseClicked(e -> this.onShopButtonClick(e, purchaseable));
+        shopButtons.forEach((button, purchasable) -> {
+            ShopButton.changeItem(button, purchasable);
+            button.setOnMouseClicked(e -> this.onShopButtonClick(e, purchasable));
         });
 
         // Set inventory buttons
@@ -105,7 +107,7 @@ public class GameController {
         });
 
         this.setInventoryVisible(this.inventoryVisible);
-        this.showSellTowerPopup(null);
+        this.showSellItemPopup(null);
 
         // this.mapInteractionController.init();
         this.mapInteractionController.init();
@@ -134,7 +136,7 @@ public class GameController {
 
         stateHandler.setState(GameState.ROUND_ACTIVE);
         this.setInventoryVisible(false);
-        this.showSellTowerPopup(null);
+        this.showSellItemPopup(null);
     }
 
     @FXML
@@ -180,27 +182,27 @@ public class GameController {
     }
 
     /**
-     * Update the appropriate elements to allow the user to sell a tower.
+     * Update the appropriate elements to allow the user to sell an item.
      * @param towerType The tower type to sell. Set to `null` to hide the sell tower popup
      */
-    public void showSellTowerPopup(TowerType towerType) {
-        if (towerType == null) {
-            this.sellTowerPane.setVisible(false);
+    public void showSellItemPopup(Item<?> item) {
+        if (item == null) {
+            this.sellItemPane.setVisible(false);
             return;
         }
 
-        this.sellTowerPane.setVisible(true);
-        this.sellTowerText.setText("Sell ($" + towerType.getSellPrice() + ")");
-        this.sellTowerPane.toFront();
+        this.sellItemPane.setVisible(true);
+        this.sellItemText.setText("Sell ($" + item.getPurchasableType().getSellPrice() + ")");
+        this.sellItemPane.toFront();
     }
 
     @FXML
-    private void onSellTowerButtonClick(MouseEvent event) {
+    private void onSellItemButtonClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
-        // this.mapInteractionController.sellSelectedTower();
-        this.showSellTowerPopup(null);
+        this.mapInteractionController.sellSelectedItem();
+        this.showSellItemPopup(null);
     }
 
     @FXML
@@ -234,11 +236,11 @@ public class GameController {
         this.inventoryController.handleInventoryTowerClick(towerButton);
     }
 
-    private void onShopButtonClick(MouseEvent event, Purchasable purchasable) {
+    private void onShopButtonClick(MouseEvent event, Purchasable<?> purchasable) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
-        mapInteractionController.tryPurchase(purchasable);
+        mapInteractionController.tryPurchaseItem(purchasable);
     }
 
     /**

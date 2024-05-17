@@ -1,13 +1,12 @@
 package seng201.team53.items.upgrade.type;
 
+import static seng201.team53.game.GameEnvironment.getGameEnvironment;
+
+import java.util.List;
+
 import seng201.team53.items.towers.Tower;
 import seng201.team53.items.upgrade.UpgradeItem;
 import seng201.team53.items.upgrade.Upgradeable;
-
-import java.util.Collection;
-import java.util.List;
-
-import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
 public class UpgradeItemRepairTower extends UpgradeItem {
     public UpgradeItemRepairTower() {
@@ -32,5 +31,15 @@ public class UpgradeItemRepairTower extends UpgradeItem {
     @Override
     public void apply(Upgradeable upgradeable) {
         ((Tower) upgradeable).setBroken(false);
+    }
+
+    @Override
+    public UpgradeItem getPurchasableType() {
+        return this;
+    }
+
+    @Override
+    public UpgradeItem create() {
+        return new UpgradeItemRepairTower();
     }
 }

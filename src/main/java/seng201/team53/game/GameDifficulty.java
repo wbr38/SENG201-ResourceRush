@@ -12,7 +12,7 @@ public enum GameDifficulty {
 
     NORMAL(
            "Normal",
-           300,
+           /* 300 */ 10000, // TODO: revert this after done testing
            100.0,
            0.75,
            1.0,
@@ -71,9 +71,9 @@ public enum GameDifficulty {
     public double getMoneyEarnMultiplier() {
         return moneyEarnMultiplier;
     }
-    
+
     /**
-     * @return The sell back price of items in the shop is calculated by dividing the cost price by this number. 
+     * @return The sell back price of items in the shop is calculated by dividing the cost price by this number.
      */
     public double getSellPriceModifier() {
         return sellPriceModifier;

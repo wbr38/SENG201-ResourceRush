@@ -5,6 +5,9 @@ import java.util.Map;
 
 import javafx.scene.control.Button;
 import seng201.team53.game.GameEnvironment;
+import seng201.team53.game.map.GameMap;
+import seng201.team53.game.map.MapInteraction;
+import seng201.team53.items.Item;
 import seng201.team53.items.towers.Tower;
 
 public class InventoryController {
@@ -19,17 +22,25 @@ public class InventoryController {
     }
 
     public void handleInventoryTowerClick(Button towerButton) {
-        Tower selectedTower = interactionController.getSelectedTower();
+        Item<?> selectedItem = interactionController.getSelectedItem();
+        if (selectedItem == null) {
+            // User clicked inventory button with no tower selected
+            // They are trying to retrieve a tower from inventory
+            this.retrieveTower(towerButton);
+            return;
+        }
 
+        if (!(selectedItem instanceof Tower)) {
+            GameEnvironment.getGameEnvironment().getController().showNotification("Only towers may be placed into inventory", 1.0f);
+            return;
+        }
+        
         // User has a tower selected, they are trying to place a tower into inventory
+        Tower selectedTower = (Tower)selectedItem;
         if (selectedTower != null) {
             this.placeTowerIntoInventory(selectedTower, towerButton);
             return;
         }
-
-        // User clicked inventory button with no tower selected
-        // They are trying to retrieve a tower from inventory
-        this.retrieveTower(towerButton);
     }
 
     private void placeTowerIntoInventory(Tower tower, Button towerButton) {
@@ -42,12 +53,12 @@ public class InventoryController {
         }
 
         // Place tower into inventory
-        ShopButton.changeItem(towerButton, tower.getType());
+        ShopButton.changeItem(towerButton, tower.getPurchasableType());
         reserveTowers.put(towerButton, tower);
 
         // Tower was previously being selected/moved, and is now placed into inventory
 
-        interactionController.stopFollowingMouse();
+        interactionController.stopPlacingItem();
     }
 
     private void retrieveTower(Button towerButton) {
@@ -57,7 +68,9 @@ public class InventoryController {
 
         reserveTowers.put(towerButton, null);
         ShopButton.changeItem(towerButton, null);
-        interactionController.startMovingTower(occupiedTower);
-        interactionController.startFollowingMouse(occupiedTower.getImageView());
+        interactionController.startPlacingItem(occupiedTower);
+        
+        GameMap map = GameEnvironment.getGameEnvironment().getMap();
+        map.setInteraction(MapInteraction.PLACE_TOWER);
     }
 }
