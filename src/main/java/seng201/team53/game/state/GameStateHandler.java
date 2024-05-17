@@ -1,5 +1,7 @@
 package seng201.team53.game.state;
 
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
 import seng201.team53.game.GameEnvironment;
 
 /**
@@ -7,15 +9,19 @@ import seng201.team53.game.GameEnvironment;
  * and handles transitions between different states
  */
 public class GameStateHandler {
-    private GameState state = GameState.ROUND_NOT_STARTED;
+    private final Property<GameState> gameStateProperty = new SimpleObjectProperty<>(GameState.ROUND_NOT_STARTED);
     private GameState previousState;
+
+    public Property<GameState> getGameStateProperty() {
+        return gameStateProperty;
+    }
 
     /**
      * Returns the current game state
      * @return The current GameState
      */
     public GameState getState() {
-        return state;
+        return gameStateProperty.getValue();
     }
 
     /**
@@ -33,11 +39,10 @@ public class GameStateHandler {
      * @param gameState The new game state to set.
      */
     public void setState(GameState gameState) {
-        System.out.println(gameState.name());
-        this.previousState = this.state;
-        this.state = gameState;
+        previousState = getState();
+        gameStateProperty.setValue(gameState);
 
-        switch (state) {
+        switch (gameState) {
             case ROUND_NOT_STARTED -> handleChangedGameStateRoundNotStarted();
             case ROUND_ACTIVE -> handleChangedGameStateRoundActive();
             case ROUND_PAUSE -> handleChangedGameStateRoundPause();
@@ -53,7 +58,6 @@ public class GameStateHandler {
     private void handleChangedGameStateRoundNotStarted() {
         GameEnvironment gameEnv = GameEnvironment.getGameEnvironment();
         gameEnv.setupNextRound();
-        gameEnv.getController().hideRoundCompleteDialog();
     }
 
     /**
@@ -67,7 +71,6 @@ public class GameStateHandler {
         }
         if (previousState == GameState.RANDOM_EVENT_DIALOG_OPEN) {
             gameEnv.startRound();
-            gameEnv.getController().hideRandomEventDialog();
         }
         gameEnv.resumeRound();
     }
@@ -99,8 +102,6 @@ public class GameStateHandler {
      * Handles logic specific to the GAME_COMPLETE state transition (implementation pending).
      */
     private void handleChangedGameStateGameComplete() {
-        GameEnvironment gameEnv = GameEnvironment.getGameEnvironment();
-        gameEnv.getController().showGameCompleteDialog();
-        gameEnv.getController().showStartButton();
+
     }
 }

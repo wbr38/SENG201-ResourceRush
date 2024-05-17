@@ -1,12 +1,20 @@
 package seng201.team53.items;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import seng201.team53.exceptions.ItemNotFoundException;
-import seng201.team53.game.GameEnvironment;
-import seng201.team53.gui.GameController;
 
 public class Shop {
 
-    private int money = 0;
+    private IntegerProperty moneyProperty = new SimpleIntegerProperty(0);
+
+    public IntegerProperty getMoneyProperty() {
+        return moneyProperty;
+    }
+
+    public int getMoney() {
+        return moneyProperty.get();
+    }
 
     /**
      * Attempt to purchase an item from the shop
@@ -18,7 +26,7 @@ public class Shop {
     public boolean purchaseItem(Purchasable<?> item) {
         int cost = item.getCostPrice();
 
-        if (cost > this.money)
+        if (cost > this.getMoney())
             return false;
 
         this.subtractMoney(cost);
@@ -32,33 +40,14 @@ public class Shop {
     }
 
     /**
-     * Update the GUI labels and shop items for the current value of `money`.
-     */
-    private void updateLabels() {
-        GameController gameController = GameEnvironment.getGameEnvironment().getController();
-        int money = this.getMoney();
-        gameController.updateMoneyLabel(money);
-        gameController.updateShopButtons(money);
-    }
-
-    public int getMoney() {
-        return this.money;
-    }
-
-    /**
      * Subtract an amount of money from the player's balance. The balance will not
      * go below zero.
      */
     public void subtractMoney(int amount) {
-        this.money -= amount;
-        if (this.money < 0)
-            this.money = 0;
-
-        this.updateLabels();
+        moneyProperty.set(Math.max(0, getMoney() - amount));
     }
 
     public void addMoney(int amount) {
-        this.money += amount;
-        this.updateLabels();
+        moneyProperty.set(moneyProperty.get() + amount);
     }
 }

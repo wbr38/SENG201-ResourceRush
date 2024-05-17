@@ -1,4 +1,4 @@
-package seng201.team53.gui;
+package seng201.team53.gui.controller;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
