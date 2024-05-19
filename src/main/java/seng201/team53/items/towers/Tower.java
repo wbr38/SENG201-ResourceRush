@@ -16,7 +16,7 @@ import seng201.team53.items.upgrade.Upgradeable;
 
 import javafx.util.Duration;
 
-public class Tower implements Item<Tower>, Tickable, Upgradeable {
+public class Tower implements Item, Tickable, Upgradeable {
     private final Timeline glowAnimation;
     private TowerType type;
     private boolean broken = false;

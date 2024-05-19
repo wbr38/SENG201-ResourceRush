@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
  * Contains constant information used in the shop: name, cost, etc.
  * Use .create() to create an actual instance of the item.
  */
-public abstract class Purchasable<I extends Item<?>> {
+public abstract class Purchasable<I extends Item> {
     public abstract String getName();
 
     public abstract String getDescription();

@@ -27,7 +27,7 @@ import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 public class MapInteractionController {
     private final GameController gameController;
 
-    private Item<?> selectedItem;
+    private Item selectedItem;
     private ImageView selectedImageView;
 
 
@@ -42,7 +42,7 @@ public class MapInteractionController {
     /**
      * @return The currently selected item that the user is moving/placing.
      */
-    public Item<?> getSelectedItem() {
+    public Item getSelectedItem() {
         return selectedItem;
     }
 
@@ -72,7 +72,7 @@ public class MapInteractionController {
             return;
 
         // Start placing the item
-        Item<?> item = purchasable.create();
+        Item item = purchasable.create();
         startPlacingItem(item);
 
         if (purchasable instanceof TowerType) {
@@ -92,7 +92,7 @@ public class MapInteractionController {
      * Sell the item the player has currently selected / is moving
      */
     public void sellSelectedItem() {
-        Item<?> item = this.getSelectedItem();
+        Item item = this.getSelectedItem();
         if (item == null)
             return;
 
@@ -104,7 +104,7 @@ public class MapInteractionController {
     /**
      * Start moving/selecting/placing an item.
      */
-    public void startPlacingItem(Item<?> item) {
+    public void startPlacingItem(Item item) {
         this.selectedItem = item;
         GridPane gridPane = gameController.getGridPane();
         gridPane.setGridLinesVisible(true);
@@ -151,7 +151,7 @@ public class MapInteractionController {
         if (!tile.canPlaceTower())
             return;
 
-        Item<?> selectedItem = this.getSelectedItem();
+        Item selectedItem = this.getSelectedItem();
         if (!(selectedItem instanceof Tower)) {
             return;
         }
@@ -213,7 +213,7 @@ public class MapInteractionController {
         if (cart == null)
             return;
 
-        Item<?> selectedItem = this.getSelectedItem();
+        Item selectedItem = this.getSelectedItem();
         if (!(selectedItem instanceof UpgradeItem)) {
             return;
         }
@@ -232,7 +232,7 @@ public class MapInteractionController {
         if (tower == null)
             return;
 
-        Item<?> selectedItem = this.getSelectedItem();
+        Item selectedItem = this.getSelectedItem();
         if (!(selectedItem instanceof UpgradeItem)) {
             return;
         }
@@ -270,7 +270,7 @@ public class MapInteractionController {
             // User has an upgrade item selected. Try upgrade the tower or cart (if there is one) on this tile 
             case PLACE_UPGRADE -> {
 
-                Item<?> selectedItem = this.getSelectedItem();
+                Item selectedItem = this.getSelectedItem();
                 if (!(selectedItem instanceof UpgradeItem)) {
                     break;
                 }

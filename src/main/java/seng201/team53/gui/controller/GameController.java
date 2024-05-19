@@ -177,7 +177,7 @@ public class GameController {
      * Update the appropriate elements to allow the user to sell an item.
      * @param item The item to sell. Set to `null` to hide this popup
      */
-    public void showSellItemPopup(Item<?> item) {
+    public void showSellItemPopup(Item item) {
         if (item == null) {
             hide(sellItemPane);
             return;
