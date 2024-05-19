@@ -8,5 +8,5 @@ public interface Item {
      * @return The Purchasable<Item> representation of this class.
      * For Towers, this would return the TowerType.
      */
-    Purchasable<? extends Item> getPurchasableType();
+    Purchasable getPurchasableType();
 }

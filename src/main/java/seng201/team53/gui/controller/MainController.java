@@ -29,6 +29,16 @@ public class MainController {
         this.windowManager = windowManager;
     }
 
+    public void init() {
+        var difficulties = FXCollections.observableArrayList(GameDifficulty.values());
+        difficultyChoiceBox.setItems(difficulties);
+        difficultyChoiceBox.setValue(GameDifficulty.NORMAL);
+
+        numberOfRoundsSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            numberOfRoundsLabel.setText(String.valueOf(newValue.intValue()));
+        });
+    }
+
     @FXML
     void onNameFieldKeyPress(KeyEvent event) {
         var text = nameTextField.getText() + event.getText();
@@ -57,15 +67,5 @@ public class MainController {
         GameController gameController = windowManager.loadGameScreen();
         GameEnvironment.init(gameController, playerName, rounds, gameDifficulty);
         gameController.init();
-    }
-
-    public void init() {
-        var difficulties = FXCollections.observableArrayList(GameDifficulty.values());
-        difficultyChoiceBox.setItems(difficulties);
-        difficultyChoiceBox.setValue(GameDifficulty.NORMAL);
-
-        numberOfRoundsSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            numberOfRoundsLabel.setText(String.valueOf(newValue.intValue()));
-        });
     }
 }

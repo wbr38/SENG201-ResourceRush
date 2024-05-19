@@ -6,7 +6,7 @@ import seng201.team53.exceptions.ItemNotFoundException;
 
 public class Shop {
 
-    private IntegerProperty moneyProperty = new SimpleIntegerProperty(0);
+    private final IntegerProperty moneyProperty = new SimpleIntegerProperty(0);
 
     public IntegerProperty getMoneyProperty() {
         return moneyProperty;
@@ -23,7 +23,7 @@ public class Shop {
      *         player's money was adjusted. False if the player did not have enough
      *         balance to purchase the item.
      */
-    public boolean purchaseItem(Purchasable<?> item) {
+    public boolean purchaseItem(Purchasable item) {
         int cost = item.getCostPrice();
 
         if (cost > this.getMoney())
@@ -34,7 +34,7 @@ public class Shop {
     }
 
 
-    public void sellItem(Purchasable<?> item) throws ItemNotFoundException {
+    public void sellItem(Purchasable item) throws ItemNotFoundException {
         int sellPrice = item.getSellPrice();
         this.addMoney(sellPrice);
     }

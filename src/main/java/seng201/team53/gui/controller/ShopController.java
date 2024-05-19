@@ -1,10 +1,5 @@
 package seng201.team53.gui.controller;
 
-import static seng201.team53.game.GameEnvironment.getGameEnvironment;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -13,9 +8,14 @@ import seng201.team53.items.Shop;
 import seng201.team53.items.towers.Tower;
 import seng201.team53.items.upgrade.UpgradeItem;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static seng201.team53.game.GameEnvironment.getGameEnvironment;
+
 public class ShopController {
     private final GameController gameController;
-    private final Map<Button, Purchasable<?>> shopButtons = new HashMap<>();
+    private final Map<Button, Purchasable> shopButtons = new HashMap<>();
 
     public ShopController(GameController gameController) {
         this.gameController = gameController;
@@ -53,7 +53,7 @@ public class ShopController {
         });
     }
 
-    private void onShopButtonClick(MouseEvent event, Purchasable<?> purchasable) {
+    private void onShopButtonClick(MouseEvent event, Purchasable purchasable) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 

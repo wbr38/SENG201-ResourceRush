@@ -1,6 +1,5 @@
 package seng201.team53.gui.controller;
 
-import javafx.collections.MapChangeListener;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -13,8 +12,6 @@ import seng201.team53.game.map.GameMap;
 import seng201.team53.game.map.MapInteraction;
 import seng201.team53.game.map.Tile;
 import seng201.team53.game.state.GameState;
-import seng201.team53.gui.wrapper.FXTower;
-import seng201.team53.items.Cart;
 import seng201.team53.items.Item;
 import seng201.team53.items.Purchasable;
 import seng201.team53.items.Shop;
@@ -29,7 +26,6 @@ import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
 public class MapInteractionController {
     private final GameController gameController;
-
     private Item selectedItem;
     private ImageView selectedImageView;
 
@@ -53,15 +49,13 @@ public class MapInteractionController {
      * Attempt to purchase an item, and begin the process of placing or using the item.
      * @param purchasable The item to purchase.
      */
-    public void tryPurchaseItem(Purchasable<?> purchasable) {
+    public void tryPurchaseItem(Purchasable purchasable) {
         GameEnvironment gameEnvironment = getGameEnvironment();
         GameMap map = getGameEnvironment().getMap();
-
-        // User is already interacting with something, don't allow them to purchase an item until they are done
         if (map.getInteraction() != MapInteraction.NONE)
             return;
-
-        // If the item is an UpgradeItem, don't allow the user to purchase if there is nothing to use it with
+        if (!gameEnvironment.getShop().purchaseItem(purchasable))
+            return;
         if (purchasable instanceof UpgradeItem upgradeItem) {
             List<Upgradeable> applicableItems = upgradeItem.getApplicableItems();
             if (applicableItems.isEmpty()) {
@@ -70,24 +64,10 @@ public class MapInteractionController {
             }
         }
 
-        boolean purchased = gameEnvironment.getShop().purchaseItem(purchasable);
-        if (!purchased)
-            return;
-
-        // Start placing the item
         Item item = purchasable.create();
         startPlacingItem(item);
-
-        if (purchasable instanceof TowerType) {
-            map.setInteraction(MapInteraction.PLACE_TOWER);
-        } else if (purchasable instanceof UpgradeItem) {
-            map.setInteraction(MapInteraction.PLACE_UPGRADE);
-        }
-
-        // Ensure round is paused for easier use when clicking a cart or tower
-        if (getGameEnvironment().getStateHandler().getState() == GameState.ROUND_ACTIVE) {
-            gameEnvironment.pauseRound();
-            getGameEnvironment().getStateHandler().setState(GameState.ROUND_PAUSE);
+        if (gameEnvironment.getStateHandler().getState() == GameState.ROUND_ACTIVE) {
+            gameEnvironment.getStateHandler().setState(GameState.ROUND_PAUSE);
         }
     }
 
@@ -112,8 +92,6 @@ public class MapInteractionController {
         GridPane gridPane = gameController.getGridPane();
         gridPane.setGridLinesVisible(true);
 
-        // Start following mouse
-        // Fine to create a new ImageView as we store the reference in selectedImageView to remove later
         Image image = getGameEnvironment().getAssetLoader().getItemImage(item.getPurchasableType());
         Pane overlay = gameController.getOverlay();
         selectedImageView = new ImageView(image);
@@ -121,10 +99,14 @@ public class MapInteractionController {
         selectedImageView.setFitWidth(GameMap.TILE_WIDTH);
         overlay.getChildren().add(selectedImageView);
         overlay.setOnMouseMoved(this::onMouseMove);
-
-        // Make sure this called after the above imageview is added
-        // So the popup appears at the top, and isn't blocked by the imageview
         gameController.showSellItemPopup(item);
+
+        var map = getGameEnvironment().getMap();
+        if (item.getPurchasableType() instanceof TowerType) {
+            map.setInteraction(MapInteraction.PLACE_TOWER);
+        } else {
+            map.setInteraction(MapInteraction.PLACE_UPGRADE);
+        }
     }
 
     /**
@@ -156,7 +138,6 @@ public class MapInteractionController {
         if (!(selectedItem instanceof Tower selectedTower))
             return;
 
-        TowerType towerType = selectedTower.getPurchasableType();
         GameMap map = getGameEnvironment().getMap();
         map.addTower(selectedTower, tile);
         stopPlacingItem();
@@ -183,37 +164,25 @@ public class MapInteractionController {
      * This function will also call map.removeTower.
      * @param tower The tower to remove from the map.
      */
-    public void removeTower(Tower tower) {
+    private void removeTower(Tower tower) {
         var map = getGameEnvironment().getMap();
         map.removeTower(tower);
     }
 
-    private void onMouseMove(MouseEvent event) {
-        if (selectedImageView == null)
-            return;
-
-        selectedImageView.setX(event.getSceneX() - ((double)GameMap.TILE_HEIGHT / 2));
-        selectedImageView.setY(event.getSceneY() - ((double)GameMap.TILE_WIDTH / 2));
-    }
-
     private void tryUpgradeCart(int screenX, int screenY) {
-        // try find cart
         var cart = getGameEnvironment().getController().getFXWrappers().findCartAtScreen(screenX, screenY);
         if (cart == null)
             return;
 
         Item selectedItem = this.getSelectedItem();
-        if (!(selectedItem instanceof UpgradeItem)) {
-            return;
+        if (selectedItem instanceof UpgradeItem upgradeItem) {
+            if (!upgradeItem.canApply(cart)) {
+                gameController.showNotification("You cannot apply " + upgradeItem.getName() + " to this cart", 3);
+                return;
+            }
+            upgradeItem.apply(cart);
+            stopPlacingItem();
         }
-
-        UpgradeItem selectedUpgradeItem = (UpgradeItem)selectedItem;
-        if (!selectedUpgradeItem.canApply(cart)) {
-            gameController.showNotification("You cannot apply " + selectedUpgradeItem.getName() + " to this cart", 3);
-            return;
-        }
-        selectedUpgradeItem.apply(cart);
-        stopPlacingItem();
     }
 
     private void tryUpgradeTower(Tile tile) {
@@ -222,18 +191,22 @@ public class MapInteractionController {
             return;
 
         Item selectedItem = this.getSelectedItem();
-        if (!(selectedItem instanceof UpgradeItem)) {
-            return;
+        if (selectedItem instanceof UpgradeItem upgradeItem) {
+            if (!upgradeItem.canApply(tower)) {
+                gameController.showNotification("You cannot apply " + upgradeItem.getName() + " to this tower", 3);
+                return;
+            }
+            upgradeItem.apply(tower);
+            stopPlacingItem();
         }
+    }
 
-        UpgradeItem selectedUpgradeItem = (UpgradeItem)selectedItem;
-
-        if (!selectedUpgradeItem.canApply(tower)) {
-            gameController.showNotification("You cannot apply " + selectedUpgradeItem.getName() + " to this tower", 3);
+    private void onMouseMove(MouseEvent event) {
+        if (selectedImageView == null)
             return;
-        }
-        selectedUpgradeItem.apply(tower);
-        stopPlacingItem();
+
+        selectedImageView.setX(event.getSceneX() - ((double)GameMap.TILE_HEIGHT / 2));
+        selectedImageView.setY(event.getSceneY() - ((double)GameMap.TILE_WIDTH / 2));
     }
 
     private void onMouseClickOverlay(MouseEvent event) {
@@ -249,26 +222,15 @@ public class MapInteractionController {
         }
 
         switch (map.getInteraction()) {
-            // User is not selected a tower, and clicked a tile.
-            // If there is a tower on this tile, start moving it.
             case NONE -> tryMoveTower(tile);
-
-            // User has a tower selected and clicked a tower to place it onto
             case PLACE_TOWER -> tryPlaceSelectedTower(tile);
-
-            // User has an upgrade item selected. Try upgrade the tower or cart (if there is one) on this tile 
             case PLACE_UPGRADE -> {
-
-                Item selectedItem = this.getSelectedItem();
-                if (!(selectedItem instanceof UpgradeItem)) {
-                    break;
+                if (selectedItem instanceof UpgradeItem upgradeItem) {
+                    if (upgradeItem.isCartUpgrade())
+                        tryUpgradeCart((int) event.getSceneX(), (int) event.getSceneY());
+                    else if (upgradeItem.isTowerUpgrade())
+                        tryUpgradeTower(tile);
                 }
-
-                UpgradeItem selectedUpgradeItem = (UpgradeItem)selectedItem;
-                if (selectedUpgradeItem.isCartUpgrade())
-                    tryUpgradeCart((int)event.getSceneX(), (int)event.getSceneY());
-                else if (selectedUpgradeItem.isTowerUpgrade())
-                    tryUpgradeTower(tile);
             }
         }
     }

@@ -1,7 +1,5 @@
 package seng201.team53.gui.controller;
 
-import static seng201.team53.game.GameEnvironment.getGameEnvironment;
-
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -59,7 +57,6 @@ public class GameController {
     @FXML private Text sellItemText;
 
     // Inventory
-    private Boolean inventoryVisible = false;
     @FXML private AnchorPane inventoryPane;
     @FXML protected Button inventoryButton1;
     @FXML protected Button inventoryButton2;
@@ -136,7 +133,7 @@ public class GameController {
             return;
 
         stateHandler.setState(GameState.ROUND_ACTIVE);
-        this.setInventoryVisible(false);
+        toggleInventoryVisible();
         this.showSellItemPopup(null);
     }
 
@@ -171,29 +168,7 @@ public class GameController {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
-        this.inventoryVisible = !this.inventoryVisible;
-        this.setInventoryVisible(inventoryVisible);
-    }
-
-    public void setInventoryVisible(Boolean enabled) {
-        this.inventoryVisible = enabled;
-        inventoryPane.setVisible(enabled);
-        inventoryPane.setDisable(!enabled);
-    }
-
-    /**
-     * Update the appropriate elements to allow the user to sell an item.
-     * @param item The item to sell. Set to `null` to hide this popup
-     */
-    public void showSellItemPopup(Item item) {
-        if (item == null) {
-            hide(sellItemPane);
-            return;
-        }
-
-        sellItemText.setText("Sell ($" + item.getPurchasableType().getSellPrice() + ")");
-        sellItemPane.toFront();
-        show(sellItemPane);
+        toggleInventoryVisible();
     }
 
     @FXML
@@ -241,6 +216,29 @@ public class GameController {
         notificationPause = new PauseTransition(Duration.seconds(duration));
         notificationPause.setOnFinished(event -> hide(notificationLabel));
         notificationPause.play();
+    }
+
+    private void toggleInventoryVisible() {
+        boolean visible = inventoryPane.isVisible();
+        if (inventoryPane.isVisible())
+            hide(inventoryPane);
+        else
+            show (inventoryPane);
+    }
+
+    /**
+     * Update the appropriate elements to allow the user to sell an item.
+     * @param item The item to sell. Set to `null` to hide this popup
+     */
+    public void showSellItemPopup(Item item) {
+        if (item == null) {
+            hide(sellItemPane);
+            return;
+        }
+
+        sellItemText.setText("Sell ($" + item.getPurchasableType().getSellPrice() + ")");
+        sellItemPane.toFront();
+        show(sellItemPane);
     }
 
     private void showStartButton() {
