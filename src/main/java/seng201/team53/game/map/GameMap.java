@@ -12,7 +12,7 @@ import seng201.team53.service.PathFinderService;
 import java.util.Collection;
 
 /**
- * This class represents a map in the game. It stores information about the map grid, tiles, and pathfinding
+ * This class represents a map in the game. It stores information about the map grid, tiles and placed towers
  * A map consists of a 2D array of tiles, where each tile represents a specific location on the map
  */
 public class GameMap {
@@ -93,6 +93,11 @@ public class GameMap {
         return Duration.seconds(duration);
     }
 
+    /**
+     * Retrieves the towers property that maps towers to their tiles
+     * This property is observable, meaning it can be watched for changes
+     * @return The observable MapProperty of towers to tiles
+     */
     public MapProperty<Tower, Tile> getTowersProperty() {
         return towersProperty;
     }
