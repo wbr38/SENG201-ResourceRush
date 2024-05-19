@@ -32,7 +32,7 @@ public class AssetLoader {
     private Image fullCartImage;
 
     /**
-     * Initializes the MapLoader by loading the tiles
+     * Initializes the MapLoader by loading the tiles and images
      */
     public void init() {
         try {
@@ -70,22 +70,43 @@ public class AssetLoader {
         return new GameMap(name, tiles, startPositionX, startPositionY, endPositionX, endPositionY);
     }
 
+    /**
+     * Retrieves the image associated with a purchasable item
+     * @param item The purchasable item for which the image is to be retrieved
+     * @return The image of the specified item
+     */
     public Image getItemImage(Purchasable item) {
         if (item instanceof TowerType towerType)
             return getTowerTypeImage(towerType, false);
         if (item instanceof UpgradeItem upgradeItem)
             return getUpgradeItemImages(upgradeItem);
-        throw new RuntimeException();
+        return null;
     }
 
+    /**
+     * Retrieves the image for a specific type of tower, with an option for a broken state
+     * @param towerType The type of the tower for which the image is to be retrieved
+     * @param broken true if the broken image should be returned
+     * @return The image of the tower
+     */
     public Image getTowerTypeImage(TowerType towerType, boolean broken) {
         return (broken ? brokenTowerImages : towerImages).get(towerType);
     }
 
+    /**
+     * Retrieves the image of the cart, either full or empty
+     * @param full true if the full cart image should be returned
+     * @return The image of the full or empty shopping cart
+     */
     public Image getCartImage(boolean full) {
         return full ? fullCartImage : cartImage;
     }
 
+    /**
+     * Retrieves the image of an upgrade item
+     * @param upgradeItem The type of upgrade item for which the image is to be retrieved
+     * @return The image of the upgrade item
+     */
     public Image getUpgradeItemImages(UpgradeItem upgradeItem) {
         return upgradeItemImages.get(upgradeItem);
     }
@@ -115,6 +136,10 @@ public class AssetLoader {
         tileTemplates.put(2, new TileTemplate(false, false));
     }
 
+    /**
+     * Loads and stores the image for each tower type into a map
+     * The intact and broken images for each tower are loaded
+     */
     private void loadTowerImages() {
         towerImages.put(Tower.Type.LUMBER_MILL, readImage("/assets/items/wood_tower.png"));
         towerImages.put(Tower.Type.MINE, readImage("/assets/items/stone_tower.png"));
@@ -126,6 +151,9 @@ public class AssetLoader {
         brokenTowerImages.put(Tower.Type.WIND_MILL, readImage("/assets/items/quarry_tower_broken.png"));
     }
 
+    /**
+     * Loads and stores the image for each item upgrade into a map
+     */
     private void loadUpgradeItemImages() {
         upgradeItemImages.put((UpgradeItem) UpgradeItem.Type.REPAIR_TOWER, readImage("/assets/items/repair_tower.png"));
         upgradeItemImages.put((UpgradeItem) UpgradeItem.Type.TEMP_FASTER_TOWER_RELOAD, readImage("/assets/items/faster_reload.png"));
