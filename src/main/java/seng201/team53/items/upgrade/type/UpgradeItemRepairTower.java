@@ -30,7 +30,8 @@ public class UpgradeItemRepairTower extends UpgradeItem {
 
     @Override
     public void apply(Upgradeable upgradeable) {
-        ((Tower) upgradeable).setBroken(false);
+        var tower = (Tower) upgradeable;
+        tower.setBroken(false);
     }
 
     @Override
@@ -40,6 +41,6 @@ public class UpgradeItemRepairTower extends UpgradeItem {
 
     @Override
     public UpgradeItem create() {
-        return new UpgradeItemRepairTower();
+        return this;
     }
 }

@@ -1,8 +1,13 @@
 package seng201.team53.gui;
 
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import seng201.team53.items.Purchasable;
+import seng201.team53.items.towers.TowerType;
+import seng201.team53.items.upgrade.UpgradeItem;
+
+import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
 /**
  * Contains functions for modifying a shop/inventory GUI Button. (for towers and items)
@@ -22,8 +27,16 @@ public class ShopButton {
             return;
         }
 
+        Image image;
+        if (purchasable instanceof UpgradeItem upgradeItem)
+            image = getGameEnvironment().getAssetLoader().getUpgradeItemImages(upgradeItem);
+        else if (purchasable instanceof TowerType towerType)
+            image = getGameEnvironment().getAssetLoader().getTowerTypeImage(towerType, false);
+        else
+            throw new RuntimeException("idk hacky fix atm");
+
         // Set new image
-        ImageView imageView = new ImageView(purchasable.getImage());
+        ImageView imageView = new ImageView(image);
         imageView.setFitWidth(60);
         imageView.setFitHeight(60);
         button.setGraphic(imageView);

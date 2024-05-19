@@ -1,5 +1,7 @@
 package seng201.team53.gui.controller;
 
+import javafx.collections.MapChangeListener;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -11,6 +13,7 @@ import seng201.team53.game.map.GameMap;
 import seng201.team53.game.map.MapInteraction;
 import seng201.team53.game.map.Tile;
 import seng201.team53.game.state.GameState;
+import seng201.team53.gui.wrapper.FXTower;
 import seng201.team53.items.Cart;
 import seng201.team53.items.Item;
 import seng201.team53.items.Purchasable;
@@ -26,7 +29,6 @@ import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
 public class MapInteractionController {
     private final GameController gameController;
-
     private Item<?> selectedItem;
     private ImageView selectedImageView;
 
@@ -39,7 +41,7 @@ public class MapInteractionController {
         gameController.getOverlay().setOnMouseClicked(this::onMouseClickOverlay);
     }
 
-    /**
+                               /**
      * @return The currently selected item that the user is moving/placing.
      */
     public Item<?> getSelectedItem() {
@@ -111,9 +113,9 @@ public class MapInteractionController {
 
         // Start following mouse
         // Fine to create a new ImageView as we store the reference in selectedImageView to remove later
-        ImageView imageView = new ImageView(item.getPurchasableType().getImage());
+        Image image = getGameEnvironment().getAssetLoader().getItemImage(item.getPurchasableType());
         Pane overlay = gameController.getOverlay();
-        selectedImageView = imageView;
+        selectedImageView = new ImageView(image);
         selectedImageView.setFitHeight(GameMap.TILE_HEIGHT);
         selectedImageView.setFitWidth(GameMap.TILE_WIDTH);
         overlay.getChildren().add(selectedImageView);
@@ -150,23 +152,12 @@ public class MapInteractionController {
     public void tryPlaceSelectedTower(Tile tile) {
         if (!tile.canPlaceTower())
             return;
-
-        Item<?> selectedItem = this.getSelectedItem();
-        if (!(selectedItem instanceof Tower)) {
+        if (!(selectedItem instanceof Tower selectedTower))
             return;
-        }
 
-        Tower selectedTower = (Tower)selectedItem;
-
-        // Add tower to map
+        TowerType towerType = selectedTower.getPurchasableType();
         GameMap map = getGameEnvironment().getMap();
         map.addTower(selectedTower, tile);
-
-        // Add the tower image to the map's tile
-        // Need to use the imageview unique to this tower
-        ImageView towerImage = selectedTower.getImageView();
-        gameController.getOverlay().getChildren().remove(towerImage);
-        gameController.getGridPane().add(towerImage, tile.getX(), tile.getY());
         stopPlacingItem();
     }
 
@@ -192,10 +183,7 @@ public class MapInteractionController {
      * @param tower The tower to remove from the map.
      */
     public void removeTower(Tower tower) {
-        var gridPane = gameController.getGridPane();
-        gridPane.getChildren().remove(tower.getImageView());
-
-        GameMap map = getGameEnvironment().getMap();
+        var map = getGameEnvironment().getMap();
         map.removeTower(tower);
     }
 
@@ -209,7 +197,7 @@ public class MapInteractionController {
 
     private void tryUpgradeCart(int screenX, int screenY) {
         // try find cart
-        Cart cart = getGameEnvironment().getRound().findCartAtScreenPosition(screenX, screenY);
+        var cart = getGameEnvironment().getController().getFXWrappers().findCartAtScreen(screenX, screenY);
         if (cart == null)
             return;
 

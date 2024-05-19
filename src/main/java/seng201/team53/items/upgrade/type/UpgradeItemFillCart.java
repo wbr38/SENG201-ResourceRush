@@ -1,5 +1,6 @@
 package seng201.team53.items.upgrade.type;
 
+import seng201.team53.game.state.CartState;
 import seng201.team53.items.Cart;
 import seng201.team53.items.Purchasable;
 import seng201.team53.items.upgrade.UpgradeItem;
@@ -25,12 +26,13 @@ public class UpgradeItemFillCart extends UpgradeItem {
 
     @Override
     public boolean canApply(Upgradeable upgradeable) {
-        return upgradeable instanceof Cart cart && !cart.isFull() && !cart.isCompletedPath();
+        return upgradeable instanceof Cart cart && !cart.isFull() && cart.getCartState() == CartState.TRAVERSING_PATH;
     }
 
     @Override
     public void apply(Upgradeable upgradeable) {
-        ((Cart) upgradeable).fill();
+        var cart = (Cart) upgradeable;
+        cart.fill();
     }
 
     @Override
@@ -40,6 +42,6 @@ public class UpgradeItemFillCart extends UpgradeItem {
 
     @Override
     public UpgradeItem create() {
-        return new UpgradeItemFillCart();
+        return this;
     }
 }

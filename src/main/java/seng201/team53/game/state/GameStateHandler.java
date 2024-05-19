@@ -69,10 +69,7 @@ public class GameStateHandler {
             gameEnv.beginRound();
             return;
         }
-        if (previousState == GameState.RANDOM_EVENT_DIALOG_OPEN) {
-            gameEnv.startRound();
-        }
-        gameEnv.resumeRound();
+        gameEnv.playRound();
     }
 
     /**

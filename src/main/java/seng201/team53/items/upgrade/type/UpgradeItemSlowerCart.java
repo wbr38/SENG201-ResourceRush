@@ -1,5 +1,6 @@
 package seng201.team53.items.upgrade.type;
 
+import seng201.team53.game.state.CartState;
 import seng201.team53.items.Cart;
 import seng201.team53.items.Purchasable;
 import seng201.team53.items.upgrade.UpgradeItem;
@@ -26,12 +27,14 @@ public class UpgradeItemSlowerCart extends UpgradeItem {
 
     @Override
     public boolean canApply(Upgradeable upgradeable) {
-        return upgradeable instanceof Cart cart && !cart.isCompletedPath();
+        return upgradeable instanceof Cart cart && cart.getCartState() == CartState.TRAVERSING_PATH;
     }
 
     @Override
     public void apply(Upgradeable upgradeable) {
-        // todo - maybe add something to game loop where it removes upgrade after a lil bit
+        var cart = (Cart) upgradeable;
+        cart.addVelocityModifier();
+        getGameEnvironment().getRound().updateMaxCartFinishTicks();
     }
 
     @Override
@@ -41,6 +44,6 @@ public class UpgradeItemSlowerCart extends UpgradeItem {
 
     @Override
     public UpgradeItem create() {
-        return new UpgradeItemSlowerCart();
+        return this;
     }
 }

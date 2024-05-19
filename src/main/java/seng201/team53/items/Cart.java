@@ -1,123 +1,98 @@
 package seng201.team53.items;
 
-import javafx.animation.PathTransition;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.beans.property.*;
 import seng201.team53.game.Tickable;
+import seng201.team53.game.state.CartState;
 import seng201.team53.items.upgrade.Upgradeable;
 
 import java.util.EnumSet;
-
-import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
 public class Cart implements Tickable, Upgradeable {
     private final int maxCapacity;
     private final float velocity;
     private final EnumSet<ResourceType> acceptedResources;
     private final int spawnAfterTicks; // so we can spawn them after each other - don't all render on top of each other
-    private final Image image;
-    private int currentCapacity;
-    private int lifetimeTicks = 0;
-    private PathTransition pathTransition;
-    private Label capacityLabel;
-    private ImageView imageView;
-    private boolean completedPath = false;
+    private final Property<CartState> cartStateProperty = new SimpleObjectProperty<>(CartState.WAITING);
+    private final IntegerProperty currentCapacityProperty = new SimpleIntegerProperty();
+    private final FloatProperty velocityModifier = new SimpleFloatProperty(1f);
 
-    public Cart(int maxCapacity, float velocity, EnumSet<ResourceType> acceptedResources, int spawnAfterTicks, Image image) {
+    public Cart(int maxCapacity, float velocity, EnumSet<ResourceType> acceptedResources, int spawnAfterTicks) {
         this.maxCapacity = maxCapacity;
         this.velocity = velocity;
         this.acceptedResources = acceptedResources;
         this.spawnAfterTicks = spawnAfterTicks;
-        this.image = image;
     }
 
     public int getMaxCapacity() {
         return maxCapacity;
     }
 
+    public IntegerProperty getCurrentCapacityProperty() {
+        return currentCapacityProperty;
+    }
+
     public int getCapacity() {
-        return currentCapacity;
+        return currentCapacityProperty.get();
     }
 
     public boolean isFull() {
         return this.getCapacity() >= this.getMaxCapacity();
     }
 
+    public void addCapacity() {
+        currentCapacityProperty.set(getCapacity() + 1);
+    }
+
     public void fill() {
-        this.currentCapacity = maxCapacity;
-        update();
-    }
-
-    public float getVelocity() {
-        return velocity;
-    }
-
-    public EnumSet<ResourceType> getAcceptedResources() {
-        return acceptedResources;
+        currentCapacityProperty.set(maxCapacity);
     }
 
     public int getSpawnAfterTicks() {
         return spawnAfterTicks;
     }
 
-    public int getLifetimeTicks() {
-        return lifetimeTicks;
+    public Property<CartState> getCartStateProperty() {
+        return cartStateProperty;
     }
 
-    public ImageView getImageView() {
-        return imageView;
+    public CartState getCartState() {
+        return cartStateProperty.getValue();
     }
 
-    public void setCompletedPath(boolean completedPath) {
-        this.completedPath = completedPath;
+    public void setCartState(CartState cartState) {
+        cartStateProperty.setValue(cartState);
     }
 
-    public PathTransition getPathTransition() {
-        return pathTransition;
-    }
-    public void setPathTransition(PathTransition pathTransition) {
-        this.pathTransition = pathTransition;
+    public float getVelocity() {
+        return velocity * getVelocityModifier();
     }
 
-    public Image getImage() {
-        return image;
+    public FloatProperty getVelocityModifierProperty() {
+        return velocityModifier;
     }
 
-    public boolean isCompletedPath() {
-        return completedPath;
+    public float getVelocityModifier() {
+        return velocityModifier.get();
+    }
+
+    public void addVelocityModifier() {
+        velocityModifier.set(getVelocityModifier() * 0.75f);
     }
 
     public void addResource(ResourceType generatedResourceType) {
-        if (currentCapacity == maxCapacity)
+        if (isFull())
             return;
-
         if (!acceptedResources.contains(generatedResourceType))
             return;
-
-        currentCapacity++;
-        update();
-    }
-
-    public void setCapacityLabel(Label capacityLabel) {
-        this.capacityLabel = capacityLabel;
-    }
-    public void update() {
-        if (capacityLabel == null || imageView == null)
-            return;
-        capacityLabel.setText(currentCapacity + "/" + maxCapacity);
-        if (isFull()) {
-            var fullCartImage = getGameEnvironment().getAssetLoader().getFullCartImage();
-            imageView.setImage(fullCartImage);
-        }
-    }
-
-    public void setImageView(ImageView imageView) {
-        this.imageView = imageView;
+        addCapacity();
     }
 
     @Override
-    public void tick() {
-        lifetimeTicks++;
+    public void tick(int lifetime) {
+        if (getCartState() == CartState.WAITING) {
+            if (spawnAfterTicks == lifetime) {
+                setCartState(CartState.TRAVERSING_PATH);
+            }
+        }
     }
 }

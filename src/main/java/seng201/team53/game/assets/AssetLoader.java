@@ -9,6 +9,10 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import seng201.team53.game.map.GameMap;
 import seng201.team53.game.map.Tile;
+import seng201.team53.items.Purchasable;
+import seng201.team53.items.towers.Tower;
+import seng201.team53.items.towers.TowerType;
+import seng201.team53.items.upgrade.UpgradeItem;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,6 +24,9 @@ import java.util.Map;
  */
 public class AssetLoader {
     private final Map<Integer, TileTemplate> tileTemplates = new HashMap<>();
+    private final Map<TowerType, Image> towerImages = new HashMap<>();
+    private final Map<TowerType, Image> brokenTowerImages = new HashMap<>();
+    private final Map<UpgradeItem, Image> upgradeItemImages = new HashMap<>();
     private final JSONParser jsonParser = new JSONParser();
     private Image cartImage;
     private Image fullCartImage;
@@ -30,6 +37,8 @@ public class AssetLoader {
     public void init() {
         try {
             loadTiles();
+            loadTowerImages();
+            loadUpgradeItemImages();
             loadCartImage();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -61,20 +70,24 @@ public class AssetLoader {
         return new GameMap(name, tiles, startPositionX, startPositionY, endPositionX, endPositionY);
     }
 
-    /**
-     * Retrieves the image of the cart
-     * @return the image representing the cart
-     */
-    public Image getCartImage() {
-        return cartImage;
+    public Image getItemImage(Purchasable<?> item) {
+        if (item instanceof TowerType towerType)
+            return getTowerTypeImage(towerType, false);
+        if (item instanceof UpgradeItem upgradeItem)
+            return getUpgradeItemImages(upgradeItem);
+        throw new RuntimeException();
     }
 
-    /**
-     * Retrieves the image of the full cart
-     * @return the image representing the full cart
-     */
-    public Image getFullCartImage() {
-        return fullCartImage;
+    public Image getTowerTypeImage(TowerType towerType, boolean broken) {
+        return (broken ? brokenTowerImages : towerImages).get(towerType);
+    }
+
+    public Image getCartImage(boolean full) {
+        return full ? fullCartImage : cartImage;
+    }
+
+    public Image getUpgradeItemImages(UpgradeItem upgradeItem) {
+        return upgradeItemImages.get(upgradeItem);
     }
 
     /**
@@ -100,6 +113,24 @@ public class AssetLoader {
         tileTemplates.put(0, new TileTemplate(true, false));
         tileTemplates.put(1, new TileTemplate(false, true));
         tileTemplates.put(2, new TileTemplate(false, false));
+    }
+
+    private void loadTowerImages() {
+        towerImages.put(Tower.Type.LUMBER_MILL, readImage("/assets/items/wood_tower.png"));
+        towerImages.put(Tower.Type.MINE, readImage("/assets/items/stone_tower.png"));
+        towerImages.put(Tower.Type.QUARRY, readImage("/assets/items/quarry_tower.png"));
+        towerImages.put(Tower.Type.WIND_MILL, readImage("/assets/items/wind_turbine_tower.png"));
+        brokenTowerImages.put(Tower.Type.LUMBER_MILL, readImage("/assets/items/wood_tower_broken.png"));
+        brokenTowerImages.put(Tower.Type.MINE, readImage("/assets/items/stone_tower_broken.png"));
+        brokenTowerImages.put(Tower.Type.QUARRY, readImage("/assets/items/quarry_tower.png"));
+        brokenTowerImages.put(Tower.Type.WIND_MILL, readImage("/assets/items/quarry_tower_broken.png"));
+    }
+
+    private void loadUpgradeItemImages() {
+        upgradeItemImages.put((UpgradeItem) UpgradeItem.Type.REPAIR_TOWER, readImage("/assets/items/repair_tower.png"));
+        upgradeItemImages.put((UpgradeItem) UpgradeItem.Type.TEMP_FASTER_TOWER_RELOAD, readImage("/assets/items/faster_reload.png"));
+        upgradeItemImages.put((UpgradeItem) UpgradeItem.Type.TEMP_SLOWER_CART, readImage("/assets/items/slower_cart.png"));
+        upgradeItemImages.put((UpgradeItem) UpgradeItem.Type.FILL_CART, readImage("/assets/items/cart_full.png"));
     }
 
     /**

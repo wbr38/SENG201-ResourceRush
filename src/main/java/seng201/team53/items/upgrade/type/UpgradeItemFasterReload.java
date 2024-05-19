@@ -31,7 +31,10 @@ public class UpgradeItemFasterReload extends UpgradeItem {
 
     @Override
     public void apply(Upgradeable upgradeable) {
-        ((Tower) upgradeable).addReloadSpeedModifier();
+        var round = getGameEnvironment().getRound();
+        var tower = (Tower) upgradeable;
+        tower.addReloadSpeedModifier();
+        round.addOnRoundEndAction(tower::resetReloadSpeedModifier);
     }
 
     @Override
@@ -41,6 +44,6 @@ public class UpgradeItemFasterReload extends UpgradeItem {
 
     @Override
     public UpgradeItem create() {
-        return new UpgradeItemFasterReload();
+        return this;
     }
 }

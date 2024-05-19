@@ -1,5 +1,8 @@
 package seng201.team53.game.map;
 
+import javafx.beans.property.MapProperty;
+import javafx.beans.property.SimpleMapProperty;
+import javafx.collections.FXCollections;
 import javafx.scene.shape.Polyline;
 import javafx.util.Duration;
 import seng201.team53.exceptions.TileNotFoundException;
@@ -7,8 +10,6 @@ import seng201.team53.items.towers.Tower;
 import seng201.team53.service.PathFinderService;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class represents a map in the game. It stores information about the map grid, tiles, and pathfinding
@@ -20,7 +21,7 @@ public class GameMap {
     private final String name;
     private final Tile[][] tiles;
     private final Polyline polylinePath;
-    private final Map<Tower, Tile> towers = new HashMap<>();
+    private final MapProperty<Tower, Tile> towersProperty = new SimpleMapProperty<>(FXCollections.observableHashMap());
     private final int pathLength;
     private MapInteraction interaction = MapInteraction.NONE;
 
@@ -92,11 +93,15 @@ public class GameMap {
         return Duration.seconds(duration);
     }
 
+    public MapProperty<Tower, Tile> getTowersProperty() {
+        return towersProperty;
+    }
+
     /**
      * @return Retrieves the collect of towers currently placed on the map
      */
     public Collection<Tower> getTowers() {
-        return towers.keySet();
+        return getTowersProperty().keySet();
     }
 
     /**
@@ -105,7 +110,7 @@ public class GameMap {
      * @param tile The tile object where the tower is to be placed
      */
     public void addTower(Tower tower, Tile tile) {
-        towers.put(tower, tile);
+        towersProperty.put(tower, tile);
         tile.setTower(tower);
     }
 
@@ -114,8 +119,8 @@ public class GameMap {
      * @param tower The tower object to be removed from the map
      */
     public void removeTower(Tower tower) {
-        Tile tile = towers.get(tower);
-        towers.remove(tower);
+        Tile tile = towersProperty.get(tower);
+        towersProperty.remove(tower);
         tile.setTower(null);
     }
 

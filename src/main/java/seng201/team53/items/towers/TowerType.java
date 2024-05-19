@@ -2,28 +2,20 @@ package seng201.team53.items.towers;
 
 import java.time.Duration;
 
-import javafx.scene.image.Image;
 import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
-import seng201.team53.game.assets.AssetLoader;
 import seng201.team53.items.Purchasable;
 import seng201.team53.items.ResourceType;
 
-public class TowerType extends Purchasable<Tower> {
+public class TowerType implements Purchasable<Tower> {
+    private final String name;
+    private final String description;
+    private final ResourceType resourceType;
+    private final int costPrice;
+    private final int resourceAmount;
+    private final Duration reloadSpeed;
 
-    protected final String name;
-    protected final String description;
-    protected final ResourceType resourceType;
-    protected final String imagePath;
-    protected final String brokenImagepath;
-    protected final int costPrice;
-    protected final int resourceAmount;
-    protected final Duration reloadSpeed;
-
-    private final Image image;
-    private final Image brokenImage;
-
-    TowerType(String name, String description, ResourceType resourceType, String imagePath, String brokenImagePath, int costPrice,
+    TowerType(String name, String description, ResourceType resourceType, int costPrice,
               int resourceAmount, Duration reloadSpeed) {
         this.name = name;
         this.description = description;
@@ -31,12 +23,6 @@ public class TowerType extends Purchasable<Tower> {
         this.costPrice = costPrice;
         this.resourceAmount = resourceAmount;
         this.reloadSpeed = reloadSpeed;
-
-        this.imagePath = imagePath;
-        this.brokenImagepath = brokenImagePath;
-
-        this.image = AssetLoader.readImage(imagePath);
-        this.brokenImage = AssetLoader.readImage(brokenImagePath);
     }
 
     @Override
@@ -51,14 +37,6 @@ public class TowerType extends Purchasable<Tower> {
 
     public ResourceType getResourceType() {
         return resourceType;
-    }
-
-    public Image getImage() {
-        return image;
-    }
-
-    public Image getBrokenImage() {
-        return brokenImage;
     }
 
     public Duration getReloadSpeed() {

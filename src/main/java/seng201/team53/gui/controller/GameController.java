@@ -6,6 +6,7 @@ import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -16,6 +17,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
+import seng201.team53.gui.wrapper.FXWrappers;
 import seng201.team53.items.Item;
 import seng201.team53.items.Purchasable;
 
@@ -68,6 +70,7 @@ public class GameController {
     private final MapInteractionController mapInteractionController = new MapInteractionController(this);
     private final InventoryController inventoryController = new InventoryController(this, mapInteractionController);
     private final ShopController shopController = new ShopController(this);
+    private final FXWrappers fxWrappers = new FXWrappers();
 
     public void init() {
         // Set inventory buttons
@@ -104,6 +107,7 @@ public class GameController {
         shopController.init();
         mapInteractionController.init();
         inventoryController.init();
+        fxWrappers.init();
     }
 
     public Pane getMapBackgroundPane() {
@@ -116,6 +120,10 @@ public class GameController {
 
     public GridPane getGridPane() {
         return gridPane;
+    }
+
+    public FXWrappers getFXWrappers() {
+        return fxWrappers;
     }
 
     @FXML
@@ -154,7 +162,7 @@ public class GameController {
         if (stateHandler.getState() != GameState.ROUND_PAUSE)
             return;
 
-        getGameEnvironment().resumeRound();
+        getGameEnvironment().playRound();
         stateHandler.setState(GameState.ROUND_ACTIVE);
     }
 
@@ -271,11 +279,12 @@ public class GameController {
     public void updateButton(Button button, Purchasable<?> purchasable) {
         if (purchasable == null) {
             button.setGraphic(null);
-            button.getTooltip().setText("");
+            button.getTooltip().setText(null);
             button.setText("Add Tower");
             return;
         }
-        ImageView imageView = new ImageView(purchasable.getImage());
+        Image image = getGameEnvironment().getAssetLoader().getItemImage(purchasable);
+        ImageView imageView = new ImageView(image);
         imageView.setFitWidth(60);
         imageView.setFitHeight(60);
         button.getTooltip().setText("Cost $" + purchasable.getCostPrice());

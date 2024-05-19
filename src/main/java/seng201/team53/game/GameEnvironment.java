@@ -62,7 +62,7 @@ public class GameEnvironment {
         assetLoader.init();
         randomEvents.init();
         map = assetLoader.loadMap("default", "/assets/maps/map_one.json", controller.getMapBackgroundPane());
-        setRound(roundFactory.getRound(stateHandler, map, 1, assetLoader.getCartImage()));
+        setRound(roundFactory.getRound(1));
 
         GameDifficulty difficulty = GameEnvironment.getGameEnvironment().getDifficulty();
         shop.addMoney(difficulty.getStartingMoney());
@@ -70,7 +70,7 @@ public class GameEnvironment {
 
     public void setupNextRound() {
         int nextRound = getRound().getRoundNumber() + 1;
-        setRound(roundFactory.getRound(stateHandler, map, nextRound, assetLoader.getCartImage()));
+        setRound(roundFactory.getRound(nextRound));
         shop.addMoney(getRound().getMoneyEarned());
     }
 
@@ -82,24 +82,23 @@ public class GameEnvironment {
             controller.showRandomEventDialog(randomEvent.getClass().getSimpleName());
             return;
         }
-        startRound();
+        playRound();
     }
 
-    public void startRound() {
-        getRound().start();
+    public void playRound() {
+        getRound().play();
     }
 
     public void pauseRound() {
         getRound().pause();
     }
 
-    public void resumeRound() {
-        getRound().play();
-    }
-
     public void completeRound() {
+        getRound().runRoundEndActions();
+        // todo - check if player won
         if (getRound().getRoundNumber() == rounds) {
             stateHandler.setState(GameState.GAME_COMPLETE);
+            return;
         }
     }
 
