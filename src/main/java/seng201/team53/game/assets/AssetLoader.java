@@ -70,7 +70,7 @@ public class AssetLoader {
         return new GameMap(name, tiles, startPositionX, startPositionY, endPositionX, endPositionY);
     }
 
-    public Image getItemImage(Purchasable<?> item) {
+    public Image getItemImage(Purchasable item) {
         if (item instanceof TowerType towerType)
             return getTowerTypeImage(towerType, false);
         if (item instanceof UpgradeItem upgradeItem)

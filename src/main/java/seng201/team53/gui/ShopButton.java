@@ -17,9 +17,9 @@ public class ShopButton {
     /**
      * Change the Button to match the info of the purchaseable item.
      * @param button The button to change the image, text, tooltip of.
-     * @param towerType Set to `null` to make into a blank button (makes the text "Add Item")
+     * @param purchasable Set to `null` to make into a blank button (makes the text "Add Item")
      */
-    public static void changeItem(Button button, Purchasable<?> purchasable) {
+    public static void changeItem(Button button, Purchasable purchasable) {
         if (purchasable == null) {
             button.setGraphic(null);
             button.getTooltip().setText("");

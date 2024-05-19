@@ -38,7 +38,7 @@ public class UpgradeItemFasterReload extends UpgradeItem {
     }
 
     @Override
-    public Purchasable<UpgradeItem> getPurchasableType() {
+    public Purchasable getPurchasableType() {
         return this;
     }
 

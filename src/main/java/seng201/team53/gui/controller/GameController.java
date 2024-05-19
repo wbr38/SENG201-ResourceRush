@@ -19,6 +19,8 @@ import seng201.team53.gui.wrapper.FXWrappers;
 import seng201.team53.items.Item;
 import seng201.team53.items.Purchasable;
 
+import static seng201.team53.game.GameEnvironment.getGameEnvironment;
+
 public class GameController {
     @FXML private Pane overlay;
     @FXML private GridPane gridPane;
@@ -70,8 +72,7 @@ public class GameController {
     private final FXWrappers fxWrappers = new FXWrappers();
 
     public void init() {
-        // Set inventory buttons
-        this.setInventoryVisible(this.inventoryVisible);
+        toggleInventoryVisible();
         this.showSellItemPopup(null);
 
         var rounds = getGameEnvironment().getRounds();
@@ -274,7 +275,7 @@ public class GameController {
         node.setDisable(true);
     }
 
-    public void updateButton(Button button, Purchasable<?> purchasable) {
+    public void updateButton(Button button, Purchasable purchasable) {
         if (purchasable == null) {
             button.setGraphic(null);
             button.getTooltip().setText(null);

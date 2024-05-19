@@ -14,7 +14,7 @@ import seng201.team53.items.upgrade.type.UpgradeItemSlowerCart;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class UpgradeItem implements Purchasable<UpgradeItem>, Item {
+public abstract class UpgradeItem implements Purchasable, Item {
     private final String name;
     private final String description;
     private final Image image;
@@ -79,9 +79,9 @@ public abstract class UpgradeItem implements Purchasable<UpgradeItem>, Item {
     public abstract void apply(Upgradeable upgradable);
 
     public interface Type {
-        Purchasable<UpgradeItem> REPAIR_TOWER = new UpgradeItemRepairTower();
-        Purchasable<UpgradeItem> TEMP_FASTER_TOWER_RELOAD = new UpgradeItemFasterReload();
-        Purchasable<UpgradeItem> TEMP_SLOWER_CART = new UpgradeItemSlowerCart();
-        Purchasable<UpgradeItem> FILL_CART = new UpgradeItemFillCart();
+        Purchasable REPAIR_TOWER = new UpgradeItemRepairTower();
+        Purchasable TEMP_FASTER_TOWER_RELOAD = new UpgradeItemFasterReload();
+        Purchasable TEMP_SLOWER_CART = new UpgradeItemSlowerCart();
+        Purchasable FILL_CART = new UpgradeItemFillCart();
     }
 }
