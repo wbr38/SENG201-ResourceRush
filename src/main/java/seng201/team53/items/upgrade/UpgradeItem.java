@@ -14,7 +14,7 @@ import seng201.team53.items.upgrade.type.UpgradeItemSlowerCart;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class UpgradeItem implements Item<UpgradeItem>, Purchasable<UpgradeItem> {
+public abstract class UpgradeItem implements Purchasable<UpgradeItem>, Item {
     private final String name;
     private final String description;
     private final Image image;

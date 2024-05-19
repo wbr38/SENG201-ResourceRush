@@ -5,7 +5,7 @@ package seng201.team53.items;
  * Contains constant information used in the shop: name, cost, etc.
  * Use .create() to create an actual instance of the item.
  */
-public interface Purchasable<I extends Item<?>> {
+public interface Purchasable<I extends Item> {
     String getName();
 
     String getDescription();

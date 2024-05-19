@@ -72,7 +72,7 @@ public class InventoryController {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
-        Item<?> selectedItem = interactionController.getSelectedItem();
+        Item selectedItem = interactionController.getSelectedItem();
         if (selectedItem == null) {
             // User clicked inventory button with no tower selected
             // They are trying to retrieve a tower from inventory

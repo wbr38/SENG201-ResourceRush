@@ -10,7 +10,7 @@ import seng201.team53.items.Item;
 import seng201.team53.items.ResourceType;
 import seng201.team53.items.upgrade.Upgradeable;
 
-public class Tower implements Item<Tower>, Upgradeable {
+public class Tower implements Item, Upgradeable {
     private final TowerType type;
     private final BooleanProperty brokenProperty = new SimpleBooleanProperty(false);
     private final LongProperty lastGeneratePropertyTime = new SimpleLongProperty(System.currentTimeMillis());
