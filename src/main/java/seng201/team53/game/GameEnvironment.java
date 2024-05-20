@@ -48,12 +48,15 @@ public class GameEnvironment {
         this.difficulty = difficulty;
     }
 
-    public static void init(GameController controller, String playerName, int rounds, GameDifficulty difficulty) {
+    /**
+     * Initialises the GameEnvironment singleton. After calling this function, call gameEnvironment.load();
+     */
+    public static GameEnvironment init(GameController controller, String playerName, int rounds, GameDifficulty difficulty) {
         if (instance != null)
             throw new RuntimeException("GameEnvironment is already initialized!");
 
         instance = new GameEnvironment(controller, playerName, rounds, difficulty);
-        instance.load();
+        return instance;
     }
 
     public static GameEnvironment getGameEnvironment() {

@@ -65,7 +65,8 @@ public class MainController {
         var gameDifficulty = difficultyChoiceBox.getSelectionModel().getSelectedItem();
 
         GameController gameController = windowManager.loadGameScreen();
-        GameEnvironment.init(gameController, playerName, rounds, gameDifficulty);
+        GameEnvironment gameEnv = GameEnvironment.init(gameController, playerName, rounds, gameDifficulty);
+        gameEnv.load();
         gameController.init();
     }
 }
