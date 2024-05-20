@@ -1,6 +1,7 @@
 package seng201.team53.items;
 
 import javafx.beans.property.*;
+import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.Tickable;
 import seng201.team53.game.state.CartState;
 import seng201.team53.items.upgrade.Upgradeable;
@@ -21,6 +22,12 @@ public class Cart implements Tickable, Upgradeable {
         this.velocity = velocity;
         this.acceptedResources = acceptedResources;
         this.spawnAfterTicks = spawnAfterTicks;
+
+        // Increase points when cart becomes full
+        getCurrentCapacityProperty().addListener(($, oldCapacity, newCapacity) -> {
+            if (newCapacity.intValue() == getMaxCapacity())
+                GameEnvironment.getGameEnvironment().addPoints(10);
+        });
     }
 
     public int getMaxCapacity() {

@@ -1,6 +1,8 @@
 package seng201.team53.game;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.Property;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.input.MouseButton;
 import seng201.team53.exceptions.TileNotFoundException;
@@ -13,9 +15,11 @@ import seng201.team53.game.round.GameRoundFactory;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.gui.controller.GameController;
+import seng201.team53.items.Cart;
 import seng201.team53.items.Shop;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * The overarching, main class of the game
@@ -31,6 +35,7 @@ public class GameEnvironment {
     private final String playerName;
     private final int rounds;
     private GameDifficulty difficulty;
+    private final IntegerProperty pointsProperty = new SimpleIntegerProperty(0);
     private final Property<GameRound> gameRoundProperty = new SimpleObjectProperty<>();
     private GameMap map;
 
@@ -95,6 +100,7 @@ public class GameEnvironment {
 
     public void completeRound() {
         getRound().runRoundEndActions();
+        addPoints(20);
         // todo - check if player won
         if (getRound().getRoundNumber() == rounds) {
             stateHandler.setState(GameState.GAME_COMPLETE);
@@ -177,7 +183,30 @@ public class GameEnvironment {
         return map;
     }
 
+    public int getPoints() {
+        return pointsProperty.get();
+    }
+
+    public IntegerProperty getPointsProperty() {
+        return pointsProperty;
+    }
+
+    public void addPoints(int points) {
+        pointsProperty.set(pointsProperty.get() + points);
+    }
+
     public String getPlayerName() {
         return playerName;
+    }
+
+    /**
+     * @return Whether the user has won the game or not. Call this function when GameState = GAME_COMPLETE
+     */
+    public boolean gameWon() {
+        List<Cart> carts = getRound().getCarts();
+        boolean allCartsFull = carts.stream().allMatch(Cart::isFull);
+
+        // maybe add check if we completed the final round?
+        return allCartsFull;
     }
 }

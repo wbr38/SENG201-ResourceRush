@@ -36,6 +36,7 @@ public class GameController {
     // Info section (top-middle of screen)
     @FXML protected Text moneyLabel;
     @FXML private Text roundCounterLabel;
+    @FXML private Text pointsLabel;
     @FXML private Text notificationLabel;
     private PauseTransition notificationPause;
 
@@ -44,7 +45,7 @@ public class GameController {
     @FXML private Button resumeButton;
 
     // Shop
-    // protected final Map<Button, TowerType> shopButtons = new HashMap<>();
+    @FXML protected Pane shopPane;
     @FXML protected Button shopTowerButton1;
     @FXML protected Button shopTowerButton2;
     @FXML protected Button shopTowerButton3;
@@ -67,11 +68,14 @@ public class GameController {
     @FXML protected Button inventoryButton4;
 
     // End Screen
+    @FXML private Button toggleInventoryButton;
     @FXML private Pane gameEndPane;
-    @FXML private Button gameEnd_ExitButton;
+    @FXML private Text gameEnd_WinLoseText;
     @FXML private Text gameEnd_NameText;
     @FXML private Text gameEnd_RoundsText;
     @FXML private Text gameEnd_MoneyEarnt;
+    @FXML private Text gameEnd_Points;
+    @FXML private Button gameEnd_ExitButton;
 
     // sub-controllers
     private final MapInteractionController mapInteractionController = new MapInteractionController(this);
@@ -83,10 +87,15 @@ public class GameController {
         toggleInventoryVisible();
         this.showSellItemPopup(null);
 
-        // setRound(1) in GameEnvironment.load() is called before this listener is added,
-        // so the round counter label doesn't update on the first round. So update the round counter first here.
-        updateRoundCounter(1);
+        // Update round number
         getGameEnvironment().getRoundProperty().addListener(($, oldRound, newRound) -> updateRoundCounter(newRound.getRoundNumber()));
+        // Update point count
+        getGameEnvironment().getPointsProperty().addListener(($, oldPoints, newPoints) -> updatePointsLabel(newPoints.intValue()));
+
+        // The following labels need to be updated here, as GameEnvironment.load() is called before these listeners are added.
+        // So the labels aren't up to date when the game loads.
+        updateRoundCounter(1);
+        updatePointsLabel(0);
 
         var stateHandler = getGameEnvironment().getStateHandler();
         stateHandler.getGameStateProperty().addListener(($, oldState, newState) -> {
@@ -254,6 +263,10 @@ public class GameController {
         roundCounterLabel.setText(currentRound + "/" + totalRounds);
     }
 
+    private void updatePointsLabel(int points) {
+        pointsLabel.setText("" + points);
+    }
+
     private void showStartButton() {
         show(startButton);
         hide(pauseButton);
@@ -281,14 +294,28 @@ public class GameController {
         show(gameEndPane);
 
         GameEnvironment gameEnv = getGameEnvironment();
+        boolean gameWon = gameEnv.gameWon();
         String playerName = gameEnv.getPlayerName();
-        int currentRound = gameEnv.getRound().getRoundNumber(); 
-        int maxRounds = gameEnv.getRounds(); 
+        int currentRound = gameEnv.getRound().getRoundNumber();
+        int maxRounds = gameEnv.getRounds();
         int money = gameEnv.getShop().getMoney();
+        int points = gameEnv.getPoints();
 
+        gameEnd_WinLoseText.setText(gameWon ? "You Won!" : "You Lost :(");
         gameEnd_NameText.setText("Name: " + playerName);
         gameEnd_RoundsText.setText("Rounds Completed: " + currentRound + "/" + maxRounds);
         gameEnd_MoneyEarnt.setText("Money Earnt: $" + money);
+        gameEnd_Points.setText("Points: " + points);
+
+        // Hide some elements
+        hide(startButton);
+        hide(pauseButton);
+        hide(startButton);
+        hide(resumeButton);
+
+        hide(toggleInventoryButton);
+        hide(inventoryPane);
+        shopPane.setDisable(true);
     }
 
     @FXML

@@ -17,7 +17,7 @@ public class GameRound implements Tickable {
     private final Set<Runnable> roundEndActions = new HashSet<>();
     private GameLoop gameLoop;
 
-    public GameRound( int roundNumber) {
+    public GameRound(int roundNumber) {
         this.roundNumber = roundNumber;
     }
 
