@@ -14,7 +14,6 @@ public class UpgradeItemSlowerCart extends UpgradeItem {
     public UpgradeItemSlowerCart() {
         super("Slower Cart",
                 "Temporality allow a cart to travel slower",
-                "/assets/decoration/red_cross.png",
                 100,
                 true,
                 false);

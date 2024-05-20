@@ -9,7 +9,7 @@ public class GameLoop extends AnimationTimer {
     public static final int TICKS_PER_SECOND = 10;
     public static final long MS_BETWEEN_TICKS = 1000 / TICKS_PER_SECOND;
     private final Tickable function;
-    private int roundCompleteTicks;
+    private int ticksUntilRoundEnd;
     private long lastTickTime = -1;
     private int lifetimeTicks = 0;
 
@@ -23,7 +23,7 @@ public class GameLoop extends AnimationTimer {
             if (System.currentTimeMillis() - lastTickTime < MS_BETWEEN_TICKS)
                 return;
         }
-        if (roundCompleteTicks == lifetimeTicks) {
+        if (ticksUntilRoundEnd == lifetimeTicks) {
             getGameEnvironment().getStateHandler().setState(GameState.ROUND_COMPLETE);
             stop();
             return;
@@ -33,7 +33,7 @@ public class GameLoop extends AnimationTimer {
         lifetimeTicks++;
     }
 
-    public void setRoundCompleteTicks(int roundCompleteTicks) {
-        this.roundCompleteTicks = roundCompleteTicks;
+    public void setRoundCompleteTicks(int ticksUntilRoundEnd) {
+        this.ticksUntilRoundEnd = ticksUntilRoundEnd;
     }
 }

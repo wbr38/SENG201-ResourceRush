@@ -13,7 +13,6 @@ public class UpgradeItemFasterReload extends UpgradeItem {
     public UpgradeItemFasterReload() {
         super("Faster Reload",
                 "Temporality allow a tower to reload faster",
-                "/assets/decoration/red_cross.png",
                 100,
                 false,
                 true);

@@ -12,7 +12,6 @@ public class UpgradeItemRepairTower extends UpgradeItem {
     public UpgradeItemRepairTower() {
         super("Repair Tower",
                 "Repair a broken tower",
-                "/assets/items/repair_tower.png",
                 100,
                 false,
                 true);

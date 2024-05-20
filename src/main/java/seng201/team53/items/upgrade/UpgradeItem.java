@@ -17,15 +17,13 @@ import java.util.List;
 public abstract class UpgradeItem implements Purchasable, Item {
     private final String name;
     private final String description;
-    private final Image image;
     private final int costPrice;
     private final boolean cartUpgrade;
     private final boolean towerUpgrade;
 
-    public UpgradeItem(String name, String description, String imagePath, int costPrice, boolean cartUpgrade, boolean towerUpgrade) {
+    public UpgradeItem(String name, String description, int costPrice, boolean cartUpgrade, boolean towerUpgrade) {
         this.name = name;
         this.description = description;
-        this.image = AssetLoader.readImage(imagePath);
         this.costPrice = costPrice;
         this.cartUpgrade = cartUpgrade;
         this.towerUpgrade = towerUpgrade;
@@ -39,10 +37,6 @@ public abstract class UpgradeItem implements Purchasable, Item {
     @Override
     public String getDescription() {
         return description;
-    }
-
-    public Image getImage() {
-        return image;
     }
 
     @Override

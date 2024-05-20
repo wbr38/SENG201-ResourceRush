@@ -14,7 +14,6 @@ public class UpgradeItemFillCart extends UpgradeItem {
     public UpgradeItemFillCart() {
         super("Fill Cart",
                 "Choose a cart to instantly fill up",
-                "/assets/items/cart_full.png",
                 100,
                 true,
                 false);

@@ -5,9 +5,7 @@ public enum ResourceType {
     WOOD("Wood"),
     STONE("Stone"),
     ORE("Ore"),
-    ENERGY("Energy"),
-    FOOD("Food"),
-    ;
+    ENERGY("Energy");
 
     // TODO: Maybe add a sprite filepath here?
     private String name;

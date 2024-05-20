@@ -1,0 +1,269 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+'gui'
+class ApplicationWindow
+class WindowManager
+class MainController
+class GameController
+class InventoryController
+class MapInventoryController
+class ShopController
+
+'wrappers'
+class FXCart
+class FXTower
+class FXWrappers
+
+'interfaces'
+interface Tickable {
++ tick()
+}
+
+interface Upgradable {}
+
+abstract class UpgradeItem {
+- name: String
+- description: String
+- costPrice: int
+- cartUpgrade: boolean
+- towerUpgrade: boolean
+---
++ canApply(upgradable): boolean
++ apply((upgradable)
+}
+
+interface Item {
++ getPurchasableType(): Purchasable
+}
+
+enum ResourceType {
++ {static} WOOD: ResourceType
++ {static} STONE: ResourceType
++ {static} ORE: ResourceType
++ {static} ENERGY: ResourceType
+}
+
+'Game'
+class GameEnvironment {
+- {static} instance: GameEnvironment
+- stateHandler: GameStateHandler
+- controller: GameController
+- assetLoader: AssetLoader
+- randomEvents: RandomEvents
+- roundFactory: GameRoundFactory
+- shop: Shop
+- playerName: String
+- rounds: int
+- difficulty: GameDifficulty
+- gameRoundProperty: Property<GameRound>
+- map: GameMap
+--
++ load()
++ setupNextRound()
++ beginRound()
++ playRound()
++ pauseRound()
++ completeRound()
++ setRound(GameRound)
++ setDifficulty(gameDifficulty)
+}
+
+class GameStateHandler {
+- gameStateProperty: Property<GameState>
+- previousGameState: GameState
+--
++ setState(gameState)
++ handleChangedGameStateRoundNotStarted()
++ handleChangedGameStateRoundActive()
++ handleChangedGameStateRoundPause()
++ handleChangedGameStateRoundComplete()
++ handleChangedGameStateRandomEventDialogOpen()
++ handleChangedGameStateGameComplete()
+}
+
+class AssetLoader {
+- tileTemplates: Map<Integer, TileTemplate>
+- towerImages: Map<TowerType, Image>
+- brokenTowerImages: Map<TowerType, Image>
+- upgradeItemImages: Map<UpgradeItem, Image>
+- jsonParser: JSONParser
+- cartImage: Image
+- fullCartImage: Image
+--
++ {static} readImage(path): Image
++ loadMap(name, path)
+- loadTiles()
+- loadTowerImages()
+- loadCartImages()
+- loadUpgradeItemImages()
+- readMapMatrix(jsonMapMatrix): Tile[][]
+- readJsonResource(path): Object
+}
+
+class TileTemplate {
+- buildable: boolean
+- path: true
+--
++ createTile(x, y): Tile
+}
+
+class RandomEvents {
+- randomEvents: List<RandomEvent>
+--
++ requestRandomEvent(): RandonEvent
+}
+
+interface RandomEvent {
++ isAvailable(): boolean
++ apply()
+}
+
+class RandomEventBrokenTower {}
+class RandomEventTowerStatesDecrease {}
+class RandomEventTowerStatesIncrease {}
+
+class GameRoundFactory {
++ getRound(roundNumber): GameRound
+}
+
+class Shop {
+- money: int
+--
++ purchaseItem(item): boolean
++ sellItem(item)
++ subtractMoney(amount)
++ addMoney(amount)
+}
+
+enum GameDifficulty {
++ {static} EASY: GameDifficulty
++ {static} NORMAL: GameDifficulty
++ {static} HARD: GameDifficulty
+- name: String
+- startingMoney: int
+- moneyEarnMultiplier: double
+- sellPriceModifier: double
+- towerReloadModifier: double
+- cartVelocityMultiplier: float
+- randomEventOdds: double
+}
+
+class GameRound {
+- roundNumber: int
+- carts: List<Cart>
+- roundEndActions: Set<Runnable>
+- gameLoop: gameLoop
+}
+
+class GameMap {
+- name: String
+- tiles: Tile[][]
+- polylinePath: PolylinePath
+- towers: Map<Tower, Tile>
+- pathLength: int
+- mapInteraction: MapInteraction
+--
++ getTileAt(gridX, gridY): Tile
++ getTileFromScreenPosition(screenX, screenY): Tile
++ addTower(tower, tile)
++ removeTower(tower)
++ calculatePathDuration(velocity): float
++ setInteraction(mapInteraction)
+}
+
+class Tile {
+- buildable: boolean
+- path: boolean
+- x: int
+- y: int
+- tower: Tower
+}
+
+class MapInteraction {
++ {static} NONE: MapInteraction
++ {static} PLACE_TOWER: MapInteraction
++ {static} PLACE_UPGRADE: MapInteraction
+}
+
+class GameLoop {
++ {static} TICKS_PER_SECOND: int
++ {static} MS_BETWEEN_TICKS: long
+- function: Tickable
+- lastTickTime: long
+- lifetimeTicks: int
+- ticksUntilRoundEnd: int
+--
+hande()
+setRoundCompleteTicks(ticksUntilRoundEnd)
+}
+
+class GameState {
+- {static} ROUND_NOT_STARTED: GameState
+- {static} RANDOM_EVENT_DIALOG_OPEN: GameState
+- {static} ROUND_ACTIVE: GameState
+- {static} ROUND_PAUSE: GameState
+- {static} ROUND_COMPLETE: GameState
+- {static} GAME_COMPLETE: GameState
+}
+
+class CartState {
+- {static} WAITING: CartState
+- {static} TRAVERSING_PATH: CartState
+- {static} COMPLETE_PATH: CartState
+}
+
+class Tower {
+- towerType: TowerType
+- broken: boolean
+- lastGenerateTime: long
+- reloadSpeedModifier: DOUBLE
+- xpLevel: int
+---
++ incrementXpLevel(amount)
++ addReloadSpeedModifier()
++ canGenerate(): boolean
+}
+
+class UpgradeItemRepairTower {}
+class UpgradeItemFasterReload {}
+class UpgradeItemSlowerCart {}
+class UpgradeItemFillCart {}
+
+GameEnvironment --o GameDifficulty : "[0..1]"
+GameEnvironment --* GameStateHandler : "[0..1]"
+GameEnvironment --* AssetLoader : "[0..1]"
+GameEnvironment --* RandomEvents : "[0..1]"
+GameEnvironment --* GameRoundFactory : "[0..1]"
+GameEnvironment --* Shop : "[0..1]"
+GameEnvironment -- GameRound : "[1..1]"
+GameEnvironment --* GameMap : "[0..1]"
+
+GameStateHandler --o GameState : "[0..1]"
+
+GameMap --* GameLoop : "[0..1]"
+GameMap --* Tile : "many"
+GameMap --o MapInteraction : "[0..1]"
+
+Tickable <|-- Cart
+Tickable <|-- GameRound
+
+RandomEvents --o RandomEvent : "many"
+RandomEvent <|-- RandomEventBrokenTower
+RandomEvent <|-- RandomEventTowerStatesDecrease
+RandomEvent <|-- RandomEventTowerStatesIncrease
+
+
+UpgradeItem --|> Purchasable
+UpgradeItem --|> Item
+UpgradeItem <|-- UpgradeItemRepairTower
+UpgradeItem <|-- UpgradeItemFasterReload
+UpgradeItem <|-- UpgradeItemSlowerCart
+UpgradeItem <|-- UpgradeItemFillCart
+
+Tower --|> Item
+Tower --|> Upgradable
+TowerType --|> Item
+
+AssetLoader --* TileTemplate : "many"
+@enduml
