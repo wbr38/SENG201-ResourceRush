@@ -20,6 +20,8 @@ import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.gui.wrapper.FXWrappers;
 import seng201.team53.items.Item;
 import seng201.team53.items.Purchasable;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
@@ -96,6 +98,12 @@ public class GameController {
         // So the labels aren't up to date when the game loads.
         updateRoundCounter(1);
         updatePointsLabel(0);
+
+        // Background music loop
+        String resource = getClass().getResource("/assets/sound/piano-groove-2.wav").toString();
+        MediaPlayer music = new MediaPlayer(new Media(resource));
+        music.setCycleCount(MediaPlayer.INDEFINITE);
+        music.play();
 
         var stateHandler = getGameEnvironment().getStateHandler();
         stateHandler.getGameStateProperty().addListener(($, oldState, newState) -> {
