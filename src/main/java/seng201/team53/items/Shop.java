@@ -2,7 +2,6 @@ package seng201.team53.items;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import seng201.team53.exceptions.ItemNotFoundException;
 
 public class Shop {
 
@@ -34,7 +33,7 @@ public class Shop {
     }
 
 
-    public void sellItem(Purchasable item) throws ItemNotFoundException {
+    public void sellItem(Purchasable item) {
         int sellPrice = item.getSellPrice();
         this.addMoney(sellPrice);
     }
