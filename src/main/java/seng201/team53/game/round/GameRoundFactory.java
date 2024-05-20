@@ -10,22 +10,21 @@ public class GameRoundFactory {
     public GameRound getRound(int roundNumber) {
 
         GameDifficulty difficulty = GameEnvironment.getGameEnvironment().getDifficulty();
-        float cartVelocity = calculateCartVelocity(difficulty, roundNumber);
-
         GameRound round = new GameRound(roundNumber);
-        int counter = 0;
-        for (int i = 0; i < roundNumber; i++) {
+        
+        // Add carts
+        float cartVelocity = calculateCartVelocity(difficulty, roundNumber);
+        int numCarts = difficulty.getNumberOfCarts(roundNumber);
+        for (int i = 0; i < numCarts; i++) {
             var resourceTypes = switch (i % 4) {
                 case 0 -> EnumSet.of(ResourceType.WOOD);
-                case 1 -> EnumSet.of(ResourceType.ORE);
-                case 2 -> EnumSet.of(ResourceType.STONE);
+                case 1 -> EnumSet.of(ResourceType.STONE);
+                case 2 -> EnumSet.of(ResourceType.ORE);
                 default -> EnumSet.of(ResourceType.ENERGY);
             };
 
-            for (int j = 0; j <= 1; j++) {
-                round.addCart(10, cartVelocity, resourceTypes, counter * 10);
-                counter++;
-            }
+            final int spawnDelayTicks = 10;
+            round.addCart(10, cartVelocity, resourceTypes, i * spawnDelayTicks);
         }
         return round;
     }

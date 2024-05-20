@@ -4,6 +4,7 @@ public enum GameDifficulty {
     EASY(
          "Easy",
          400,
+         0.5,
          200.0,
          1.0,
          1.5,
@@ -13,6 +14,7 @@ public enum GameDifficulty {
     NORMAL(
            "Normal",
            /* 300 */ 10000, // TODO: revert this after done testing
+           1.0,
            100.0,
            0.75,
            1.0,
@@ -22,6 +24,7 @@ public enum GameDifficulty {
     HARD(
          "Hard",
          200,
+         1.5,
          200.0,
          0.5,
          0.75,
@@ -30,6 +33,7 @@ public enum GameDifficulty {
 
     private final String name;
     private final int startingMoney;
+    private final double numberOfCartsMultiplier;
     private final double moneyEarnMultiplier;
     private final double sellPriceModifier;
     private final double towerReloadModifier;
@@ -39,6 +43,7 @@ public enum GameDifficulty {
     GameDifficulty(
                    String name,
                    int startingMoney,
+                   double numberOfCartsMultiplier,
                    double moneyEarnMultiplier,
                    double sellPriceModifier,
                    double towerReloadMultiplier,
@@ -47,6 +52,7 @@ public enum GameDifficulty {
     ) {
         this.name = name;
         this.startingMoney = startingMoney;
+        this.numberOfCartsMultiplier = numberOfCartsMultiplier;
         this.moneyEarnMultiplier = moneyEarnMultiplier;
         this.sellPriceModifier = sellPriceModifier;
         this.towerReloadModifier = towerReloadMultiplier;
@@ -63,6 +69,15 @@ public enum GameDifficulty {
      */
     public int getStartingMoney() {
         return startingMoney;
+    }
+
+    /**
+     * @return The number of carts to spawn.
+     */
+    public int getNumberOfCarts(int roundNumber) {
+        int baseCarts = 2;
+        int cartsPerRound = baseCarts + (roundNumber - 1);
+        return (int)Math.round(cartsPerRound * numberOfCartsMultiplier);
     }
 
     /**
