@@ -13,12 +13,23 @@ public enum GameDifficulty {
 
     NORMAL(
            "Normal",
-           /* 300 */ 10000, // TODO: revert this after done testing
+           10000,
            1.0,
            100.0,
            0.75,
            1.0,
-           1.0f,
+           3.0f,
+           0.35),
+
+    // TODO: Comment this out after done testing
+    TESTING(
+           "TESTING",
+           10000, 
+           1.0,
+           100.0,
+           0.75,
+           1.0,
+           3.0f,
            0.35),
 
     HARD(
