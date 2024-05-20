@@ -1,6 +1,7 @@
 package seng201.team53.gui.controller;
 
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -13,6 +14,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.gui.wrapper.FXWrappers;
@@ -27,7 +29,6 @@ public class GameController {
 
     @FXML private Pane mapBackgroundPane;
     @FXML private Pane roundCompletePane;
-    @FXML private Pane gameCompletePane;
 
     @FXML private Pane randomEventPane;
     @FXML private Text randomEventTest;
@@ -43,7 +44,7 @@ public class GameController {
     @FXML private Button resumeButton;
 
     // Shop
-    //protected final Map<Button, TowerType> shopButtons = new HashMap<>();
+    // protected final Map<Button, TowerType> shopButtons = new HashMap<>();
     @FXML protected Button shopTowerButton1;
     @FXML protected Button shopTowerButton2;
     @FXML protected Button shopTowerButton3;
@@ -65,6 +66,13 @@ public class GameController {
     @FXML protected Button inventoryButton3;
     @FXML protected Button inventoryButton4;
 
+    // End Screen
+    @FXML private Pane gameEndPane;
+    @FXML private Button gameEnd_ExitButton;
+    @FXML private Text gameEnd_NameText;
+    @FXML private Text gameEnd_RoundsText;
+    @FXML private Text gameEnd_MoneyEarnt;
+
     // sub-controllers
     private final MapInteractionController mapInteractionController = new MapInteractionController(this);
     private final InventoryController inventoryController = new InventoryController(this, mapInteractionController);
@@ -75,11 +83,10 @@ public class GameController {
         toggleInventoryVisible();
         this.showSellItemPopup(null);
 
-        // setRound(1) in GameEnvironment.load() is called before this listener is added, 
+        // setRound(1) in GameEnvironment.load() is called before this listener is added,
         // so the round counter label doesn't update on the first round. So update the round counter first here.
         updateRoundCounter(1);
-        getGameEnvironment().getRoundProperty().addListener(($, oldRound, newRound) ->
-            updateRoundCounter(newRound.getRoundNumber()));
+        getGameEnvironment().getRoundProperty().addListener(($, oldRound, newRound) -> updateRoundCounter(newRound.getRoundNumber()));
 
         var stateHandler = getGameEnvironment().getStateHandler();
         stateHandler.getGameStateProperty().addListener(($, oldState, newState) -> {
@@ -96,8 +103,7 @@ public class GameController {
                     show(roundCompletePane);
                 }
                 case GAME_COMPLETE -> {
-                    showStartButton();
-                    show(gameCompletePane);
+                    showGameEndPopup();
                 }
             }
             if (oldState == GameState.RANDOM_EVENT_DIALOG_OPEN)
@@ -222,11 +228,10 @@ public class GameController {
     }
 
     private void toggleInventoryVisible() {
-        boolean visible = inventoryPane.isVisible();
         if (inventoryPane.isVisible())
             hide(inventoryPane);
         else
-            show (inventoryPane);
+            show(inventoryPane);
     }
 
     /**
@@ -270,6 +275,29 @@ public class GameController {
     public void showRandomEventDialog(String text) {
         randomEventTest.setText(text);
         show(randomEventPane);
+    }
+
+    private void showGameEndPopup() {
+        show(gameEndPane);
+
+        GameEnvironment gameEnv = getGameEnvironment();
+        String playerName = gameEnv.getPlayerName();
+        int currentRound = gameEnv.getRound().getRoundNumber(); 
+        int maxRounds = gameEnv.getRounds(); 
+        int money = gameEnv.getShop().getMoney();
+
+        gameEnd_NameText.setText("Name: " + playerName);
+        gameEnd_RoundsText.setText("Rounds Completed: " + currentRound + "/" + maxRounds);
+        gameEnd_MoneyEarnt.setText("Money Earnt: $" + money);
+    }
+
+    @FXML
+    private void onGameEnd_QuitButtonMouseClick(MouseEvent event) {
+        if (event.getButton() != MouseButton.PRIMARY)
+            return;
+
+        Platform.exit();
+        System.exit(0);
     }
 
     private void show(Node node) {

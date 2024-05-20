@@ -173,8 +173,11 @@ public class GameEnvironment {
         return rounds;
     }
 
-
     public GameMap getMap() {
         return map;
+    }
+
+    public String getPlayerName() {
+        return playerName;
     }
 }
