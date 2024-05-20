@@ -11,16 +11,16 @@ import java.util.EnumSet;
 public class Cart implements Tickable, Upgradeable {
     private final int maxCapacity;
     private final float velocity;
-    private final EnumSet<ResourceType> acceptedResources;
+    private final ResourceType resourceType;
     private final int spawnAfterTicks; // so we can spawn them after each other - don't all render on top of each other
     private final Property<CartState> cartStateProperty = new SimpleObjectProperty<>(CartState.WAITING);
     private final IntegerProperty currentCapacityProperty = new SimpleIntegerProperty();
     private final FloatProperty velocityModifier = new SimpleFloatProperty(1f);
 
-    public Cart(int maxCapacity, float velocity, EnumSet<ResourceType> acceptedResources, int spawnAfterTicks) {
+    public Cart(int maxCapacity, float velocity, ResourceType acceptedResources, int spawnAfterTicks) {
         this.maxCapacity = maxCapacity;
         this.velocity = velocity;
-        this.acceptedResources = acceptedResources;
+        this.resourceType = acceptedResources;
         this.spawnAfterTicks = spawnAfterTicks;
 
         // Increase points when cart becomes full
@@ -89,9 +89,13 @@ public class Cart implements Tickable, Upgradeable {
     public void addResource(ResourceType generatedResourceType) {
         if (isFull())
             return;
-        if (!acceptedResources.contains(generatedResourceType))
+        if (resourceType != generatedResourceType)
             return;
         addCapacity();
+    }
+
+    public ResourceType getResourceType() {
+        return resourceType;
     }
 
     @Override

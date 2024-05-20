@@ -2,10 +2,15 @@ package seng201.team53.gui.wrapper;
 
 import javafx.collections.MapChangeListener;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polyline;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import seng201.team53.game.GameEnvironment;
+import seng201.team53.game.assets.AssetLoader;
 import seng201.team53.game.map.GameMap;
 import seng201.team53.game.map.Tile;
 import seng201.team53.game.round.GameRound;
@@ -23,8 +28,7 @@ public class FXWrappers {
     private final Map<Cart, FXCart> fxCarts = new HashMap<>();
 
     public void init() {
-        getGameEnvironment().getRoundProperty().addListener(($, oldRound, newRound) ->
-                onGameRoundChange(newRound));
+        getGameEnvironment().getRoundProperty().addListener(($, oldRound, newRound) -> onGameRoundChange(newRound));
         getGameEnvironment().getMap().getTowersProperty().addListener(this::onTowersChange);
 
         // set it up for current round
@@ -41,9 +45,9 @@ public class FXWrappers {
             double sceneX = pointInScene.getX();
             double sceneY = pointInScene.getY();
             if (sceneX <= screenX &&
-                    (sceneX +  40) > screenX &&
-                    sceneY <= screenY &&
-                    (sceneY +  40) > screenY)
+                (sceneX + 40) > screenX &&
+                sceneY <= screenY &&
+                (sceneY + 40) > screenY)
                 return cart;
         }
         return null;
@@ -57,14 +61,26 @@ public class FXWrappers {
         // is no longer a surviving reference to it
         fxCarts.clear();
         round.getCarts().forEach(cart -> {
-            var gameEnvironment = getGameEnvironment();
-            var assetLoader = gameEnvironment.getAssetLoader();
-            var wrapper = new StackPane();
-            var imageView = new ImageView(assetLoader.getCartImage(false));
-            var capacityLabel = new Label("0/" + cart.getMaxCapacity());
-            var polylinePath = gameEnvironment.getMap().getPolylinePath();
-            capacityLabel.setFont(Font.font("System Regular", 16));
+            GameEnvironment gameEnvironment = getGameEnvironment();
+            AssetLoader assetLoader = gameEnvironment.getAssetLoader();
+            StackPane wrapper = new StackPane();
+            ImageView imageView = new ImageView(assetLoader.getCartImage(cart.getResourceType(), false));
+
+            // Capacity label (0/10)
+            Label capacityLabel = new Label("0/" + cart.getMaxCapacity());
+            capacityLabel.setTranslateY(10); // 10 units
+            capacityLabel.setFont(Font.font("System Regular", FontWeight.BOLD, 16));
             capacityLabel.setTextFill(Color.WHITE);
+
+            // Add a shadow to the capacity label
+            DropShadow dropShadow = new DropShadow();
+            dropShadow.setRadius(5.0);
+            dropShadow.setOffsetX(3.0);
+            dropShadow.setOffsetY(3.0);
+            dropShadow.setColor(Color.BLACK);
+            capacityLabel.setEffect(dropShadow);
+
+            Polyline polylinePath = gameEnvironment.getMap().getPolylinePath();
             wrapper.setTranslateX(polylinePath.getPoints().get(1));
             wrapper.setTranslateY(polylinePath.getPoints().get(0));
             wrapper.getChildren().addAll(imageView, capacityLabel);

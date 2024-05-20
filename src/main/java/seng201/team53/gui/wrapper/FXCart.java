@@ -57,7 +57,7 @@ public class FXCart {
     private void onCapacityUpdate(int capacity) {
         capacityLabel.setText(capacity + "/" + cart.getMaxCapacity());
         if (capacity == cart.getMaxCapacity()) {
-            var fullCartImage = getGameEnvironment().getAssetLoader().getCartImage(true);
+            var fullCartImage = getGameEnvironment().getAssetLoader().getCartImage(cart.getResourceType(), true);
             imageView.setImage(fullCartImage);
         }
     }

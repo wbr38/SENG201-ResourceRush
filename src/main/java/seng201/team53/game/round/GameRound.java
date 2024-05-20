@@ -46,10 +46,10 @@ public class GameRound implements Tickable {
         return carts;
     }
 
-    public void addCart(int maxCapacity, float velocity, EnumSet<ResourceType> acceptedResources, int spawnAfterTicks) {
+    public void addCart(int maxCapacity, float velocity, ResourceType resourceType, int spawnAfterTicks) {
         var cart = new Cart(maxCapacity,
             velocity,
-            acceptedResources,
+            resourceType,
             spawnAfterTicks);
         carts.add(cart);
     }

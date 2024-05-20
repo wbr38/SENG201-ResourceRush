@@ -10,6 +10,7 @@ import org.json.simple.parser.ParseException;
 import seng201.team53.game.map.GameMap;
 import seng201.team53.game.map.Tile;
 import seng201.team53.items.Purchasable;
+import seng201.team53.items.ResourceType;
 import seng201.team53.items.towers.Tower;
 import seng201.team53.items.towers.TowerType;
 import seng201.team53.items.upgrade.UpgradeItem;
@@ -28,7 +29,11 @@ public class AssetLoader {
     private final Map<TowerType, Image> brokenTowerImages = new HashMap<>();
     private final Map<UpgradeItem, Image> upgradeItemImages = new HashMap<>();
     private final JSONParser jsonParser = new JSONParser();
-    private Image cartImage;
+    private Image emptyCart;
+    private Image quarryCartImage;
+    private Image stoneCartImage;
+    private Image windCartImage;
+    private Image woodCartImage;
     private Image fullCartImage;
 
     /**
@@ -39,7 +44,7 @@ public class AssetLoader {
             loadTiles();
             loadTowerImages();
             loadUpgradeItemImages();
-            loadCartImage();
+            loadCartImages();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -98,8 +103,28 @@ public class AssetLoader {
      * @param full true if the full cart image should be returned
      * @return The image of the full or empty shopping cart
      */
-    public Image getCartImage(boolean full) {
-        return full ? fullCartImage : cartImage;
+    public Image getCartImage(ResourceType resourceType, boolean full) {
+
+        if (full)
+            return fullCartImage;
+
+        switch (resourceType) {
+            case WOOD:
+                return woodCartImage;
+
+            case STONE:
+                return stoneCartImage;
+
+            case ORE:
+                return quarryCartImage;
+
+            case ENERGY:
+                return windCartImage;
+
+            // Fallback to cart without a specific resource type
+            default:
+                return emptyCart;
+        }
     }
 
     /**
@@ -155,18 +180,22 @@ public class AssetLoader {
      * Loads and stores the image for each item upgrade into a map
      */
     private void loadUpgradeItemImages() {
-        upgradeItemImages.put((UpgradeItem) UpgradeItem.Type.REPAIR_TOWER, readImage("/assets/items/repair_tower.png"));
-        upgradeItemImages.put((UpgradeItem) UpgradeItem.Type.TEMP_FASTER_TOWER_RELOAD, readImage("/assets/items/faster_reload.png"));
-        upgradeItemImages.put((UpgradeItem) UpgradeItem.Type.TEMP_SLOWER_CART, readImage("/assets/items/slower_cart.png"));
-        upgradeItemImages.put((UpgradeItem) UpgradeItem.Type.FILL_CART, readImage("/assets/items/cart_full.png"));
+        upgradeItemImages.put((UpgradeItem)UpgradeItem.Type.REPAIR_TOWER, readImage("/assets/items/repair_tower.png"));
+        upgradeItemImages.put((UpgradeItem)UpgradeItem.Type.TEMP_FASTER_TOWER_RELOAD, readImage("/assets/items/faster_reload.png"));
+        upgradeItemImages.put((UpgradeItem)UpgradeItem.Type.TEMP_SLOWER_CART, readImage("/assets/items/slower_cart.png"));
+        upgradeItemImages.put((UpgradeItem)UpgradeItem.Type.FILL_CART, readImage("/assets/items/cart_full.png"));
     }
 
     /**
-     * Loads the cart image
+     * Loads the cart images
      * @throws IOException If an I/O error occurs
      */
-    private void loadCartImage() throws IOException {
-        cartImage = readImage("/assets/items/cart.png");
+    private void loadCartImages() throws IOException {
+        emptyCart = readImage("/assets/items/cart.png");
+        quarryCartImage = readImage("/assets/items/cart_quarry.png");
+        stoneCartImage = readImage("/assets/items/cart_stone.png");
+        windCartImage = readImage("/assets/items/cart_wind.png");
+        woodCartImage = readImage("/assets/items/cart_wood.png");
         fullCartImage = readImage("/assets/items/cart_full.png");
     }
 

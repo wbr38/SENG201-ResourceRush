@@ -16,15 +16,15 @@ public class GameRoundFactory {
         float cartVelocity = calculateCartVelocity(difficulty, roundNumber);
         int numCarts = difficulty.getNumberOfCarts(roundNumber);
         for (int i = 0; i < numCarts; i++) {
-            var resourceTypes = switch (i % 4) {
-                case 0 -> EnumSet.of(ResourceType.WOOD);
-                case 1 -> EnumSet.of(ResourceType.STONE);
-                case 2 -> EnumSet.of(ResourceType.ORE);
-                default -> EnumSet.of(ResourceType.ENERGY);
+            var resourceType = switch (i % 4) {
+                case 0 -> ResourceType.WOOD;
+                case 1 -> ResourceType.STONE;
+                case 2 -> ResourceType.ORE;
+                default -> ResourceType.ENERGY;
             };
 
             final int spawnDelayTicks = 10;
-            round.addCart(10, cartVelocity, resourceTypes, i * spawnDelayTicks);
+            round.addCart(10, cartVelocity, resourceType, i * spawnDelayTicks);
         }
         return round;
     }
