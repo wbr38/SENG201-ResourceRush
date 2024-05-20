@@ -75,9 +75,11 @@ public class GameController {
         toggleInventoryVisible();
         this.showSellItemPopup(null);
 
-        var rounds = getGameEnvironment().getRounds();
+        // setRound(1) in GameEnvironment.load() is called before this listener is added, 
+        // so the round counter label doesn't update on the first round. So update the round counter first here.
+        updateRoundCounter(1);
         getGameEnvironment().getRoundProperty().addListener(($, oldRound, newRound) ->
-                roundCounterLabel.setText(newRound.getRoundNumber() + "/" + rounds));
+            updateRoundCounter(newRound.getRoundNumber()));
 
         var stateHandler = getGameEnvironment().getStateHandler();
         stateHandler.getGameStateProperty().addListener(($, oldState, newState) -> {
@@ -240,6 +242,11 @@ public class GameController {
         sellItemText.setText("Sell ($" + item.getPurchasableType().getSellPrice() + ")");
         sellItemPane.toFront();
         show(sellItemPane);
+    }
+
+    private void updateRoundCounter(int currentRound) {
+        int totalRounds = getGameEnvironment().getRounds();
+        roundCounterLabel.setText(currentRound + "/" + totalRounds);
     }
 
     private void showStartButton() {
