@@ -1,4 +1,4 @@
-package seng201.team53.unittests.services;
+package seng201.team53.unittests.items;
 
 import static org.junit.Assert.assertEquals;
 
