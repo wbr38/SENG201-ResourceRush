@@ -1,11 +1,15 @@
 package seng201.team53.items.towers;
 
+import java.util.List;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleLongProperty;
 import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
+import seng201.team53.game.state.CartState;
+import seng201.team53.items.Cart;
 import seng201.team53.items.Item;
 import seng201.team53.items.ResourceType;
 import seng201.team53.items.upgrade.Upgradeable;
@@ -79,6 +83,19 @@ public class Tower implements Item, Upgradeable {
 
         long deltaTime = System.currentTimeMillis() - getLastGenerateTime();
         if (deltaTime < reloadSpeed)
+            return false;
+
+        // Tower should only generate if there are carts to be filled
+        // Check if there are any unfilled carts that can be filled by this tower.
+        List<Cart> carts = GameEnvironment.getGameEnvironment().getRound().getCarts();
+        final ResourceType resourceType = getPurchasableType().getResourceType();
+        boolean cartsToFill = carts.stream().anyMatch(cart -> {
+            return !cart.isFull()
+                && cart.getResourceType() == resourceType
+                && cart.getCartState() == CartState.TRAVERSING_PATH;
+        });
+
+        if (!cartsToFill)
             return false;
 
         setLastGenerateTime(System.currentTimeMillis());

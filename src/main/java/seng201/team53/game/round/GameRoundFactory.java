@@ -4,8 +4,6 @@ import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
 import seng201.team53.items.ResourceType;
 
-import java.util.EnumSet;
-
 public class GameRoundFactory {
     public GameRound getRound(int roundNumber) {
 

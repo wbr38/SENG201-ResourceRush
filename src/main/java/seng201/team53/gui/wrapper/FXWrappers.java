@@ -60,6 +60,7 @@ public class FXWrappers {
         // when we change round, the GameRound and hence list of carts just gets garbage collected as there
         // is no longer a surviving reference to it
         fxCarts.clear();
+
         round.getCarts().forEach(cart -> {
             GameEnvironment gameEnvironment = getGameEnvironment();
             AssetLoader assetLoader = gameEnvironment.getAssetLoader();
