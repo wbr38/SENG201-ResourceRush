@@ -35,6 +35,7 @@ public class FXCart {
         pathTransition.setDuration(map.calculatePathDuration(cart.getVelocity()));
         pathTransition.setPath(map.getPolylinePath());
         pathTransition.setInterpolator(Interpolator.LINEAR);
+        pathTransition.setOnFinished(event -> cart.setCartState(CartState.COMPLETE_PATH));
 
         cartCapacityListener = ($, oldCapacity, newCapacity) ->
                 onCapacityUpdate(newCapacity.intValue());
