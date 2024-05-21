@@ -46,7 +46,7 @@ public class Cart implements Tickable, Upgradeable {
         return this.getCapacity() >= this.getMaxCapacity();
     }
 
-    public void addCapacity() {
+    private void addCapacity() {
         currentCapacityProperty.set(getCapacity() + 1);
     }
 
@@ -82,7 +82,7 @@ public class Cart implements Tickable, Upgradeable {
         return velocityModifier.get();
     }
 
-    public void addVelocityModifier() {
+    public void decreaseVelocityModifier() {
         velocityModifier.set(getVelocityModifier() * 0.75f);
     }
 
