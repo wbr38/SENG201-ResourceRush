@@ -75,7 +75,7 @@ public class Tower implements Item, Upgradeable {
         GameDifficulty difficulty = GameEnvironment.getGameEnvironment().getDifficulty();
         long reloadSpeed = type.getReloadSpeed().toMillis();
         reloadSpeed /= (long)difficulty.getTowerReloadModifier();
-        reloadSpeed /= (long)reloadSpeedModifier;
+        reloadSpeed /= reloadSpeedModifier;
 
         long deltaTime = System.currentTimeMillis() - getLastGenerateTime();
         if (deltaTime < reloadSpeed)
