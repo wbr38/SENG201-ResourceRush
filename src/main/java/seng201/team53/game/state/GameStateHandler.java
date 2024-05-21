@@ -69,15 +69,13 @@ public class GameStateHandler {
             gameEnv.beginRound();
             return;
         }
-        gameEnv.playRound();
     }
 
     /**
      * Handles logic specific to the ROUND_PAUSE state transition.
      */
     private void handleChangedGameStateRoundPause() {
-        GameEnvironment gameEnv = GameEnvironment.getGameEnvironment();
-        gameEnv.pauseRound();
+
     }
 
     /**

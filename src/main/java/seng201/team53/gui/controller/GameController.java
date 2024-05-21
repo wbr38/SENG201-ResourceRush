@@ -191,7 +191,6 @@ public class GameController {
         if (stateHandler.getState() != GameState.ROUND_ACTIVE)
             return;
 
-        getGameEnvironment().pauseRound();
         stateHandler.setState(GameState.ROUND_PAUSE);
     }
 
@@ -204,7 +203,6 @@ public class GameController {
         if (stateHandler.getState() != GameState.ROUND_PAUSE)
             return;
 
-        getGameEnvironment().playRound();
         stateHandler.setState(GameState.ROUND_ACTIVE);
     }
 

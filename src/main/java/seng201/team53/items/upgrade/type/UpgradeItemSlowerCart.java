@@ -33,7 +33,6 @@ public class UpgradeItemSlowerCart extends UpgradeItem {
     public void apply(Upgradeable upgradeable) {
         var cart = (Cart) upgradeable;
         cart.decreaseVelocityModifier();
-        getGameEnvironment().getRound().updateMaxCartFinishTicks();
     }
 
     @Override
