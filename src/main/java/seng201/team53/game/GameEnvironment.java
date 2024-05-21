@@ -52,9 +52,6 @@ public class GameEnvironment {
      * Initialises the GameEnvironment singleton. After calling this function, call gameEnvironment.load();
      */
     public static GameEnvironment init(GameController controller, String playerName, int rounds, GameDifficulty difficulty) {
-        if (instance != null)
-            throw new RuntimeException("GameEnvironment is already initialized!");
-
         instance = new GameEnvironment(controller, playerName, rounds, difficulty);
         return instance;
     }
