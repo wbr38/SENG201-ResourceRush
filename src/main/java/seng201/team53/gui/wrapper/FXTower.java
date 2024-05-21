@@ -5,12 +5,14 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.effect.Glow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import seng201.team53.game.map.Tile;
 import seng201.team53.items.towers.Tower;
+import seng201.team53.items.towers.TowerType;
 
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
@@ -38,7 +40,7 @@ public class FXTower {
         String resource = getClass().getResource("/assets/sound/projectile.wav").toString();
         soundEffectMedia = new Media(resource);
 
-        towerBrokenListener = ($, newValue, oldValue) ->
+        towerBrokenListener = ($, oldValue, newValue) ->
                 onBrokenUpdate(newValue);
         lastGenerateTimeListener = ($, newTime, oldTime) ->
                 onTowerGenerate();
@@ -48,9 +50,9 @@ public class FXTower {
     }
 
     private void onBrokenUpdate(boolean broken) {
-        var towerType = tower.getPurchasableType();
-        var cartImage = getGameEnvironment().getAssetLoader().getTowerTypeImage(towerType, broken);
-        imageView.setImage(cartImage);
+        TowerType towerType = tower.getPurchasableType();
+        Image towerImage = getGameEnvironment().getAssetLoader().getTowerTypeImage(towerType, broken);
+        imageView.setImage(towerImage);
     }
 
     private void onTowerGenerate() {
