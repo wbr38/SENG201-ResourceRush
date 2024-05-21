@@ -23,6 +23,10 @@ interface Tickable {
 interface Upgradable {}
 
 abstract class UpgradeItem {
++ {static} REPAIR_TOWER
++ {static} TEMP_FASTER_TOWER_RELOAD
++ {static} TEMP_SLOWER_CART
++ {static} FILL_CART
 - name: String
 - description: String
 - costPrice: int
@@ -32,6 +36,17 @@ abstract class UpgradeItem {
 + canApply(upgradable): boolean
 + apply((upgradable)
 }
+
+class TowerType {
+- name: String
+- description: String
+- resourceType: ResourceType
+- costPrice: int
+- resourceAmount: int
+- reloadSpeed: Duration
+}
+
+TowerType --o ResourceType : "[0..1]"
 
 interface Item {
 + getPurchasableType(): Purchasable
@@ -225,6 +240,19 @@ class Tower {
 + canGenerate(): boolean
 }
 
+class Cart {
+- maxCapacity: int
+- velocity: float
+resourceType: ResourceType
+- spawnAfterTicks: int
+- cartState: CartState
+- currentCapacity: int
+- velocityModifier: float
+}
+
+Cart --o ResourceType : "[0..1]"
+Cart --o CartState : "[0..1]"
+
 class UpgradeItemRepairTower {}
 class UpgradeItemFasterReload {}
 class UpgradeItemSlowerCart {}
@@ -244,6 +272,7 @@ GameStateHandler --o GameState : "[0..1]"
 GameMap --* GameLoop : "[0..1]"
 GameMap --* Tile : "many"
 GameMap --o MapInteraction : "[0..1]"
+GameMap --o Tower : "many"
 
 Tickable <|-- Cart
 Tickable <|-- GameRound
@@ -263,6 +292,7 @@ UpgradeItem <|-- UpgradeItemFillCart
 
 Tower --|> Item
 Tower --|> Upgradable
+Tower --* TowerType : "[0..1]"
 TowerType --|> Item
 
 AssetLoader --* TileTemplate : "many"

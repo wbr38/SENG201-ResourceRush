@@ -1,0 +1,35 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+left to right direction
+skinparam packageStyle rectangle
+
+actor User
+
+rectangle MainScreen {
+User --- (Select Options)
+(Select Options) <.. (Choose difficulty) : "<<include>>"
+(Select Options) <.. (Choose number\nof rounds) : "<<include>>"
+(Select Options) <.. (Choose name) : "<<include>>"
+(Select Options) <. (Start Game) : "                      <<include>>"
+}
+
+rectangle Game {
+User --- (View Shop)
+User --- (View Inventory)
+
+User --- (Manage Rounds)
+(Manage Rounds) <. (Start Round) : "                      <<extend>>"
+(Start Round) <. (Pause Round) : "                      <<extend>>"
+(Pause Round) <. (Resume Round) : "                      <<extend>>"
+
+(View Shop) <.. (Switch between\nitem categories) : "<<extend>>"
+(View Shop) <.. (Purchase items from\nthe shop) : "<<extend>>"
+(Purchase items from\nthe shop) <. (Sell item back to shop) : "                      <<extend>>"
+
+(View Inventory) <.. (Move placed tower\nto inventory) : "<<extend>>"
+(View Inventory) <.. (Place tower in\ninventory on map) : "<<extend>>"
+
+
+}
+@enduml
