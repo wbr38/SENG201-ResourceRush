@@ -98,7 +98,6 @@ public class GameEnvironment {
 
     public void completeRound() {
         getRound().runRoundEndActions();
-        addPoints(20);
         // todo - check if player won
         if (getRound().getRoundNumber() == rounds) {
             stateHandler.setState(GameState.GAME_COMPLETE);

@@ -2,9 +2,11 @@ package seng201.team53.gui.controller;
 
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -14,6 +16,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
@@ -30,7 +33,12 @@ public class GameController {
     @FXML private GridPane gridPane;
 
     @FXML private Pane mapBackgroundPane;
+
+    // Round complete popup
+    @FXML private ChoiceBox<GameDifficulty> difficultyChoiceBox;
     @FXML private Pane roundCompletePane;
+    @FXML private Text roundCompleteInfoLabel;
+    private int previousPoints = 0;
 
     @FXML private Pane randomEventPane;
     @FXML private Text randomEventTest;
@@ -89,6 +97,12 @@ public class GameController {
         toggleInventoryVisible(false);
         this.showSellItemPopup(null);
 
+        var difficulties = FXCollections.observableArrayList(GameDifficulty.values());
+        difficultyChoiceBox.setItems(difficulties);
+        difficultyChoiceBox.setValue(getGameEnvironment().getDifficulty());
+        difficultyChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue,
+                                                                                    newValue) -> getGameEnvironment().setDifficulty(newValue));
+
         // Update round number
         getGameEnvironment().getRoundProperty().addListener(($, oldRound, newRound) -> updateRoundCounter(newRound.getRoundNumber()));
         // Update point count
@@ -122,8 +136,7 @@ public class GameController {
                         return;
                     }
 
-                    showStartButton();
-                    show(roundCompletePane);
+                    showRoundCompletePopup();
                 }
                 case GAME_COMPLETE -> {
                     showGameEndPopup();
@@ -312,6 +325,15 @@ public class GameController {
     public void showRandomEventDialog(String text) {
         randomEventTest.setText(text);
         show(randomEventPane);
+    }
+
+    private void showRoundCompletePopup() {
+        showStartButton();
+        show(roundCompletePane);
+
+        int pointsEarned = getGameEnvironment().getPoints() - previousPoints;
+        roundCompleteInfoLabel.setText("Points Earned: " + pointsEarned);
+        previousPoints = getGameEnvironment().getPoints();
     }
 
     private void showGameEndPopup() {

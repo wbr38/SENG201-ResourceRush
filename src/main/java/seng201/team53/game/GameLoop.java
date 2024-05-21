@@ -24,6 +24,9 @@ public class GameLoop extends AnimationTimer {
                 return;
         }
         if (ticksUntilRoundEnd == lifetimeTicks) {
+            // Add points before ROUND_COMPLETE is set
+            // Otherwise round complete popup will be displayed with wrong amount of points
+            getGameEnvironment().addPoints(20); 
             getGameEnvironment().getStateHandler().setState(GameState.ROUND_COMPLETE);
             stop();
             return;
