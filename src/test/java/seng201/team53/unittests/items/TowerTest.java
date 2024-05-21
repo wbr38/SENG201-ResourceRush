@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -14,6 +15,11 @@ import seng201.team53.items.towers.TowerType;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TowerTest {
+
+    @BeforeAll
+    void beforeAllTests() {
+        GameEnvironment.init(null, null, 0, GameDifficulty.NORMAL);
+    }
 
     @Test
     void testDefaults() {
@@ -37,7 +43,6 @@ class TowerTest {
     void testGenerate() {
         Tower tower = Tower.Type.LUMBER_MILL.create();
 
-        GameEnvironment.init(null, null, 0, GameDifficulty.NORMAL);
 
         // Not enough time lapsed to generate
         assertFalse(tower.canGenerate());

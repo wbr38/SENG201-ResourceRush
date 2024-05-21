@@ -2,6 +2,7 @@ package seng201.team53.unittests.items;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -18,8 +19,13 @@ import seng201.team53.items.towers.Tower;
 class ShopTest {
     private Shop shop;
 
-    @BeforeEach
+    @BeforeAll
     void beforeAllTests() {
+        GameEnvironment.init(null, null, 0, GameDifficulty.NORMAL);
+    }
+
+    @BeforeEach
+    void beforeEachTest() {
         shop = new Shop();
     }
 
@@ -86,7 +92,6 @@ class ShopTest {
     @Test
     void testPurchaseItem() {
         // Needed to set GameDifficulty parameter
-        GameEnvironment.init(null, null, 0, GameDifficulty.NORMAL);
         Purchasable item = Tower.Type.MINE;
 
         shop.addMoney(item.getCostPrice());
