@@ -116,6 +116,12 @@ public class GameController {
                     hide(roundCompletePane);
                 }
                 case ROUND_COMPLETE -> {
+                    boolean roundWon = getGameEnvironment().getRound().roundWon();
+                    if (!roundWon) {
+                        showGameEndPopup();
+                        return;
+                    }
+
                     showStartButton();
                     show(roundCompletePane);
                 }
@@ -302,7 +308,7 @@ public class GameController {
         show(gameEndPane);
 
         GameEnvironment gameEnv = getGameEnvironment();
-        boolean gameWon = gameEnv.gameWon();
+        boolean gameWon = gameEnv.getRound().roundWon();
         String playerName = gameEnv.getPlayerName();
         int currentRound = gameEnv.getRound().getRoundNumber();
         int maxRounds = gameEnv.getRounds();

@@ -93,4 +93,13 @@ public class GameRound implements Tickable {
         }).max().orElseGet(() -> 0);
         gameLoop.setRoundCompleteTicks(maxCartTicks);
     }
+
+    /**
+     * @return Whether all the carts for this round were filled
+     */
+    public boolean roundWon() {
+        List<Cart> carts = getCarts();
+        boolean allCartsFull = carts.stream().allMatch(Cart::isFull);
+        return allCartsFull;
+    }
 }

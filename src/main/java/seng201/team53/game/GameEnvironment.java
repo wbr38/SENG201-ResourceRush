@@ -198,15 +198,4 @@ public class GameEnvironment {
     public String getPlayerName() {
         return playerName;
     }
-
-    /**
-     * @return Whether the user has won the game or not. Call this function when GameState = GAME_COMPLETE
-     */
-    public boolean gameWon() {
-        List<Cart> carts = getRound().getCarts();
-        boolean allCartsFull = carts.stream().allMatch(Cart::isFull);
-
-        // maybe add check if we completed the final round?
-        return allCartsFull;
-    }
 }
