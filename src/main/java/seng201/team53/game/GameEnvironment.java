@@ -15,11 +15,9 @@ import seng201.team53.game.round.GameRoundFactory;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.gui.controller.GameController;
-import seng201.team53.items.Cart;
 import seng201.team53.items.Shop;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * The overarching, main class of the game

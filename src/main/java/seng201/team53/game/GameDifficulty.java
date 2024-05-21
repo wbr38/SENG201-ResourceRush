@@ -3,7 +3,7 @@ package seng201.team53.game;
 public enum GameDifficulty {
     EASY(
          "Easy",
-         400,
+         600,
          0.5,
          200.0,
          1.0,
@@ -13,7 +13,7 @@ public enum GameDifficulty {
 
     NORMAL(
            "Normal",
-           300,
+           500,
            1.0,
            100.0,
            0.75,
@@ -21,20 +21,19 @@ public enum GameDifficulty {
            1.0f,
            0.35),
 
-    // TODO: Comment this out after done testing
-    TESTING(
-           "TESTING",
-           10000, 
-           1.0,
-           100.0,
-           0.75,
-           1.0,
-           3.0f,
-           0.35),
+    // TESTING(
+    //        "TESTING",
+    //        10000, 
+    //        1.0,
+    //        100.0,
+    //        0.75,
+    //        1.0,
+    //        3.0f,
+    //        0.35),
 
     HARD(
          "Hard",
-         200,
+         400,
          1.5,
          200.0,
          0.5,
