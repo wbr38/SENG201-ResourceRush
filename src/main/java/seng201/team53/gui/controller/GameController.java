@@ -86,7 +86,7 @@ public class GameController {
     private final FXWrappers fxWrappers = new FXWrappers();
 
     public void init() {
-        toggleInventoryVisible();
+        toggleInventoryVisible(false);
         this.showSellItemPopup(null);
 
         // Update round number
@@ -165,7 +165,7 @@ public class GameController {
             return;
 
         stateHandler.setState(GameState.ROUND_ACTIVE);
-        toggleInventoryVisible();
+        toggleInventoryVisible(false);
         this.showSellItemPopup(null);
     }
 
@@ -250,11 +250,21 @@ public class GameController {
         notificationPause.play();
     }
 
+    /**
+     * Toggle the visibility of the inventory pane
+     */
     private void toggleInventoryVisible() {
-        if (inventoryPane.isVisible())
-            hide(inventoryPane);
-        else
+        toggleInventoryVisible(!inventoryPane.isVisible());
+    }
+
+    /**
+     * Set the visibility of the inventory pane
+     */
+    private void toggleInventoryVisible(boolean visible) {
+        if (visible)
             show(inventoryPane);
+        else
+            hide(inventoryPane);
     }
 
     /**
