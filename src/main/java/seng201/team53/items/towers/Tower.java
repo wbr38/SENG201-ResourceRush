@@ -198,7 +198,6 @@ public class Tower implements Item, Upgradeable {
             "A Lumber Mill produces wood",
             ResourceType.WOOD,
             100,
-            1,
             Duration.seconds(1));
 
         /**
@@ -208,7 +207,6 @@ public class Tower implements Item, Upgradeable {
             "A Mine produces ores",
             ResourceType.STONE,
             120,
-            1,
             Duration.seconds(1));
 
         /**
@@ -218,7 +216,6 @@ public class Tower implements Item, Upgradeable {
             "A Quarry produces stone",
             ResourceType.ORE,
             150,
-            1,
             Duration.seconds(1));
 
         /**
@@ -228,7 +225,6 @@ public class Tower implements Item, Upgradeable {
             "A windmill produces energy",
             ResourceType.ENERGY,
             200,
-            1,
             Duration.seconds(1));
     }
 }
