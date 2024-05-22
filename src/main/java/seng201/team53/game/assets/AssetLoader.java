@@ -157,11 +157,11 @@ public class AssetLoader {
         towerImages.put(Tower.Type.LUMBER_MILL, readImage("/assets/items/wood_tower.png"));
         towerImages.put(Tower.Type.MINE, readImage("/assets/items/stone_tower.png"));
         towerImages.put(Tower.Type.QUARRY, readImage("/assets/items/quarry_tower.png"));
-        towerImages.put(Tower.Type.WIND_MILL, readImage("/assets/items/wind_turbine_tower.png"));
+        towerImages.put(Tower.Type.WINDMILL, readImage("/assets/items/wind_turbine_tower.png"));
         brokenTowerImages.put(Tower.Type.LUMBER_MILL, readImage("/assets/items/wood_tower_broken.png"));
         brokenTowerImages.put(Tower.Type.MINE, readImage("/assets/items/stone_tower_broken.png"));
         brokenTowerImages.put(Tower.Type.QUARRY, readImage("/assets/items/quarry_tower.png"));
-        brokenTowerImages.put(Tower.Type.WIND_MILL, readImage("/assets/items/quarry_tower_broken.png"));
+        brokenTowerImages.put(Tower.Type.WINDMILL, readImage("/assets/items/quarry_tower_broken.png"));
     }
 
     /**

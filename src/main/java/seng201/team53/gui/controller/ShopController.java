@@ -25,7 +25,7 @@ public class ShopController {
         shopButtons.put(gameController.shopTowerButton1, Tower.Type.LUMBER_MILL);
         shopButtons.put(gameController.shopTowerButton2, Tower.Type.MINE);
         shopButtons.put(gameController.shopTowerButton3, Tower.Type.QUARRY);
-        shopButtons.put(gameController.shopTowerButton4, Tower.Type.WIND_MILL);
+        shopButtons.put(gameController.shopTowerButton4, Tower.Type.WINDMILL);
         shopButtons.put(gameController.shopItemButton1, UpgradeItem.Type.REPAIR_TOWER);
         shopButtons.put(gameController.shopItemButton2, UpgradeItem.Type.TEMP_FASTER_TOWER_RELOAD);
         shopButtons.put(gameController.shopItemButton3, UpgradeItem.Type.TEMP_SLOWER_CART);

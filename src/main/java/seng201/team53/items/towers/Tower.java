@@ -20,19 +20,26 @@ import seng201.team53.items.upgrade.Upgradeable;
 
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
+/**
+ * Represents a tower in the game.
+ * Each tower has a type, broken property, last generate property, generate timeline, reload speed modifier
+ * and an XP level
+ */
 public class Tower implements Item, Upgradeable {
     private final TowerType type;
     private final BooleanProperty brokenProperty = new SimpleBooleanProperty(false);
     private final LongProperty lastGenerateTimeProperty = new SimpleLongProperty(System.currentTimeMillis());
+    private final Timeline generateTimeline;
     private double reloadSpeedModifier = 1;
     private int xpLevel = 0;
 
-    private Timeline generateTimeline;
-
+    /**
+     * Constructs a new tower with the given type
+     * @param type The type of the tower
+     */
     protected Tower(TowerType type) {
         this.type = type;
 
-        // Timeline for Tower generating. They keyframe at index 1 is used to modify the delay/reload speed
         generateTimeline = new Timeline(
             new KeyFrame(Duration.ZERO, event -> generate()),
             new KeyFrame(Duration.millis(getReloadMS()))
@@ -47,6 +54,11 @@ public class Tower implements Item, Upgradeable {
         });
     }
 
+    /**
+     * Generates the resources for the carts in the game round.
+     * If the tower can generate, it will loop all the carts in the game round and attempt to give it a resource
+     * of the specified type. The last generate time is set to the current time, if it generates.
+     */
     private void generate() {
         if (!canGenerate())
             return;
@@ -57,6 +69,10 @@ public class Tower implements Item, Upgradeable {
         setLastGenerateTime(System.currentTimeMillis());
     }
 
+    /**
+     * Checks if the tower is ready to generate a resource
+     * @return true if the tower is ready to generate, false otherwise
+     */
     public boolean canGenerate() {
         if (isBroken())
             return false;
@@ -65,37 +81,36 @@ public class Tower implements Item, Upgradeable {
         if (gameState != GameState.ROUND_ACTIVE)
             return false;
 
-        // Tower should only generate if there are carts to be filled
-        // Check if there are any unfilled carts that can be filled by this tower.
         List<Cart> carts = GameEnvironment.getGameEnvironment().getRound().getCarts();
-        final ResourceType resourceType = getPurchasableType().getResourceType();
-        boolean cartsToFill = carts.stream().anyMatch(cart -> {
+        ResourceType resourceType = getPurchasableType().getResourceType();
+        return carts.stream().anyMatch(cart -> {
             return !cart.isFull()
                 && cart.getResourceType() == resourceType
                 && cart.getCartState() == CartState.TRAVERSING_PATH;
         });
-
-        if (!cartsToFill)
-            return false;
-
-        return true;
     }
 
+    /**
+     * Adds a reload speed modifier of 0.5. Everytime this method is called, it will generate resources 50% faster,
+     * until the modifier is reset
+     */
     public void addReloadSpeedModifier() {
         reloadSpeedModifier += 0.5;
         updateGenerateDelay();
     }
 
+    /**
+     * Resets the reload speed modifier. The tower will generate at its original rate
+     */
     public void resetReloadSpeedModifier() {
         reloadSpeedModifier = 1;
         updateGenerateDelay();
     }
 
     /**
-     * Update the generate timeline with a new reload delay.
+     * Updates the generate timeline with a new reload delay.
      */
     private void updateGenerateDelay() {
-        // Need to restart the timeline for changes to take affect
         generateTimeline.stop();
         Duration delay = Duration.millis(getReloadMS());
         generateTimeline.getKeyFrames().set(1, new KeyFrame(delay));
@@ -103,82 +118,117 @@ public class Tower implements Item, Upgradeable {
     }
 
     /**
+     * Calculates the reload speed in milliseconds
      * @return The modified reload speed of this tower in milliseconds.
      */
     private long getReloadMS() {
         GameDifficulty difficulty = GameEnvironment.getGameEnvironment().getDifficulty();
-        long reloadSpeed = type.getReloadSpeed().toMillis();
+        double reloadSpeed = type.getReloadSpeed().toMillis();
         reloadSpeed /= difficulty.getTowerReloadModifier();
         reloadSpeed /= reloadSpeedModifier;
-        return reloadSpeed;
+        return (long) reloadSpeed;
     }
 
-
+    /**
+     * Retrieves the towers purchasable type
+     * @return The type of tower
+     */
     public TowerType getPurchasableType() {
         return type;
     }
 
+    /**
+     * Retrieves the broken property.
+     * This property is observable meaning it can be watched for changes
+     * @return The observable broken property
+     */
     public BooleanProperty getBrokenProperty() {
         return brokenProperty;
     }
 
+    /**
+     * Retrieves the broken boolean of the tower
+     * @return true if the tower is broken, false otherwise
+     */
     public boolean isBroken() {
         return brokenProperty.get();
     }
 
+    /**
+     * Sets the towers broken status
+     * @param broken true if the tower is broken, false otherwise
+     */
     public void setBroken(boolean broken) {
         brokenProperty.set(broken);
     }
 
+    /**
+     * Retrieves the last generate time property.
+     * This property is observable, meaning it can be watched for changes
+     * @return The last generate time property
+     */
     public LongProperty getLastGenerateTimeProperty() {
         return lastGenerateTimeProperty;
     }
 
-    public long getLastGenerateTime() {
-        return lastGenerateTimeProperty.get();
-    }
-
+    /**
+     * Sets the last generate time
+     * @param time The last generate time
+     */
     public void setLastGenerateTime(long time) {
         lastGenerateTimeProperty.set(time);
     }
 
+    /**
+     * Retrieves the current XP level
+     * @return The XP level
+     */
     public int getXpLevel() {
         return xpLevel;
     }
 
-    public void incrementXpLevel(int amount) {
-        this.xpLevel += amount;
-    }
-
-
+    /**
+     * This interface represents the types of towers
+     */
     public interface Type {
+        /**
+         * Represents the lumber mill tower type
+         */
         TowerType LUMBER_MILL = new TowerType("Lumber Mill Tower",
             "A Lumber Mill produces wood",
             ResourceType.WOOD,
             100,
             1,
-            java.time.Duration.ofSeconds(1));
+            Duration.seconds(1));
 
-
+        /**
+         * Represents the mine tower type
+         */
         TowerType MINE = new TowerType("Mine Tower",
             "A Mine produces ores",
             ResourceType.STONE,
             120,
             1,
-            java.time.Duration.ofSeconds(1));
+            Duration.seconds(1));
 
+        /**
+         * Represents the quarry tower type
+         */
         TowerType QUARRY = new TowerType("Quarry Tower",
             "A Quarry produces stone",
             ResourceType.ORE,
             150,
             1,
-            java.time.Duration.ofSeconds(1));
+            Duration.seconds(1));
 
-        TowerType WIND_MILL = new TowerType("Windmill Tower",
-            "A wind mill produces energy",
+        /**
+         * Represents the windmill tower type
+         */
+        TowerType WINDMILL = new TowerType("Windmill Tower",
+            "A windmill produces energy",
             ResourceType.ENERGY,
             200,
             1,
-            java.time.Duration.ofSeconds(1));
+            Duration.seconds(1));
     }
 }

@@ -1,11 +1,10 @@
 package seng201.team53.items.towers;
 
+import javafx.util.Duration;
 import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
 import seng201.team53.items.Purchasable;
 import seng201.team53.items.ResourceType;
-
-import java.time.Duration;
 
 public class TowerType implements Purchasable {
     private final String name;

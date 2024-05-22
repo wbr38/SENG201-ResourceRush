@@ -21,7 +21,7 @@ import java.util.Arrays;
 
 /**
  * The overarching, main class of the game
- * This class is a Singleton; use .getGameEnvironment() to get the instance of this class and all its sub-components;
+ * This class is a Singleton; use .getGameEnvironment() to get the instance of this class and all its subcomponents;
  */
 public class GameEnvironment {
     private final GameStateHandler stateHandler = new GameStateHandler();
@@ -39,6 +39,13 @@ public class GameEnvironment {
 
     private static GameEnvironment instance;
 
+    /**
+     * Constructs a new game environment with the given parameters
+     * @param controller The graphical controller of the game
+     * @param playerName The name of the play
+     * @param rounds The number of rounds to be played
+     * @param difficulty The initial difficulty of the game
+     */
     private GameEnvironment(GameController controller, String playerName, int rounds, GameDifficulty difficulty) {
         this.controller = controller;
         this.playerName = playerName;
@@ -47,20 +54,9 @@ public class GameEnvironment {
     }
 
     /**
-     * Initialises the GameEnvironment singleton. After calling this function, call gameEnvironment.load();
+     * Loads the game environment. This includes initialising the asset loader, random events, map and creating
+     * the first round
      */
-    public static GameEnvironment init(GameController controller, String playerName, int rounds, GameDifficulty difficulty) {
-        instance = new GameEnvironment(controller, playerName, rounds, difficulty);
-        return instance;
-    }
-
-    public static GameEnvironment getGameEnvironment() {
-        if (instance == null) {
-            throw new RuntimeException("GameEnvironment has not been initialized!");
-        }
-        return instance;
-    }
-
     public void load() {
         assetLoader.init();
         randomEvents.init();
@@ -71,12 +67,18 @@ public class GameEnvironment {
         shop.addMoney(difficulty.getStartingMoney());
     }
 
+    /**
+     * Sets up the next round of the game
+     */
     public void setupNextRound() {
         int nextRound = getRound().getRoundNumber() + 1;
         setRound(roundFactory.getRound(nextRound));
         shop.addMoney(getRound().getMoneyEarned());
     }
 
+    /**
+     * Begins the current round
+     */
     public void beginRound() {
         var randomEvent = randomEvents.requestRandomEvent();
         if (randomEvent != null) {
@@ -87,102 +89,155 @@ public class GameEnvironment {
         }
     }
 
+    /**
+     * Completes the current round.
+     * This method will run the current rounds end actions
+     */
     public void completeRound() {
         getRound().runRoundEndActions();
-        // todo - check if player won
         if (getRound().getRoundNumber() == rounds) {
             stateHandler.setState(GameState.GAME_COMPLETE);
-            return;
         }
     }
 
-    // to create the path and buildable matrix stuff
-    public void enableMapCreationMode() {
-        int[][] matrix = new int[16][20];
-        controller.getOverlay().setOnMouseClicked(event -> {
-            Tile tile;
-            try {
-                tile = map.getTileFromScreenPosition((int)event.getSceneX(), (int)event.getSceneY());
-            } catch (TileNotFoundException e) {
-                return;
-            }
-            if (event.getButton() == MouseButton.PRIMARY) {
-                matrix[tile.getY()][tile.getX()] = 1;
-                return;
-            }
-            if (event.getButton() == MouseButton.SECONDARY) {
-                matrix[tile.getY()][tile.getX()] = 2;
-                return;
-            }
-            if (event.getButton() == MouseButton.MIDDLE) {
-                // print the matrix
-                for (int[] row : matrix) {
-                    System.out.println(Arrays.toString(row));
-                }
-            }
-        });
+    /**
+     * Constructs a new game environment and initialises the singleton
+     * After calling this function, call GameEnvironment#load();
+     */
+    public static GameEnvironment init(GameController controller, String playerName, int rounds, GameDifficulty difficulty) {
+        instance = new GameEnvironment(controller, playerName, rounds, difficulty);
+        return instance;
     }
 
+    /**
+     * Retrieves the instance of the game environment singleton
+     * @return The instance of the game environment singleton
+     */
+    public static GameEnvironment getGameEnvironment() {
+        if (instance == null) {
+            throw new RuntimeException("GameEnvironment has not been initialized!");
+        }
+        return instance;
+    }
+
+    /**
+     * Retrieves the state handler
+     * @return The state handler
+     */
     public GameStateHandler getStateHandler() {
         return this.stateHandler;
     }
 
+    /**
+     * Retrieves the game controller
+     * @return The game controller
+     */
     public GameController getController() {
         return controller;
     }
 
+    /**
+     * Retrieves the asset loader
+     * @return The asset loader
+     */
     public AssetLoader getAssetLoader() {
         return assetLoader;
     }
 
-    public RandomEvents getRandomEvents() {
-        return randomEvents;
-    }
-
+    /**
+     * Retrieves the shop
+     * @return The shop
+     */
     public Shop getShop() {
         return shop;
     }
 
+    /**
+     * Retrieves the game round property.
+     * This property is observable, meaning it can be watched for changes
+     * @return The observable game round property
+     */
     public Property<GameRound> getRoundProperty() {
         return gameRoundProperty;
     }
 
+    /**
+     * Retrieves the current round
+     * @return The current game round
+     */
     public GameRound getRound() {
         return gameRoundProperty.getValue();
     }
 
+    /**
+     * Sets the current game round
+     * @param round The new game round
+     */
     private void setRound(GameRound round) {
         gameRoundProperty.setValue(round);
     }
 
+    /**
+     * Retrieves the current game difficulty
+     * @return The game difficulty
+     */
     public GameDifficulty getDifficulty() {
         return difficulty;
     }
 
+    /**
+     * Sets the new game difficulty
+     * @param difficulty The new game difficulty
+     */
     public void setDifficulty(GameDifficulty difficulty) {
         this.difficulty = difficulty;
     }
 
+    /**
+     * Retrieves the number of rounds to be played
+     * @return The number of total rounds
+     */
     public int getRounds() {
         return rounds;
     }
 
+    /**
+     * Retrieves the game map
+     * @return The game map
+     */
     public GameMap getMap() {
         return map;
     }
 
-    public int getPoints() {
-        return pointsProperty.get();
-    }
-
+    /**
+     * Retrieves the points property.
+     * This property is observable, meaning it can be watched for changes
+     * @return The observable points property
+     */
     public IntegerProperty getPointsProperty() {
         return pointsProperty;
     }
 
+    /**
+     * Retrieves the number of points gained throughout the game
+     * @return The number of points
+     */
+    public int getPoints() {
+        return pointsProperty.get();
+    }
+
+    /**
+     * Increases the number of points gained throughout the game
+     * @param points The points to be added
+     */
     public void addPoints(int points) {
         pointsProperty.set(pointsProperty.get() + points);
     }
 
+    /**
+     * Retrieves the players name
+     * @return The players name
+     */
     public String getPlayerName() {
         return playerName;
     }
