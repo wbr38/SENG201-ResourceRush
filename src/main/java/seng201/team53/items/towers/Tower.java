@@ -191,6 +191,7 @@ public class Tower implements Item, Upgradeable {
      * This interface represents the types of towers
      */
     public interface Type {
+
         /**
          * Represents the lumber mill tower type
          */
