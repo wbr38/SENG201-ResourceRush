@@ -9,6 +9,9 @@ import java.util.Stack;
 import static seng201.team53.game.map.GameMap.TILE_HEIGHT;
 import static seng201.team53.game.map.GameMap.TILE_WIDTH;
 
+/**
+ * This service finds and validates a path in the map given a matrix
+ */
 public class PathFinderService {
     public static final int[] X_DIRECTIONS = {-1, 0, 1, 0};
     public static final int[] Y_DIRECTIONS = {0, 1, 0, -1};
@@ -36,15 +39,19 @@ public class PathFinderService {
         return polylinePath;
     }
 
+    /**
+     * Calculates the path length. The value 2 is added to the calculation to take into account
+     * starting the path off-screen and ending off-screen
+     * @return The calculated path length
+     */
     public int calculatePathLength() {
-        return path.size() + 2; // add 2 to take into account starting off screen and ending off screen
+        return path.size() + 2;
     }
 
     /**
      * Finds a path from the starting point (startX, startY) to the ending point (endX, endY) on the map
      * This method uses a depth-first search algorithm to explore possible paths on the map
      * It throws an exception if a path cannot be found or if a path has already been calculated for this map
-     * @throws IllegalStateException If a path has already been calculated for this map
      */
     public void findPath(Tile[][] tiles, int startX, int startY, int endX, int endY) {
         int[][] discovered = new int[tiles.length][tiles[0].length];

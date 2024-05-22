@@ -3,14 +3,26 @@ package seng201.team53.items;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
+/**
+ * This class represents the shop. It stores the players money, determines if an item can be bought and handles
+ * selling of items
+ */
 public class Shop {
-
     private final IntegerProperty moneyProperty = new SimpleIntegerProperty(0);
 
+    /**
+     * Retrieves the money property.
+     * This property is observable, meaning it can be watched for changes
+     * @return The money property
+     */
     public IntegerProperty getMoneyProperty() {
         return moneyProperty;
     }
 
+    /**
+     * Retrieves the players money
+     * @return The amount of money the player has
+     */
     public int getMoney() {
         return moneyProperty.get();
     }
@@ -32,7 +44,10 @@ public class Shop {
         return true;
     }
 
-
+    /**
+     * Sells a purchasable item and adds the sell price to the players balance
+     * @param item The item to sell
+     */
     public void sellItem(Purchasable item) {
         int sellPrice = item.getSellPrice();
         this.addMoney(sellPrice);
@@ -46,6 +61,10 @@ public class Shop {
         moneyProperty.set(Math.max(0, getMoney() - amount));
     }
 
+    /**
+     * Increases the player's balance by a given amount
+     * @param amount The amount to increase the players balance
+     */
     public void addMoney(int amount) {
         moneyProperty.set(moneyProperty.get() + amount);
     }
