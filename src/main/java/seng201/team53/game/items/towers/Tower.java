@@ -89,12 +89,20 @@ public class Tower implements Item, Upgradeable {
     }
 
     /**
-     * Adds a reload speed modifier of 0.5. Everytime this method is called, it will generate resources 50% faster,
+     * Adds a reload speed modifier of 0.25. Everytime this method is called, it will generate resources 50% faster,
      * until the modifier is reset
      */
     public void addReloadSpeedModifier() {
-        reloadSpeedModifier += 0.5;
+        reloadSpeedModifier += 0.25;
         updateGenerateDelay();
+    }
+
+    /**
+     * Takes away a reload speed modifier of 0.25. Everytime this method is called, it will generate resources 50% faster,
+     * until the modifier is reset
+     */
+    public void minusReloadModifier() {
+        reloadSpeedModifier -= 0.25;
     }
 
     /**

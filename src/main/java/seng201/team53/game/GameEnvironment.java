@@ -77,10 +77,11 @@ public class GameEnvironment {
     public void beginRound() {
         var randomEvent = randomEvents.requestRandomEvent();
         if (randomEvent != null) {
-            randomEvent.apply();
-            stateHandler.setState(GameState.RANDOM_EVENT_DIALOG_OPEN);
-            controller.showRandomEventDialog(randomEvent.getClass().getSimpleName());
-            return;
+            var towerType = randomEvent.apply();
+            if (towerType != null) {
+                stateHandler.setState(GameState.RANDOM_EVENT_DIALOG_OPEN);
+                controller.showRandomEventDialog(randomEvent.getDescription(towerType));
+            }
         }
     }
 
@@ -129,6 +130,14 @@ public class GameEnvironment {
      */
     public GameController getController() {
         return controller;
+    }
+
+    /**
+     * Retrieves the random events
+     * @return The random events
+     */
+    public RandomEvents getRandomEvents() {
+        return randomEvents;
     }
 
     /**

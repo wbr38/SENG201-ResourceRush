@@ -37,7 +37,8 @@ public class Cart implements Upgradeable {
         this.resourceType = acceptedResource;
 
         getGameEnvironment().getStateHandler().getGameStateProperty().addListener(($, oldState, newState) -> {
-            if (newState == GameState.ROUND_ACTIVE && oldState == GameState.ROUND_NOT_STARTED) {
+            if (newState == GameState.ROUND_ACTIVE &&
+                    (oldState == GameState.ROUND_NOT_STARTED || oldState == GameState.RANDOM_EVENT_DIALOG_OPEN)) {
                 PauseTransition pause = new PauseTransition(spawnDelay);
                 pause.setOnFinished(event -> setCartState(CartState.TRAVERSING_PATH));
                 pause.play();

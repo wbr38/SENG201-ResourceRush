@@ -37,11 +37,15 @@ public class GameStateHandler {
      */
     public void setState(GameState gameState) {
         previousState = getState();
+        if (gameState == GameState.ROUND_ACTIVE) {
+            if (!handleChangedGameStateRoundActive())
+                return;
+        }
+        System.out.println(gameState.name());
         gameStateProperty.setValue(gameState);
 
         switch (gameState) {
             case ROUND_NOT_STARTED -> handleChangedGameStateRoundNotStarted();
-            case ROUND_ACTIVE -> handleChangedGameStateRoundActive();
             case ROUND_PAUSE -> handleChangedGameStateRoundPause();
             case ROUND_COMPLETE -> handleChangedGameStateRoundComplete();
             case RANDOM_EVENT_DIALOG_OPEN -> handleChangedGameStateRandomEventDialogOpen();
@@ -59,13 +63,22 @@ public class GameStateHandler {
 
     /**
      * Handles logic specific to the ROUND_ACTIVE state transition.
+     * @return true if the state should be changed, false otherwise
      */
-    private void handleChangedGameStateRoundActive() {
+    private boolean handleChangedGameStateRoundActive() {
         GameEnvironment gameEnv = GameEnvironment.getGameEnvironment();
         if (previousState == GameState.ROUND_NOT_STARTED) {
-            gameEnv.beginRound();
-            return;
+            var randomEvent = gameEnv.getRandomEvents().requestRandomEvent();
+            if (randomEvent != null) {
+                var towerType = randomEvent.apply();
+                if (towerType != null) {
+                    gameEnv.getController().showRandomEventDialog(randomEvent.getDescription(towerType));
+                    setState(GameState.RANDOM_EVENT_DIALOG_OPEN);
+                    return false;
+                }
+            }
         }
+        return true;
     }
 
     /**
