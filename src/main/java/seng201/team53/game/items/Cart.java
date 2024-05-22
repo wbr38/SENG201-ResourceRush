@@ -29,20 +29,23 @@ public class Cart implements Upgradeable {
      * @param maxCapacity The max capacity of the cart
      * @param velocity The velocity of the cart
      * @param acceptedResource The resource that the cart accepts
-     * @param spawnDelay The delay time until the cart spawns and starts collecting resources
+     * @param spawnDelayTime The delay time until the cart spawns and starts collecting resources
      */
-    public Cart(int maxCapacity, float velocity, ResourceType acceptedResource, Duration spawnDelay) {
+    public Cart(int maxCapacity, float velocity, ResourceType acceptedResource, Duration spawnDelayTime) {
         this.maxCapacity = maxCapacity;
         this.velocity = velocity;
         this.resourceType = acceptedResource;
 
+        // Delay the cart starting to move. See FXCart onCartStateUpdate where the cart will begin following the path. 
+        PauseTransition spawnDelay = new PauseTransition(spawnDelayTime);
+        spawnDelay.setOnFinished(event -> setCartState(CartState.TRAVERSING_PATH));
+
+        // Play/pause the cart spawnDelay in line with the game being paused.
         getGameEnvironment().getStateHandler().getGameStateProperty().addListener(($, oldState, newState) -> {
-            if (newState == GameState.ROUND_ACTIVE &&
-                    (oldState == GameState.ROUND_NOT_STARTED || oldState == GameState.RANDOM_EVENT_DIALOG_OPEN)) {
-                PauseTransition pause = new PauseTransition(spawnDelay);
-                pause.setOnFinished(event -> setCartState(CartState.TRAVERSING_PATH));
-                pause.play();
-            }
+            if (newState == GameState.ROUND_ACTIVE)
+                spawnDelay.play();
+            else    
+                spawnDelay.pause();
         });
     }
 
