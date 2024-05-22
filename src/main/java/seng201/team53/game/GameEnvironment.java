@@ -85,15 +85,6 @@ public class GameEnvironment {
             controller.showRandomEventDialog(randomEvent.getClass().getSimpleName());
             return;
         }
-        playRound();
-    }
-
-    public void playRound() {
-        getRound().play();
-    }
-
-    public void pauseRound() {
-        getRound().pause();
     }
 
     public void completeRound() {

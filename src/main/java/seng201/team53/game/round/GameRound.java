@@ -1,21 +1,21 @@
 package seng201.team53.game.round;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javafx.util.Duration;
 import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
-import seng201.team53.game.GameLoop;
-import seng201.team53.game.Tickable;
 import seng201.team53.items.Cart;
 import seng201.team53.items.ResourceType;
 
-import java.util.*;
 
-import static seng201.team53.game.GameEnvironment.getGameEnvironment;
-
-public class GameRound implements Tickable {
+public class GameRound {
     private final int roundNumber;
     private final List<Cart> carts = new ArrayList<>();
     private final Set<Runnable> roundEndActions = new HashSet<>();
-    private GameLoop gameLoop;
 
     public GameRound(int roundNumber) {
         this.roundNumber = roundNumber;
@@ -34,47 +34,16 @@ public class GameRound implements Tickable {
         return moneyEarned;
     }
 
-    public int getMaxCartFinishTicks() {
-        var map = getGameEnvironment().getMap();
-        return carts.stream().mapToInt(cart -> {
-            var duration = map.calculatePathDuration(cart.getVelocity()).toMillis();
-            return cart.getSpawnAfterTicks() + (int)Math.ceil(duration / GameLoop.MS_BETWEEN_TICKS);
-        }).max().orElseGet(() -> 0); // should never happen tho
-    }
-
     public List<Cart> getCarts() {
         return carts;
     }
 
-    public void addCart(int maxCapacity, float velocity, ResourceType resourceType, int spawnAfterTicks) {
+    public void addCart(int maxCapacity, float velocity, ResourceType resourceType, Duration spawnDelay) {
         var cart = new Cart(maxCapacity,
             velocity,
             resourceType,
-            spawnAfterTicks);
+            spawnDelay);
         carts.add(cart);
-    }
-
-    @Override
-    public void tick(int lifetime) {
-
-        carts.forEach(cart -> cart.tick(lifetime));
-        getGameEnvironment().getMap().getTowers().forEach(tower -> {
-            if (tower.canGenerate()) {
-                carts.forEach(cart -> cart.addResource(tower.getPurchasableType().getResourceType()));
-            }
-        });
-    }
-
-    public void play() {
-        if (gameLoop == null) {
-            gameLoop = new GameLoop(this);
-            updateMaxCartFinishTicks();
-        }
-        gameLoop.start();
-    }
-
-    public void pause() {
-        gameLoop.stop();
     }
 
     public void runRoundEndActions() {
@@ -83,15 +52,6 @@ public class GameRound implements Tickable {
 
     public void addOnRoundEndAction(Runnable runnable) {
         roundEndActions.add(runnable);
-    }
-
-    public void updateMaxCartFinishTicks() {
-        var map = getGameEnvironment().getMap();
-        int maxCartTicks = carts.stream().mapToInt(cart -> {
-            var duration = map.calculatePathDuration(cart.getVelocity()).toMillis();
-            return (int)Math.ceil(duration / GameLoop.MS_BETWEEN_TICKS);
-        }).max().orElseGet(() -> 0);
-        gameLoop.setRoundCompleteTicks(maxCartTicks);
     }
 
     /**

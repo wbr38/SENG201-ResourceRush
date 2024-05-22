@@ -12,6 +12,8 @@ import seng201.team53.items.Cart;
 
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
+import java.util.List;
+
 public class FXCart {
     private final Cart cart;
     private final Pane wrapper;
@@ -35,16 +37,23 @@ public class FXCart {
         pathTransition.setDuration(map.calculatePathDuration(cart.getVelocity()));
         pathTransition.setPath(map.getPolylinePath());
         pathTransition.setInterpolator(Interpolator.LINEAR);
-        pathTransition.setOnFinished(event -> cart.setCartState(CartState.COMPLETE_PATH));
+        
+        // When this cart reaches the end, update it's state
+        // Check if this was the last cart to reach the end (aka round completed)
+        pathTransition.setOnFinished(event -> {
+            cart.setCartState(CartState.COMPLETE_PATH);
+            List<Cart> carts = getGameEnvironment().getRound().getCarts();
+            boolean allCartsFinished = carts.stream().allMatch(x -> x.getCartState() == CartState.COMPLETE_PATH);
+            if (allCartsFinished) {
+                getGameEnvironment().addPoints(20);
+                getGameEnvironment().getStateHandler().setState(GameState.ROUND_COMPLETE);
+            }
+        });
 
-        cartCapacityListener = ($, oldCapacity, newCapacity) ->
-                onCapacityUpdate(newCapacity.intValue());
-        cartStateListener = ($, oldState, newState) ->
-                onCartStateUpdate(newState);
-        gameStateListener = ($, oldState, newState) ->
-                onGameStateUpdate(newState);
-        cartVelocityModifierListener = ($, oldModifier, newModifier) ->
-                onCartVelocityModifierChange(newModifier.floatValue());
+        cartCapacityListener = ($, oldCapacity, newCapacity) -> onCapacityUpdate(newCapacity.intValue());
+        cartStateListener = ($, oldState, newState) -> onCartStateUpdate(newState);
+        gameStateListener = ($, oldState, newState) -> onGameStateUpdate(newState);
+        cartVelocityModifierListener = ($, oldModifier, newModifier) -> onCartVelocityModifierChange(newModifier.floatValue());
         cart.getCurrentCapacityProperty().addListener(cartCapacityListener);
         cart.getCartStateProperty().addListener(cartStateListener);
         cart.getVelocityModifierProperty().addListener(cartVelocityModifierListener);
@@ -62,6 +71,7 @@ public class FXCart {
             imageView.setImage(fullCartImage);
         }
     }
+
     private void onCartStateUpdate(CartState cartState) {
         switch (cartState) {
             case TRAVERSING_PATH -> pathTransition.play();
@@ -76,6 +86,7 @@ public class FXCart {
             }
         }
     }
+
     private void onCartVelocityModifierChange(float modifier) {
         var totalTime = pathTransition.getDuration();
         var elapsedTime = pathTransition.getCurrentTime();
@@ -84,9 +95,10 @@ public class FXCart {
         pathTransition.setDuration(newDuration);
         pathTransition.stop();
         pathTransition.jumpTo(newDuration.multiply(percentageCompleted));
-        //pathTransition.pause();
-        //pathTransition.jumpTo(elapsedTime.multiply(ratioCompleted));
+        // pathTransition.pause();
+        // pathTransition.jumpTo(elapsedTime.multiply(ratioCompleted));
     }
+
     private void onGameStateUpdate(GameState gameState) {
         if (cart.getCartState() != CartState.TRAVERSING_PATH)
             return;

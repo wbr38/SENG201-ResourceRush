@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import javafx.util.Duration;
 import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.state.CartState;
@@ -24,7 +25,7 @@ class CartTest {
     final int maxCapacity = 5;
     final float velocity = 1.0f;
     final ResourceType resourceType = ResourceType.ENERGY;
-    final int spawnAfterTicks = 10;
+    final Duration spawnDelay = Duration.seconds(0);
     
     @BeforeAll
     void beforeAllTests() {
@@ -33,7 +34,7 @@ class CartTest {
 
     @BeforeEach
     void beforeEachTest() {
-        cart = new Cart(maxCapacity, velocity, resourceType, spawnAfterTicks);
+        cart = new Cart(maxCapacity, velocity, resourceType, spawnDelay);
     }
 
     @Test
@@ -41,8 +42,6 @@ class CartTest {
         assertEquals(cart.getMaxCapacity(), maxCapacity);
         assertEquals(cart.getVelocity(), velocity, 0.0);
         assertEquals(cart.getResourceType(), resourceType);
-        assertEquals(cart.getSpawnAfterTicks(), spawnAfterTicks);
-        
         assertEquals(cart.getCartState(), CartState.WAITING);
     }
 
@@ -88,18 +87,5 @@ class CartTest {
         // Verify that points were given for filling the cart
         int newPoints = GameEnvironment.getGameEnvironment().getPoints();
         assertTrue(newPoints > oldPoints);
-    }
-
-    @Test
-    void testTick() {
-        // Default
-        assertEquals(cart.getCartState(), CartState.WAITING);
-
-        // Update cart state to traversing path once spawnAfterTicks is reached
-        cart.tick(spawnAfterTicks - 1);
-        assertEquals(cart.getCartState(), CartState.WAITING);
-
-        cart.tick(spawnAfterTicks);
-        assertEquals(cart.getCartState(), CartState.TRAVERSING_PATH);
     }
 }
