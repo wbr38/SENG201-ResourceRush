@@ -104,27 +104,15 @@ public class AssetLoader {
      * @return The image of the full or empty shopping cart
      */
     public Image getCartImage(ResourceType resourceType, boolean full) {
-
         if (full)
             return fullCartImage;
-
-        switch (resourceType) {
-            case WOOD:
-                return woodCartImage;
-
-            case STONE:
-                return stoneCartImage;
-
-            case ORE:
-                return quarryCartImage;
-
-            case ENERGY:
-                return windCartImage;
-
-            // Fallback to cart without a specific resource type
-            default:
-                return emptyCart;
-        }
+        return switch (resourceType) {
+            case WOOD -> woodCartImage;
+            case STONE -> stoneCartImage;
+            case ORE -> quarryCartImage;
+            case ENERGY -> windCartImage;
+            default -> emptyCart;
+        };
     }
 
     /**
