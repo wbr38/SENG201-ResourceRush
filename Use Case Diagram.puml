@@ -26,9 +26,10 @@ User --- (Manage Rounds)
 (View Shop) <.. (Switch between\nitem categories) : "<<extend>>"
 (View Shop) <.. (Purchase items from\nthe shop) : "<<extend>>"
 (Purchase items from\nthe shop) <. (Sell item back to shop) : "                      <<extend>>"
+(Purchase items from\nthe shop) <.. (Apply item to a tower or cart) : "                      <<include>>"
 
-(View Inventory) <.. (Move placed tower\nto inventory) : "<<extend>>"
-(View Inventory) <.. (Place tower in\ninventory on map) : "<<extend>>"
+(View Inventory) <. (Move placed tower\nto inventory) : "<<extend>>"
+(View Inventory) <. (Place tower in\ninventory on map) : "<<extend>>"
 
 
 }
