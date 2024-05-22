@@ -32,6 +32,7 @@ public class Tower implements Item, Upgradeable {
     private final Timeline generateTimeline;
     private double reloadSpeedModifier = 1;
     private int xpLevel = 0;
+    private boolean inInventory = false;
 
     /**
      * Constructs a new tower with the given type
@@ -75,6 +76,9 @@ public class Tower implements Item, Upgradeable {
      */
     public boolean canGenerate() {
         if (isBroken())
+            return false;
+
+        if (isInInventory())
             return false;
 
         GameState gameState = getGameEnvironment().getStateHandler().getGameStateProperty().getValue();
@@ -126,7 +130,7 @@ public class Tower implements Item, Upgradeable {
         double reloadSpeed = type.getReloadSpeed().toMillis();
         reloadSpeed /= difficulty.getTowerReloadModifier();
         reloadSpeed /= reloadSpeedModifier;
-        return (long) reloadSpeed;
+        return (long)reloadSpeed;
     }
 
     /**
@@ -185,6 +189,21 @@ public class Tower implements Item, Upgradeable {
      */
     public int getXpLevel() {
         return xpLevel;
+    }
+
+    /**
+     * Set whether this tower is in inventory or not.
+     * @param inInventory Whether this item is now in inventory.
+     */
+    public void setInInventory(boolean inInventory) {
+        this.inInventory = inInventory;
+    }
+
+    /**
+     * @return Whether this Tower is currently stored in inventory.
+     */
+    public boolean isInInventory() {
+        return inInventory;
     }
 
     /**

@@ -45,6 +45,7 @@ public class InventoryController {
 
         gameController.updateButton(towerButton, tower.getPurchasableType());
         reserveTowers.put(towerButton, tower);
+        tower.setInInventory(true);
         interactionController.stopPlacingItem();
     }
 
@@ -53,6 +54,7 @@ public class InventoryController {
         if (occupiedTower == null)
             return;
 
+        occupiedTower.setInInventory(false);
         reserveTowers.put(towerButton, null);
         gameController.updateButton(towerButton, null);
         interactionController.startPlacingItem(occupiedTower);
