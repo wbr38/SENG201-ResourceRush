@@ -12,6 +12,11 @@ public class GameStateHandler {
     private final Property<GameState> gameStateProperty = new SimpleObjectProperty<>(GameState.ROUND_NOT_STARTED);
     private GameState previousState;
 
+    /**
+     * Retrieves the game state property
+     * This property is observable, meaning it can be watched for changes
+     * @return The observable game state property
+     */
     public Property<GameState> getGameStateProperty() {
         return gameStateProperty;
     }
@@ -22,14 +27,6 @@ public class GameStateHandler {
      */
     public GameState getState() {
         return gameStateProperty.getValue();
-    }
-
-    /**
-     * Returns the previous game state
-     * @return The previous GameState
-     */
-    public GameState getPreviousState() {
-        return previousState;
     }
 
     /**
