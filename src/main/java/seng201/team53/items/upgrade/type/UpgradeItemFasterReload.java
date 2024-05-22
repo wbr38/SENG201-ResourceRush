@@ -9,7 +9,14 @@ import java.util.List;
 
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
+/**
+ * Represents the faster reload tower upgrade
+ */
 public class UpgradeItemFasterReload extends UpgradeItem {
+
+    /**
+     * Constructs a new faster reload tower upgrade
+     */
     public UpgradeItemFasterReload() {
         super("Faster Reload",
                 "Temporality allow a tower to reload faster",
@@ -18,16 +25,29 @@ public class UpgradeItemFasterReload extends UpgradeItem {
                 true);
     }
 
+    /**
+     * Returns a list of upgradable items that can apply this upgrade
+     * @return A list of upgradable items that can apply this upgrade
+     */
     @Override
     public List<Upgradeable> getApplicableItems() {
         return super.getApplicableItems(getGameEnvironment().getMap().getTowers());
     }
 
+    /**
+     * Determines if this upgrade can be applied to a given upgradable item
+     * @param upgradeable The item to check
+     * @return true if this upgrade can be applied to the item, false otherwise
+     */
     @Override
     public boolean canApply(Upgradeable upgradeable) {
         return upgradeable instanceof Tower tower && !tower.isBroken();
     }
 
+    /**
+     * Applies this upgrade to a given upgradable item
+     * @param upgradeable The upgradable item to apply this upgrade to
+     */
     @Override
     public void apply(Upgradeable upgradeable) {
         var round = getGameEnvironment().getRound();
@@ -36,11 +56,20 @@ public class UpgradeItemFasterReload extends UpgradeItem {
         round.addOnRoundEndAction(tower::resetReloadSpeedModifier);
     }
 
+    /**
+     * Retrieves the type of purchasable upgrade type
+     * @return The purchase type
+     */
     @Override
     public Purchasable getPurchasableType() {
         return this;
     }
 
+    /**
+     * R
+     * Retrieves the type of purchasable upgrade type
+     * @return The upgrade item
+     */
     @Override
     public UpgradeItem create() {
         return this;
