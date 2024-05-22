@@ -1,4 +1,4 @@
-package seng201.team53.items;
+package seng201.team53.game.items;
 
 /**
  * Enum representing the types of resources
@@ -24,7 +24,7 @@ public enum ResourceType {
      */
     ENERGY("Energy");
 
-    private String name;
+    private final String name;
 
     /**
      * Constructs a new resource type with a given name

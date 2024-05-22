@@ -11,8 +11,8 @@ import javafx.util.Duration;
 import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.state.CartState;
-import seng201.team53.items.Cart;
-import seng201.team53.items.ResourceType;
+import seng201.team53.game.items.Cart;
+import seng201.team53.game.items.ResourceType;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CartTest {

@@ -1,9 +1,32 @@
 package seng201.team53.game.event.type;
 
+import seng201.team53.game.items.towers.Tower;
+import seng201.team53.game.items.towers.TowerType;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
+
+import static seng201.team53.game.GameEnvironment.getGameEnvironment;
+
 /**
  * Represents a random event where a tower has its stats decreased
  */
 public class RandomEventTowerStatsDecrease implements RandomEvent {
+    private final Map<TowerType, String> messages = new HashMap<>() {{
+        put(Tower.Type.LUMBER_MILL, "The trees seem sparse. Your Lumber Mill’s stats have decreased.");
+        put(Tower.Type.MINE, "The mine has hit a dry spell. Your Mine’s stats have decreased.");
+        put(Tower.Type.QUARRY, "The stone seems scarce. Your Quarry’s stats have decreased.");
+        put(Tower.Type.WINDMILL, "The winds are calm today. Your Windmill’s stats have decreased.");
+    }};
+
+    /**
+     * Returns a description of the random event based on what tower type it has selected
+     */
+    @Override
+    public String getDescription(TowerType towerType) {
+        return messages.get(towerType);
+    }
 
     /**
      * Checks if there are any unbroken unmodified towers available for the random event to apply
@@ -11,7 +34,10 @@ public class RandomEventTowerStatsDecrease implements RandomEvent {
      */
     @Override
     public boolean isAvailable() {
-        // todo
+        var map = getGameEnvironment().getMap();
+        for (var tower : map.getTowers())
+            if (!tower.isBroken())
+                return true;
         return false;
     }
 
@@ -19,7 +45,15 @@ public class RandomEventTowerStatsDecrease implements RandomEvent {
      * Applies the random event to a randomly selected unbroken and unmodified tower
      */
     @Override
-    public void apply() {
-        // todo
+    public TowerType apply() {
+        var map = getGameEnvironment().getMap();
+        var unbrokenTowers = map.getTowers().stream().filter(tower -> !tower.isBroken()).toList();
+        if (unbrokenTowers.isEmpty())
+            return null;
+
+        int randomInt = ThreadLocalRandom.current().nextInt(0, unbrokenTowers.size());
+        var tower = unbrokenTowers.get(randomInt);
+        tower.minusReloadModifier();
+        return tower.getPurchasableType();
     }
 }

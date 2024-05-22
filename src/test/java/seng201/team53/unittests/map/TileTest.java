@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import seng201.team53.game.map.Tile;
-import seng201.team53.items.towers.Tower;
+import seng201.team53.game.items.towers.Tower;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TileTest {

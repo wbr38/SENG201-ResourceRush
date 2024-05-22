@@ -4,20 +4,15 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.scene.input.MouseButton;
-import seng201.team53.exceptions.TileNotFoundException;
 import seng201.team53.game.assets.AssetLoader;
 import seng201.team53.game.event.RandomEvents;
 import seng201.team53.game.map.GameMap;
-import seng201.team53.game.map.Tile;
 import seng201.team53.game.round.GameRound;
 import seng201.team53.game.round.GameRoundFactory;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.gui.controller.GameController;
-import seng201.team53.items.Shop;
-
-import java.util.Arrays;
+import seng201.team53.game.items.Shop;
 
 /**
  * The overarching, main class of the game
@@ -82,10 +77,11 @@ public class GameEnvironment {
     public void beginRound() {
         var randomEvent = randomEvents.requestRandomEvent();
         if (randomEvent != null) {
-            randomEvent.apply();
-            stateHandler.setState(GameState.RANDOM_EVENT_DIALOG_OPEN);
-            controller.showRandomEventDialog(randomEvent.getClass().getSimpleName());
-            return;
+            var towerType = randomEvent.apply();
+            if (towerType != null) {
+                stateHandler.setState(GameState.RANDOM_EVENT_DIALOG_OPEN);
+                controller.showRandomEventDialog(randomEvent.getDescription(towerType));
+            }
         }
     }
 
@@ -134,6 +130,14 @@ public class GameEnvironment {
      */
     public GameController getController() {
         return controller;
+    }
+
+    /**
+     * Retrieves the random events
+     * @return The random events
+     */
+    public RandomEvents getRandomEvents() {
+        return randomEvents;
     }
 
     /**

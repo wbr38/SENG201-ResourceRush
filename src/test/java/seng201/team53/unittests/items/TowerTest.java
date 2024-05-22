@@ -10,8 +10,8 @@ import org.junit.jupiter.api.TestInstance;
 
 import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
-import seng201.team53.items.towers.Tower;
-import seng201.team53.items.towers.TowerType;
+import seng201.team53.game.items.towers.Tower;
+import seng201.team53.game.items.towers.TowerType;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TowerTest {
@@ -48,7 +48,7 @@ class TowerTest {
         assertFalse(tower.canGenerate());
 
         // Subtract reload speed from current time so tower should be able to generate again
-        long reloadSpeed = tower.getPurchasableType().getReloadSpeed().toMillis();
+        long reloadSpeed = (long) tower.getPurchasableType().getReloadSpeed().toMillis();
         tower.setLastGenerateTime(System.currentTimeMillis() - reloadSpeed);
         assertTrue(tower.canGenerate());
 

@@ -8,8 +8,8 @@ import java.util.Set;
 import javafx.util.Duration;
 import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
-import seng201.team53.items.Cart;
-import seng201.team53.items.ResourceType;
+import seng201.team53.game.items.Cart;
+import seng201.team53.game.items.ResourceType;
 
 /**
  * Represents a single round in the game
@@ -42,8 +42,7 @@ public class GameRound {
      */
     public int getMoneyEarned() {
         GameDifficulty difficulty = GameEnvironment.getGameEnvironment().getDifficulty();
-        int moneyEarned = (int)Math.round(this.getRoundNumber() * difficulty.getMoneyEarnMultiplier());
-        return moneyEarned;
+        return (int)Math.round(this.getRoundNumber() * difficulty.getMoneyEarnMultiplier());
     }
 
     /**

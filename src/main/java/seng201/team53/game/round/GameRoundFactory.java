@@ -3,7 +3,7 @@ package seng201.team53.game.round;
 import javafx.util.Duration;
 import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
-import seng201.team53.items.ResourceType;
+import seng201.team53.game.items.ResourceType;
 
 /**
  * This class is responsible for creating instances of the GameRound class

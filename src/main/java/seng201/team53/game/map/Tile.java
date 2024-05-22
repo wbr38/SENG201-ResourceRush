@@ -1,6 +1,6 @@
 package seng201.team53.game.map;
 
-import seng201.team53.items.towers.Tower;
+import seng201.team53.game.items.towers.Tower;
 
 /**
  * Represents a tile on the game map which stores properties relating to build-ability, location and if it is a

@@ -21,8 +21,8 @@ import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.gui.wrapper.FXWrappers;
-import seng201.team53.items.Item;
-import seng201.team53.items.Purchasable;
+import seng201.team53.game.items.Item;
+import seng201.team53.game.items.Purchasable;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 

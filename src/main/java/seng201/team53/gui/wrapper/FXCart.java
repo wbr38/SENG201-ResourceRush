@@ -8,7 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import seng201.team53.game.state.CartState;
 import seng201.team53.game.state.GameState;
-import seng201.team53.items.Cart;
+import seng201.team53.game.items.Cart;
 
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 

@@ -12,13 +12,13 @@ import seng201.team53.game.map.GameMap;
 import seng201.team53.game.map.MapInteraction;
 import seng201.team53.game.map.Tile;
 import seng201.team53.game.state.GameState;
-import seng201.team53.items.Item;
-import seng201.team53.items.Purchasable;
-import seng201.team53.items.Shop;
-import seng201.team53.items.towers.Tower;
-import seng201.team53.items.towers.TowerType;
-import seng201.team53.items.upgrade.UpgradeItem;
-import seng201.team53.items.upgrade.Upgradeable;
+import seng201.team53.game.items.Item;
+import seng201.team53.game.items.Purchasable;
+import seng201.team53.game.items.Shop;
+import seng201.team53.game.items.towers.Tower;
+import seng201.team53.game.items.towers.TowerType;
+import seng201.team53.game.items.upgrade.UpgradeItem;
+import seng201.team53.game.items.upgrade.Upgradeable;
 
 import java.util.List;
 

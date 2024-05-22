@@ -6,8 +6,8 @@ import javafx.scene.input.MouseEvent;
 import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.map.GameMap;
 import seng201.team53.game.map.MapInteraction;
-import seng201.team53.items.Item;
-import seng201.team53.items.towers.Tower;
+import seng201.team53.game.items.Item;
+import seng201.team53.game.items.towers.Tower;
 
 import java.util.Arrays;
 import java.util.HashMap;

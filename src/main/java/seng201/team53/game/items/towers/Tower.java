@@ -1,4 +1,4 @@
-package seng201.team53.items.towers;
+package seng201.team53.game.items.towers;
 
 import java.util.List;
 
@@ -11,12 +11,12 @@ import javafx.beans.property.SimpleLongProperty;
 import javafx.util.Duration;
 import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
+import seng201.team53.game.items.upgrade.Upgradeable;
 import seng201.team53.game.state.CartState;
 import seng201.team53.game.state.GameState;
-import seng201.team53.items.Cart;
-import seng201.team53.items.Item;
-import seng201.team53.items.ResourceType;
-import seng201.team53.items.upgrade.Upgradeable;
+import seng201.team53.game.items.Cart;
+import seng201.team53.game.items.Item;
+import seng201.team53.game.items.ResourceType;
 
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
@@ -87,20 +87,26 @@ public class Tower implements Item, Upgradeable {
 
         List<Cart> carts = GameEnvironment.getGameEnvironment().getRound().getCarts();
         ResourceType resourceType = getPurchasableType().getResourceType();
-        return carts.stream().anyMatch(cart -> {
-            return !cart.isFull()
-                && cart.getResourceType() == resourceType
-                && cart.getCartState() == CartState.TRAVERSING_PATH;
-        });
+        return carts.stream().anyMatch(cart -> !cart.isFull()
+            && cart.getResourceType() == resourceType
+            && cart.getCartState() == CartState.TRAVERSING_PATH);
     }
 
     /**
-     * Adds a reload speed modifier of 0.5. Everytime this method is called, it will generate resources 50% faster,
+     * Adds a reload speed modifier of 0.25. Everytime this method is called, it will generate resources 50% faster,
      * until the modifier is reset
      */
     public void addReloadSpeedModifier() {
-        reloadSpeedModifier += 0.5;
+        reloadSpeedModifier += 0.25;
         updateGenerateDelay();
+    }
+
+    /**
+     * Takes away a reload speed modifier of 0.25. Everytime this method is called, it will generate resources 50% faster,
+     * until the modifier is reset
+     */
+    public void minusReloadModifier() {
+        reloadSpeedModifier -= 0.25;
     }
 
     /**

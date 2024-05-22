@@ -1,37 +1,37 @@
-package seng201.team53.items.upgrade.type;
+package seng201.team53.game.items.upgrade.type;
 
-import seng201.team53.game.state.CartState;
-import seng201.team53.items.Cart;
-import seng201.team53.items.Purchasable;
-import seng201.team53.items.upgrade.UpgradeItem;
-import seng201.team53.items.upgrade.Upgradeable;
+import seng201.team53.game.items.upgrade.Upgradeable;
+import seng201.team53.game.items.Purchasable;
+import seng201.team53.game.items.towers.Tower;
+import seng201.team53.game.items.upgrade.UpgradeItem;
 
 import java.util.List;
 
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
 /**
- * Represents the fill cart upgrade
+ * Represents the repair tower upgrade
  */
-public class UpgradeItemFillCart extends UpgradeItem {
+public class UpgradeItemRepairTower extends UpgradeItem {
 
     /**
-     * Constructs a new fill cart upgrade
+     * Constructs a new repair tower upgrade
      */
-    public UpgradeItemFillCart() {
-        super("Fill Cart",
-                "Choose a cart to instantly fill up",
+    public UpgradeItemRepairTower() {
+        super("Repair Tower",
+                "Repair a broken tower",
                 100,
-                true,
-                false);
+                false,
+                true);
     }
 
     /**
      * Returns a list of upgradable items that can apply this upgrade
      * @return A list of upgradable items that can apply this upgrade
      */
+    @Override
     public List<Upgradeable> getApplicableItems() {
-        return super.getApplicableItems(getGameEnvironment().getRound().getCarts());
+        return super.getApplicableItems(getGameEnvironment().getMap().getTowers());
     }
 
     /**
@@ -41,7 +41,7 @@ public class UpgradeItemFillCart extends UpgradeItem {
      */
     @Override
     public boolean canApply(Upgradeable upgradeable) {
-        return upgradeable instanceof Cart cart && !cart.isFull() && cart.getCartState() == CartState.TRAVERSING_PATH;
+        return upgradeable instanceof Tower tower && tower.isBroken();
     }
 
     /**
@@ -50,8 +50,8 @@ public class UpgradeItemFillCart extends UpgradeItem {
      */
     @Override
     public void apply(Upgradeable upgradeable) {
-        var cart = (Cart) upgradeable;
-        cart.fill();
+        var tower = (Tower) upgradeable;
+        tower.setBroken(false);
     }
 
     /**
