@@ -1,4 +1,4 @@
-package seng201.team53.items;
+package seng201.team53.game.items;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;

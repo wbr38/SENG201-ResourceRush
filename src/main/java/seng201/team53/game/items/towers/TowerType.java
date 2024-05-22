@@ -1,10 +1,10 @@
-package seng201.team53.items.towers;
+package seng201.team53.game.items.towers;
 
 import javafx.util.Duration;
 import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
-import seng201.team53.items.Purchasable;
-import seng201.team53.items.ResourceType;
+import seng201.team53.game.items.Purchasable;
+import seng201.team53.game.items.ResourceType;
 
 /**
  * Represents a type of tower.

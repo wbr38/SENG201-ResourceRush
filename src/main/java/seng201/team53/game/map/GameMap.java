@@ -6,7 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.scene.shape.Polyline;
 import javafx.util.Duration;
 import seng201.team53.exceptions.TileNotFoundException;
-import seng201.team53.items.towers.Tower;
+import seng201.team53.game.items.towers.Tower;
 import seng201.team53.service.PathFinderService;
 
 import java.util.Collection;

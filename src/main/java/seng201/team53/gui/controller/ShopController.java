@@ -3,10 +3,10 @@ package seng201.team53.gui.controller;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import seng201.team53.items.Purchasable;
-import seng201.team53.items.Shop;
-import seng201.team53.items.towers.Tower;
-import seng201.team53.items.upgrade.UpgradeItem;
+import seng201.team53.game.items.Purchasable;
+import seng201.team53.game.items.Shop;
+import seng201.team53.game.items.towers.Tower;
+import seng201.team53.game.items.upgrade.UpgradeItem;
 
 import java.util.HashMap;
 import java.util.Map;

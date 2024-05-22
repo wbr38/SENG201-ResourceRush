@@ -1,4 +1,4 @@
-package seng201.team53.items;
+package seng201.team53.game.items;
 
 /**
  * Represents an item that is purchasable from the shop.

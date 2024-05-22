@@ -1,12 +1,12 @@
-package seng201.team53.items;
+package seng201.team53.game.items;
 
 import javafx.animation.PauseTransition;
 import javafx.beans.property.*;
 import javafx.util.Duration;
 import seng201.team53.game.GameEnvironment;
+import seng201.team53.game.items.upgrade.Upgradeable;
 import seng201.team53.game.state.CartState;
 import seng201.team53.game.state.GameState;
-import seng201.team53.items.upgrade.Upgradeable;
 
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
@@ -155,7 +155,7 @@ public class Cart implements Upgradeable {
     /**
      * Attempt to add a resource to the cart. If the cart is not full and the given resource type is equal to the carts
      * accept resource, 1 will be added to the capacity
-     * @param generatedResourceType
+     * @param generatedResourceType The generated resource type
      */
     public void addResource(ResourceType generatedResourceType) {
         if (isFull())

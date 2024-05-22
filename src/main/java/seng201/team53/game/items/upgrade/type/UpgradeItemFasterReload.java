@@ -1,25 +1,25 @@
-package seng201.team53.items.upgrade.type;
+package seng201.team53.game.items.upgrade.type;
 
-import seng201.team53.items.Purchasable;
-import seng201.team53.items.towers.Tower;
-import seng201.team53.items.upgrade.UpgradeItem;
-import seng201.team53.items.upgrade.Upgradeable;
+import seng201.team53.game.items.Purchasable;
+import seng201.team53.game.items.towers.Tower;
+import seng201.team53.game.items.upgrade.UpgradeItem;
+import seng201.team53.game.items.upgrade.Upgradeable;
 
 import java.util.List;
 
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
 /**
- * Represents the repair tower upgrade
+ * Represents the faster reload tower upgrade
  */
-public class UpgradeItemRepairTower extends UpgradeItem {
+public class UpgradeItemFasterReload extends UpgradeItem {
 
     /**
-     * Constructs a new repair tower upgrade
+     * Constructs a new faster reload tower upgrade
      */
-    public UpgradeItemRepairTower() {
-        super("Repair Tower",
-                "Repair a broken tower",
+    public UpgradeItemFasterReload() {
+        super("Faster Reload",
+                "Temporality allow a tower to reload faster",
                 100,
                 false,
                 true);
@@ -41,7 +41,7 @@ public class UpgradeItemRepairTower extends UpgradeItem {
      */
     @Override
     public boolean canApply(Upgradeable upgradeable) {
-        return upgradeable instanceof Tower tower && tower.isBroken();
+        return upgradeable instanceof Tower tower && !tower.isBroken();
     }
 
     /**
@@ -50,8 +50,10 @@ public class UpgradeItemRepairTower extends UpgradeItem {
      */
     @Override
     public void apply(Upgradeable upgradeable) {
+        var round = getGameEnvironment().getRound();
         var tower = (Tower) upgradeable;
-        tower.setBroken(false);
+        tower.addReloadSpeedModifier();
+        round.addOnRoundEndAction(tower::resetReloadSpeedModifier);
     }
 
     /**

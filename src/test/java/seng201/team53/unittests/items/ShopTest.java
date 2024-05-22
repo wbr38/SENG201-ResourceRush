@@ -11,9 +11,9 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.value.ChangeListener;
 import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
-import seng201.team53.items.Purchasable;
-import seng201.team53.items.Shop;
-import seng201.team53.items.towers.Tower;
+import seng201.team53.game.items.Purchasable;
+import seng201.team53.game.items.Shop;
+import seng201.team53.game.items.towers.Tower;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ShopTest {

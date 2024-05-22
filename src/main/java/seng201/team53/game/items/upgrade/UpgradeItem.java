@@ -1,13 +1,13 @@
-package seng201.team53.items.upgrade;
+package seng201.team53.game.items.upgrade;
 
 import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
-import seng201.team53.items.Item;
-import seng201.team53.items.Purchasable;
-import seng201.team53.items.upgrade.type.UpgradeItemFasterReload;
-import seng201.team53.items.upgrade.type.UpgradeItemFillCart;
-import seng201.team53.items.upgrade.type.UpgradeItemRepairTower;
-import seng201.team53.items.upgrade.type.UpgradeItemSlowerCart;
+import seng201.team53.game.items.upgrade.type.UpgradeItemRepairTower;
+import seng201.team53.game.items.Item;
+import seng201.team53.game.items.Purchasable;
+import seng201.team53.game.items.upgrade.type.UpgradeItemFasterReload;
+import seng201.team53.game.items.upgrade.type.UpgradeItemFillCart;
+import seng201.team53.game.items.upgrade.type.UpgradeItemSlowerCart;
 
 import java.util.Collection;
 import java.util.List;

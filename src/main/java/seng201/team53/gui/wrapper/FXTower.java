@@ -11,8 +11,8 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import seng201.team53.game.map.Tile;
-import seng201.team53.items.towers.Tower;
-import seng201.team53.items.towers.TowerType;
+import seng201.team53.game.items.towers.Tower;
+import seng201.team53.game.items.towers.TowerType;
 
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 

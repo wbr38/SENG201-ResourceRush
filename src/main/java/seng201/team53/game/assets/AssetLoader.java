@@ -9,11 +9,11 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import seng201.team53.game.map.GameMap;
 import seng201.team53.game.map.Tile;
-import seng201.team53.items.Purchasable;
-import seng201.team53.items.ResourceType;
-import seng201.team53.items.towers.Tower;
-import seng201.team53.items.towers.TowerType;
-import seng201.team53.items.upgrade.UpgradeItem;
+import seng201.team53.game.items.Purchasable;
+import seng201.team53.game.items.ResourceType;
+import seng201.team53.game.items.towers.Tower;
+import seng201.team53.game.items.towers.TowerType;
+import seng201.team53.game.items.upgrade.UpgradeItem;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
