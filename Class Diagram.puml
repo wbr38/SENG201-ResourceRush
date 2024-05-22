@@ -1,25 +1,6 @@
 @startuml
 'https://plantuml.com/class-diagram
-
-'gui'
-class ApplicationWindow
-class WindowManager
-class MainController
-class GameController
-class InventoryController
-class MapInventoryController
-class ShopController
-
-'wrappers'
-class FXCart
-class FXTower
-class FXWrappers
-
-'interfaces'
-interface Tickable {
-+ tick()
-}
-
+top to bottom direction
 interface Upgradable {}
 
 abstract class UpgradeItem {
@@ -168,7 +149,6 @@ class GameRound {
 - roundNumber: int
 - carts: List<Cart>
 - roundEndActions: Set<Runnable>
-- gameLoop: gameLoop
 }
 
 class GameMap {
@@ -199,18 +179,6 @@ class MapInteraction {
 + {static} NONE: MapInteraction
 + {static} PLACE_TOWER: MapInteraction
 + {static} PLACE_UPGRADE: MapInteraction
-}
-
-class GameLoop {
-+ {static} TICKS_PER_SECOND: int
-+ {static} MS_BETWEEN_TICKS: long
-- function: Tickable
-- lastTickTime: long
-- lifetimeTicks: int
-- ticksUntilRoundEnd: int
---
-hande()
-setRoundCompleteTicks(ticksUntilRoundEnd)
 }
 
 class GameState {
@@ -252,6 +220,7 @@ resourceType: ResourceType
 
 Cart --o ResourceType : "[0..1]"
 Cart --o CartState : "[0..1]"
+Cart --|> Upgradable
 
 class UpgradeItemRepairTower {}
 class UpgradeItemFasterReload {}
@@ -267,15 +236,12 @@ GameEnvironment --* Shop : "[0..1]"
 GameEnvironment -- GameRound : "[1..1]"
 GameEnvironment --* GameMap : "[0..1]"
 
+GameRoundFactory -- GameRound : "creates"
 GameStateHandler --o GameState : "[0..1]"
 
-GameMap --* GameLoop : "[0..1]"
 GameMap --* Tile : "many"
 GameMap --o MapInteraction : "[0..1]"
 GameMap --o Tower : "many"
-
-Tickable <|-- Cart
-Tickable <|-- GameRound
 
 RandomEvents --o RandomEvent : "many"
 RandomEvent <|-- RandomEventBrokenTower
@@ -296,4 +262,153 @@ Tower --* TowerType : "[0..1]"
 TowerType --|> Item
 
 AssetLoader --* TileTemplate : "many"
+
+rectangle {
+left to right direction
+'gui'
+    class App {
+        + {static} main(args)
+    }
+
+    class ApplicationWindow {
+        + start(primaryStage)
+        + {static} launchWrappers(args)
+    }
+    class WindowManager {
+        - pane: Pane
+        - stage: Stage
+        --
+        + loadSetupScreen()
+        + loadGameScreen()
+    }
+    class MainController {
+        - windowManager: WindowManager
+        - nameValidatorService: NameValidatorService
+        --
+        + init()
+    }
+    class GameController {
+        - mapInteractionController: MapInteractionController
+        - inventoryController: InventoryController
+        - shopController: ShopController
+        - fxWrappers: FXWrappers
+        --
+        + init()
+        + showNotification(text, duration)
+        + toggleInventoryVisible(visible)
+        + showSellItemPopup(item)
+        + showRandomEventDialog(text)
+        - updateRoundCounter(currentRound)
+        - showStartButton()
+        - showPauseButton()
+        - showResumeButton()
+        - showRoundCompletePopup()
+        - showGameEndPopup()
+        - show(node)
+        - hide(node)
+        + updateButton(button, purchasable)
+    }
+    class InventoryController {
+        - gameController: GameController
+        - MapInteractionController: MapInteractionController
+        - reserveTowers: Map<Button, Tower>
+        --
+        + init()
+        - placeTowerIntoInventory(tower, towerButton)
+        - retrieveTower(towerButton)
+    }
+    class ShopController {
+        - gameController: GameController
+        - shopButtons: Map<Button, Purchasable>
+        ---
+        + init()
+        - updateGUI(money)
+    }
+    class MapInteractionController {
+        - gameController: GameController
+        - selectedItem: Item
+        - selectedImageView: ImageView
+        ---
+        + init()
+        + tryPurchaseItem(purchasable)
+        + sellSelectedItem()
+        + startPlacingItem(item)
+        + stopPlacingItem()
+        + tryPlaceSelectedTower()
+        + tryMoveTower(tile)
+        - removeTower(tower)
+        - tryUpgradeCart(screenX, screenY)
+        - tryUpgradeTower(tile)
+    }
+    class FXCart {
+        - cart: Cart
+        - cartCapacityListener: ChangeListener<Number>
+        - cartStateListener: ChangeListener<CartState>
+        - cartVelocityModifierListener: ChangeListener<Number>
+        - gameStateListener: ChangeListener<GameState>
+        --
+        - onCapacityUpdate(capacity)
+        - onCartStateUpdate(cartState)
+        - onCartVelocityModifierChange()
+        - onGameStateUpdate()
+    }
+    class FXTower {
+        - tower: Tower
+        - towerBrokenListener: ChangeListener<Boolean>
+        - lastGenerateTimeListener: ChangeListener<Number>
+        --
+        onBrokenUpdate(broken)
+        onTowerGenerate()
+        onTowerRemoved()
+    }
+    class FXWrappers {
+        - fxTowers: Map<Tower, FXTower>
+        - fxCarts: Map<Tower, FXCart>
+        --
+        + findCartAtScreen(int screenX, int screenY): Cart
+        - onGameRoundChange(gameRound)
+        - onTowersChange(mapChangeListener.Change)
+    }
+
+    App --- ApplicationWindow : "launches"
+    ApplicationWindow --- WindowManager : "loads"
+    WindowManager --- MainController : "loads"
+    WindowManager --- GameController : "loads"
+
+    GameController --* MapInteractionController : "[0..1]"
+    GameController --* InventoryController : "[0..1]"
+    GameController --* ShopController : "[0..1]"
+    GameController --* FXWrappers : "[0..1]"
+
+    FXWrappers --* FXCart : "many"
+    FXWrappers --* FXTower : "many"
+}
+MainController --- GameEnvironment : "initializes"
+FXCart --> Cart : "has"
+FXTower --> Tower : "has"
+
+rectangle {
+    class NameValidatorService {
+        + {static} VALID_NAME_REGEX: Pattern
+        + {static} MIN_NAME_LENGTH: int
+        + {static} MAX_NAME_LENGTH: int
+        --
+        + isValid(name): boolean
+    }
+    class PathFinderService {
+        + {static} X_DIRECTIONS: int[]
+        + {static} Y_DIRECTIONS: int[]
+        - path: Stack<Point>
+        - polylinePath: Polyline
+        --
+        + generatePathPolyline()
+        + calculatePathLength()
+        + findPath(tiles, startX, startY, endX, endY)
+        - depthFirstSearch(tiles, discovered, x, y, endX, endY)
+        - isValidTile(tiles, discovered, x, y)
+    }
+}
+MainController --* NameValidatorService : "[0..1]"
+GameMap --- PathFinderService : "uses"
+}
 @enduml
