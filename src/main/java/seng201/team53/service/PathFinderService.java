@@ -64,7 +64,7 @@ public class PathFinderService {
      * @param endY The Y coordinate of the end point
      * @return True if a path is found, false otherwise
      */
-    public boolean depthFirstSearch(Tile[][] tiles, int[][] discovered, int x, int y, int endX, int endY) {
+    private boolean depthFirstSearch(Tile[][] tiles, int[][] discovered, int x, int y, int endX, int endY) {
         discovered[x][y] = 2;
         if (x == endX && y == endY) {
             path.push(new Point(x, y));
@@ -91,7 +91,7 @@ public class PathFinderService {
      * @param y The Y coordinate of the cell to check
      * @return True if the tile is a valid candidate, false otherwise
      */
-    public boolean isValidTile(Tile[][] tiles, int[][] discovered, int x, int y) {
+    private boolean isValidTile(Tile[][] tiles, int[][] discovered, int x, int y) {
         return (x >= 0
                 && y >= 0
                 && x < tiles.length
