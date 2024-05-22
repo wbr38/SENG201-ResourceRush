@@ -1,9 +1,7 @@
 package seng201.team53.items.upgrade;
 
-import javafx.scene.image.Image;
 import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
-import seng201.team53.game.assets.AssetLoader;
 import seng201.team53.items.Item;
 import seng201.team53.items.Purchasable;
 import seng201.team53.items.upgrade.type.UpgradeItemFasterReload;
@@ -49,11 +47,6 @@ public abstract class UpgradeItem implements Purchasable, Item {
         GameDifficulty difficulty = GameEnvironment.getGameEnvironment().getDifficulty();
         int sellPrice = (int)Math.round(costPrice * difficulty.getSellPriceModifier());
         return sellPrice;
-    }
-
-    @Override
-    public boolean isSellable() {
-        return false;
     }
 
     public boolean isCartUpgrade() {

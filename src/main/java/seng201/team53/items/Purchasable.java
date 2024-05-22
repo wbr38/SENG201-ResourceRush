@@ -14,7 +14,5 @@ public interface Purchasable {
 
     int getSellPrice();
 
-    boolean isSellable();
-
     Item create();
 }
