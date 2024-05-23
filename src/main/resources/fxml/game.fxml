@@ -199,7 +199,7 @@
                   <ChoiceBox fx:id="difficultyChoiceBox" layoutX="47.0" layoutY="118.0" prefHeight="25.0" prefWidth="200.0" />
                </children>
             </Pane>
-            <Pane fx:id="gameEndPane" layoutX="260.0" layoutY="160.0" prefHeight="236.0" prefWidth="285.0" visible="false">
+            <Pane fx:id="gameEndPane" layoutX="216.0" layoutY="166.0" prefHeight="236.0" prefWidth="369.0">
                <children>
                   <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="71.0" layoutY="-2.0">
                      <image>
@@ -211,7 +211,7 @@
                         <Image url="@../assets/decoration/wood_tile_top_center.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="221.0" layoutY="-2.0">
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="296.0" layoutY="-2.0">
                      <image>
                         <Image url="@../assets/decoration/wood_tile_top_right.png" />
                      </image>
@@ -231,7 +231,7 @@
                         <Image url="@../assets/decoration/wood_tile_bottom_center.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="221.0" layoutY="158.0">
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="296.0" layoutY="158.0">
                      <image>
                         <Image url="@../assets/decoration/wood_tile_bottom_right.png" />
                      </image>
@@ -251,7 +251,7 @@
                         <Image url="@../assets/decoration/wood_tile_center.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="221.0" layoutY="78.0">
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="296.0" layoutY="78.0">
                      <image>
                         <Image url="@../assets/decoration/wood_tile_center_right.png" />
                      </image>
@@ -261,32 +261,47 @@
                         <Image url="@../assets/decoration/wood_tile_center_left.png" />
                      </image>
                   </ImageView>
-                  <Text fx:id="gameEnd_WinLoseText" fill="WHITE" layoutX="67.0" layoutY="52.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="You Won!">
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="221.0" layoutY="-2.0">
+                     <image>
+                        <Image url="@../assets/decoration/wood_tile_top_center.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="221.0" layoutY="158.0">
+                     <image>
+                        <Image url="@../assets/decoration/wood_tile_bottom_center.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="80.0" fitWidth="75.0" layoutX="221.0" layoutY="78.0">
+                     <image>
+                        <Image url="@../assets/decoration/wood_tile_center.png" />
+                     </image>
+                  </ImageView>
+                  <Text fx:id="gameEnd_WinLoseText" fill="WHITE" layoutX="95.0" layoutY="48.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="You Won!">
                      <font>
                         <Font name="Expo M" size="36.0" />
                      </font>
                   </Text>
-                  <Text fx:id="gameEnd_NameText" fill="WHITE" layoutX="14.0" layoutY="96.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="Name: User">
+                  <Text fx:id="gameEnd_NameText" fill="WHITE" layoutX="42.0" layoutY="92.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="Name: User">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Text>
-                  <Text fx:id="gameEnd_RoundsText" fill="WHITE" layoutX="14.0" layoutY="127.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="Rounds Completed: 5/5">
+                  <Text fx:id="gameEnd_RoundsText" fill="WHITE" layoutX="42.0" layoutY="123.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="Rounds Completed: 5/5">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Text>
-                  <Text fx:id="gameEnd_MoneyEarnt" fill="WHITE" layoutX="14.0" layoutY="162.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="Money Earnt: $5">
+                  <Text fx:id="gameEnd_MoneyEarnt" fill="WHITE" layoutX="42.0" layoutY="158.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="Money Earnt: $5">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Text>
-                  <Text fx:id="gameEnd_Points" fill="WHITE" layoutX="14.0" layoutY="197.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="Points: 500">
+                  <Text fx:id="gameEnd_Points" fill="WHITE" layoutX="42.0" layoutY="193.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="Points: 500">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Text>
-                  <Button fx:id="quitButton" layoutX="208.0" layoutY="170.0" mnemonicParsing="false" onMouseClicked="#onGameEnd_QuitButtonMouseClick" prefHeight="56.0" prefWidth="75.0" style="-fx-background-color: #60b3e0; -fx-border-color: #2485ba; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Quit">
+                  <Button fx:id="quitButton" layoutX="287.0" layoutY="171.0" mnemonicParsing="false" onMouseClicked="#onGameEnd_QuitButtonMouseClick" prefHeight="56.0" prefWidth="75.0" style="-fx-background-color: #60b3e0; -fx-border-color: #2485ba; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Quit">
                      <font>
                         <Font name="Expo M" size="20.0" />
                      </font>
