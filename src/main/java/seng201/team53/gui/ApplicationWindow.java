@@ -8,7 +8,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * This class is responsible for initializing and display the primary stage of the graphical interface.
+ * Also contains the method to launch the application which must be called from another class.
+ */
 public class ApplicationWindow extends Application {
+
     /**
      * Opens the gui with the fxml content specified in resources/fxml/application.fxml
      * @param primaryStage The current fxml stage, handled by javaFX Application class
@@ -30,8 +35,7 @@ public class ApplicationWindow extends Application {
     }
 
     /**
-     * Launches the FXML application, this must be called from another class (in this cass App.java) otherwise JavaFX
-     * errors out and does not run
+     * Launches the FXML application, this must be called from another class
      * @param args command line arguments
      */
     public static void launchWrapper(String[] args) {

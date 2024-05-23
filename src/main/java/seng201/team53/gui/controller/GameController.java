@@ -28,6 +28,10 @@ import javafx.scene.media.MediaPlayer;
 
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
+/**
+ * This class is responsible for controlling and managing sub-controllers for the graphical game interface. It consists
+ * of all the required JavaFX elements and events when interacting with the game interface
+ */
 public class GameController {
     @FXML private Pane overlay;
     @FXML private GridPane gridPane;
@@ -93,6 +97,11 @@ public class GameController {
     private final ShopController shopController = new ShopController(this);
     private final FXWrappers fxWrappers = new FXWrappers();
 
+    /**
+     * Initialises the game controller.
+     * This method hides the inventory and sell item popup, adds values to the difficulty drop town box and creates
+     * change listeners for handling round number, point number and state property changes.
+     */
     public void init() {
         toggleInventoryVisible(false);
         this.showSellItemPopup(null);
@@ -152,22 +161,39 @@ public class GameController {
         fxWrappers.init();
     }
 
+    /**
+     * @return The pane responsible for holding the map image
+     */
     public Pane getMapBackgroundPane() {
         return mapBackgroundPane;
     }
 
+    /**
+     * @return The pane responsible for displaying carts and watching for mouse clicks
+     */
     public Pane getOverlay() {
         return overlay;
     }
 
+    /**
+     * @return The grid pane responsible for displaying tower images
+     */
     public GridPane getGridPane() {
         return gridPane;
     }
 
+    /**
+     * @return The FX wrappers instance
+     */
     public FXWrappers getFXWrappers() {
         return fxWrappers;
     }
 
+    /**
+     * Handles when the start button is clicked.
+     * If the round has not yet started, change the game state to active
+     * @param event The mouse event
+     */
     @FXML
     private void onStartButtonMouseClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
@@ -182,6 +208,11 @@ public class GameController {
         this.showSellItemPopup(null);
     }
 
+    /**
+     * Handles when the pause button is clicked.
+     * If the round is active, change the game state to pause
+     * @param event The mouse event
+     */
     @FXML
     private void onPauseButtonMouseClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
@@ -194,6 +225,11 @@ public class GameController {
         stateHandler.setState(GameState.ROUND_PAUSE);
     }
 
+    /**
+     * Handles when the resume button is clicked.
+     * If the round is paused, change the game state to active
+     * @param event The mouse event
+     */
     @FXML
     private void onResumeButtonMouseClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
@@ -206,6 +242,11 @@ public class GameController {
         stateHandler.setState(GameState.ROUND_ACTIVE);
     }
 
+    /**
+     * Handles when the inventory button is clicked.
+     * If the inventory is currently visible, it will be hidden. If it is not visible, it will be shown
+     * @param event The mouse event
+     */
     @FXML
     private void onInventoryButtonMouseClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
@@ -214,15 +255,11 @@ public class GameController {
         toggleInventoryVisible();
     }
 
-    @FXML
-    private void onSellItemButtonClick(MouseEvent event) {
-        if (event.getButton() != MouseButton.PRIMARY)
-            return;
-
-        this.mapInteractionController.sellSelectedItem();
-        this.showSellItemPopup(null);
-    }
-
+    /**
+     * Handles when the exit random event dialog button is clicked
+     * If the random event dialog is open, it will close it and set the round to active
+     * @param event The mouse event
+     */
     @FXML
     private void onRandomEventDialogExistClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
@@ -235,6 +272,11 @@ public class GameController {
         stateHandler.setState(GameState.ROUND_ACTIVE);
     }
 
+    /**
+     * Handles when the exit round complete button is clicked
+     * If the round is complete, it will set the state to ROUND_NOT_STARTED
+     * @param event The mouse event
+     */
     @FXML
     private void onRoundCompleteDialogExistClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
@@ -247,6 +289,11 @@ public class GameController {
         stateHandler.setState(GameState.ROUND_NOT_STARTED);
     }
 
+    /**
+     * Shows a notification for a given duration and with the given text
+     * @param text The text to be displayed in the notification
+     * @param duration The duration the notification should shown
+     */
     public void showNotification(String text, double duration) {
         notificationLabel.setText(text);
         show(notificationLabel);
@@ -293,38 +340,63 @@ public class GameController {
         show(sellItemPane);
     }
 
+    /**
+     * Updates the round label to the given current round number
+     * @param currentRound The current round number
+     */
     private void updateRoundCounter(int currentRound) {
         int totalRounds = getGameEnvironment().getRounds();
         roundCounterLabel.setText(currentRound + "/" + totalRounds);
     }
 
+    /**
+     * Updates the point label to the given points number
+     * @param points The current points
+     */
     private void updatePointsLabel(int points) {
         pointsLabel.setText("" + points);
     }
 
+    /**
+     * Show the start button and hide the pause and resume button
+     */
     private void showStartButton() {
         show(startButton);
         hide(pauseButton);
         hide(resumeButton);
     }
 
+    /**
+     * Show the pause button and hide the start and resume button
+     */
     private void showPauseButton() {
         hide(startButton);
         show(pauseButton);
         hide(resumeButton);
     }
 
+    /**
+     * Show the resume button and hide the pause and start button
+     */
     private void showResumeButton() {
         hide(startButton);
         hide(pauseButton);
         show(resumeButton);
     }
 
+    /**
+     * Show the random event dialog with a given text message
+     * @param text The text to be displayed in the dialog
+     */
     public void showRandomEventDialog(String text) {
         randomEventTest.setText(text);
         show(randomEventPane);
     }
 
+    /**
+     * Show the round complete dialog.
+     * The dialog contains information about how many points were earned throughout the round
+     */
     private void showRoundCompletePopup() {
         showStartButton();
         show(roundCompletePane);
@@ -334,6 +406,11 @@ public class GameController {
         previousPoints = getGameEnvironment().getPoints();
     }
 
+    /**
+     * Show the game end dialog.
+     * This dialog contains information about the game such as if the game was won, player name, current round,
+     * max rounds, money and points earned throughout the game
+     */
     private void showGameEndPopup() {
         show(gameEndPane);
 
@@ -362,6 +439,11 @@ public class GameController {
         shopPane.setDisable(true);
     }
 
+    /**
+     * Handles when the quit button is clicked.
+     * This will exit the game
+     * @param event The mouse event
+     */
     @FXML
     private void onGameEnd_QuitButtonMouseClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
@@ -371,16 +453,31 @@ public class GameController {
         System.exit(0);
     }
 
+    /**
+     * This method will show a given javafx node
+     * @param node The node to be shown
+     */
     private void show(Node node) {
         node.setVisible(true);
         node.setDisable(false);
     }
 
+    /**
+     * This method will hide a given javafx node
+     * @param node The node to be hidden
+     */
     private void hide(Node node) {
         node.setVisible(false);
         node.setDisable(true);
     }
 
+    /**
+     * Updates a shop or inventory button, given the button and purchasable object.
+     * If purchasable is null, the buttons graphic and tool tip will be removed.
+     * Otherwise, the graphic is added to the button as well as a tool tip which displays the cost price
+     * @param button
+     * @param purchasable
+     */
     public void updateButton(Button button, Purchasable purchasable) {
         if (purchasable == null) {
             button.setGraphic(null);
@@ -397,6 +494,10 @@ public class GameController {
         button.setText(purchasable.getName());
     }
 
+    /**
+     * Retrieves the instance of the map interaction controller class
+     * @return The map interaction controller
+     */
     public MapInteractionController getMapInteractionController() {
         return mapInteractionController;
     }

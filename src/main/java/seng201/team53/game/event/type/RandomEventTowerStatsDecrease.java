@@ -22,6 +22,7 @@ public class RandomEventTowerStatsDecrease implements RandomEvent {
 
     /**
      * Returns a description of the random event based on what tower type it has selected
+     * @return The description
      */
     @Override
     public String getDescription(TowerType towerType) {

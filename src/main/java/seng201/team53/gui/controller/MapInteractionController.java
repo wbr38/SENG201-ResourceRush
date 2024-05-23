@@ -24,16 +24,25 @@ import java.util.List;
 
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
+/**
+ * This class is a sub-controller of the GameController and is responsible for handling map interactions
+ */
 public class MapInteractionController {
     private final GameController gameController;
     private Item selectedItem;
     private ImageView selectedImageView;
 
-
+    /**
+     * Constructs a new map interaction controller with a reference to the main game controller
+     * @param gameController The game controller
+     */
     public MapInteractionController(GameController gameController) {
         this.gameController = gameController;
     }
 
+    /**
+     * Initialises the map interaction controller by setting a mouse click event on the overlay
+     */
     public void init() {
         gameController.getOverlay().setOnMouseClicked(this::onMouseClickOverlay);
     }
@@ -86,6 +95,7 @@ public class MapInteractionController {
 
     /**
      * Start moving/selecting/placing an item.
+     * @param item The item to start placing
      */
     public void startPlacingItem(Item item) {
         this.selectedItem = item;
@@ -169,6 +179,13 @@ public class MapInteractionController {
         map.removeTower(tower);
     }
 
+    /**
+     * This method will attempt to upgrade a cart with a selected upgrade item at a given screen x and y coordinate.
+     * If the selected upgrade item cannot be applied to a cart, a notification will be shown. Otherwise, the upgrade
+     * will be applied and the user will stop placing the item.
+     * @param screenX The screen x-coordinate
+     * @param screenY The screen y-coordinate
+     */
     private void tryUpgradeCart(int screenX, int screenY) {
         var cart = getGameEnvironment().getController().getFXWrappers().findCartAtScreen(screenX, screenY);
         if (cart == null)
@@ -185,6 +202,13 @@ public class MapInteractionController {
         }
     }
 
+    /**
+     * This method will attempt to upgrade a tower with a selected upgrade item at a tile.
+     * If the selected tile does not have a tower on it, the method will stop.
+     * If the selected upgrade item cannot be applied to a tower, a notification will be shown. Otherwise, the upgrade
+     * will be applied and the user will stop placing the item.
+     * @param tile The clicked tile
+     */
     private void tryUpgradeTower(Tile tile) {
         var tower = tile.getTower();
         if (tower == null)
@@ -201,6 +225,11 @@ public class MapInteractionController {
         }
     }
 
+    /**
+     * Handles when the mouse moves during placing an item.
+     * This method updates the image view on the overlay to show the image moving with the user's cursor.
+     * @param event The mouse event
+     */
     private void onMouseMove(MouseEvent event) {
         if (selectedImageView == null)
             return;
@@ -209,6 +238,14 @@ public class MapInteractionController {
         selectedImageView.setY(event.getSceneY() - ((double)GameMap.TILE_WIDTH / 2));
     }
 
+    /**
+     * Handles when the overlay is clicked.
+     * If the current map interaction is none, it will attempt to move the tower at that tile
+     * If the current map interaction is place tower, it will attempt to place a tower at that tile
+     * If the current map interaction is place upgrade, it will attempt to upgrade a cart or tower depending
+     * on what type the upgrade is.
+     * @param event
+     */
     private void onMouseClickOverlay(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;

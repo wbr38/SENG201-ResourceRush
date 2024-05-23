@@ -320,7 +320,7 @@
                         <Font size="26.0" />
                      </font>
                   </Text>
-                  <Button layoutX="18.0" layoutY="45.0" mnemonicParsing="false" onMouseClicked="#onSellItemButtonClick" prefHeight="51.0" prefWidth="119.0" style="-fx-background-color: #60b3e0; -fx-border-color: #2485ba; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Sell Item">
+                  <Button layoutX="18.0" layoutY="45.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="119.0" style="-fx-background-color: #60b3e0; -fx-border-color: #2485ba; -fx-border-width: 2px; -fx-border-radius: 25px; -fx-background-radius: 25px;" text="Sell Item">
                      <font>
                         <Font size="18.0" />
                      </font>

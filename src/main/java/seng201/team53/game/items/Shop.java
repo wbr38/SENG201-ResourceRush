@@ -29,7 +29,7 @@ public class Shop {
 
     /**
      * Attempt to purchase an item from the shop
-     * 
+     * @param item The item to be purchased
      * @return True if the item was successfuly purchased from the shop, and the
      *         player's money was adjusted. False if the player did not have enough
      *         balance to purchase the item.
@@ -56,6 +56,7 @@ public class Shop {
     /**
      * Subtract an amount of money from the player's balance. The balance will not
      * go below zero.
+     * @param amount The amount of money to subtract
      */
     public void subtractMoney(int amount) {
         moneyProperty.set(Math.max(0, getMoney() - amount));

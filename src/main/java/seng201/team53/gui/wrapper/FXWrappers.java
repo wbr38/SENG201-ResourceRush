@@ -22,11 +22,16 @@ import java.util.Map;
 
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
-// responsible for handling creation and deletion of fx wrappers for towers and carts
+/**
+ * This class is responsible for handling creation, storing and deletion of fx wrappers for towers and carts
+ */
 public class FXWrappers {
     private final Map<Tower, FXTower> fxTowers = new HashMap<>();
     private final Map<Cart, FXCart> fxCarts = new HashMap<>();
 
+    /**
+     * Initialises the FXWrapper class by adding change listeners to the game round and maps towers properties
+     */
     public void init() {
         getGameEnvironment().getRoundProperty().addListener(($, oldRound, newRound) -> onGameRoundChange(newRound));
         getGameEnvironment().getMap().getTowersProperty().addListener(this::onTowersChange);
@@ -36,6 +41,12 @@ public class FXWrappers {
         onGameRoundChange(round);
     }
 
+    /**
+     * Searches for a cart's graphical image on the map given a screen x and y coordinate.
+     * @param screenX The screen X coordinate
+     * @param screenY The screen Y coordinate
+     * @return The found cart if a cart was found at the given screen x and y coordinate, null otherwise
+     */
     public Cart findCartAtScreen(int screenX, int screenY) {
         for (var entry : fxCarts.entrySet()) {
             var cart = entry.getKey();
@@ -53,7 +64,12 @@ public class FXWrappers {
         return null;
     }
 
-    // handles when the game round is changed (comes from GameRound)
+    /**
+     * Handles when the game round changes
+     * When the game round is changed, we need to clear the list of FX carts as they are no longer used then, initialise
+     * each of the new carts for the new round with the required graphical properties
+     * @param round The new game round
+     */
     private void onGameRoundChange(GameRound round) {
         // we only ever add carts to the list of carts so prob only need this
         // when the cart finishes the path, it gets removed as per FXCart#onCartStateUpdate
@@ -67,13 +83,11 @@ public class FXWrappers {
             StackPane wrapper = new StackPane();
             ImageView imageView = new ImageView(assetLoader.getCartImage(cart.getResourceType(), false));
 
-            // Capacity label (0/10)
             Label capacityLabel = new Label("0/" + cart.getMaxCapacity());
             capacityLabel.setTranslateY(10); // 10 units
             capacityLabel.setFont(Font.font("System Regular", FontWeight.BOLD, 16));
             capacityLabel.setTextFill(Color.WHITE);
 
-            // Add a shadow to the capacity label
             DropShadow dropShadow = new DropShadow();
             dropShadow.setRadius(5.0);
             dropShadow.setOffsetX(3.0);
@@ -90,7 +104,12 @@ public class FXWrappers {
         });
     }
 
-    // handles when towers are added or removed from the main map (comes from GameMap)
+    /**
+     * Handles when the map of towers is changed. This method is called when a tower is added or removed/
+     * If the tower was removed, the graphical representation of the tower should be removed and no longer stored.
+     * If the tower was added, the graphical representation of the tower needs to be created and stored.
+     * @param change
+     */
     private void onTowersChange(MapChangeListener.Change<? extends Tower, ? extends Tile> change) {
         var tower = change.getKey();
         if (change.wasRemoved()) {

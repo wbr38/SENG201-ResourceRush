@@ -14,8 +14,15 @@ import seng201.team53.game.map.Tile;
 import seng201.team53.game.items.towers.Tower;
 import seng201.team53.game.items.towers.TowerType;
 
+import java.util.Objects;
+
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
+/**
+ * Represents a graphical wrapper for a tower.
+ * This class contains an instance of a tower and all the javafx elements which allows for the tower's graphics.
+ * Change listeners are stored so when the tower is removed, the listeners can also be removed
+ */
 public class FXTower {
     private final Tower tower;
     private final Timeline glowAnimation;
@@ -24,6 +31,14 @@ public class FXTower {
     private final ChangeListener<Boolean> towerBrokenListener;
     private final ChangeListener<Number> lastGenerateTimeListener;
 
+    /**
+     * Constructs a new FX tower instance.
+     * This constructor sets up the glow animation which is used when the tower generates.
+     * Change listeners are created and added for the towers broken and last generate property.
+     * @param tower The tower
+     * @param tile The tile where the tower is placed
+     * @param imageView The towers image view
+     */
     public FXTower(Tower tower, Tile tile, ImageView imageView) {
         this.tower = tower;
         this.imageView = imageView;
@@ -37,7 +52,7 @@ public class FXTower {
         imageView.setEffect(glow);
         getGameEnvironment().getController().getGridPane().add(imageView, tile.getX(), tile.getY());
 
-        String resource = getClass().getResource("/assets/sound/projectile.wav").toString();
+        String resource = Objects.requireNonNull(getClass().getResource("/assets/sound/projectile.wav")).toString();
         soundEffectMedia = new Media(resource);
 
         towerBrokenListener = ($, oldValue, newValue) ->
@@ -49,12 +64,23 @@ public class FXTower {
         tower.getLastGenerateTimeProperty().addListener(lastGenerateTimeListener);
     }
 
+    /**
+     * Handles when the towers broken property is updated.
+     * This method will change the towers image to the towers type image.
+     * If broken is true, it will fetch the broken image, otherwise the normal image
+     * @param broken The new broken value
+     */
     private void onBrokenUpdate(boolean broken) {
         TowerType towerType = tower.getPurchasableType();
         Image towerImage = getGameEnvironment().getAssetLoader().getTowerTypeImage(towerType, broken);
         imageView.setImage(towerImage);
     }
 
+    /**
+     * Handles when the tower generates
+     * This method will play the glow animation as well as a sound effect each time the towers last generate
+     * time is changed, meaning the tower has generated
+     */
     private void onTowerGenerate() {
         glowAnimation.play();
 
@@ -63,6 +89,10 @@ public class FXTower {
         soundEffect.play();
     }
 
+    /**
+     * Handles when the tower is removed from the map
+     * This method will remove the listeners as well as the graphical image view placed on the map
+     */
     public void onTowerRemoved() {
         tower.getBrokenProperty().removeListener(towerBrokenListener);
         tower.getLastGenerateTimeProperty().removeListener(lastGenerateTimeListener);

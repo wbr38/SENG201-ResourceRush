@@ -106,6 +106,11 @@ public class GameEnvironment {
     /**
      * Constructs a new game environment and initialises the singleton
      * After calling this function, call GameEnvironment#load();
+     * @param controller The game controller
+     * @param playerName The players name
+     * @param rounds The number of rounds to be played
+     * @param difficulty The game difficulty
+     * @return The game environment
      */
     public static GameEnvironment init(GameController controller, String playerName, int rounds, GameDifficulty difficulty) {
         instance = new GameEnvironment(controller, playerName, rounds, difficulty);
