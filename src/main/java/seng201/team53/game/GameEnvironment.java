@@ -6,15 +6,13 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import seng201.team53.game.assets.AssetLoader;
 import seng201.team53.game.event.RandomEvents;
-import seng201.team53.game.event.type.RandomEvent;
+import seng201.team53.game.items.Shop;
 import seng201.team53.game.map.GameMap;
 import seng201.team53.game.round.GameRound;
 import seng201.team53.game.round.GameRoundFactory;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.gui.controller.GameController;
-import seng201.team53.game.items.Shop;
-import seng201.team53.game.items.towers.TowerType;
 
 /**
  * The overarching, main class of the game
@@ -78,20 +76,6 @@ public class GameEnvironment {
         GameRound nextRound = roundFactory.getRound(round.getRoundNumber() + 1);
         setRound(nextRound);
         shop.addMoney(nextRound.getMoneyEarned());
-    }
-
-    /**
-     * Begins the current round
-     */
-    public void beginRound() {
-        RandomEvent randomEvent = randomEvents.requestRandomEvent();
-        if (randomEvent != null) {
-            TowerType towerType = randomEvent.apply();
-            if (towerType != null) {
-                stateHandler.setState(GameState.RANDOM_EVENT_DIALOG_OPEN);
-                controller.showRandomEventDialog(randomEvent.getDescription(towerType));
-            }
-        }
     }
 
     /**
