@@ -101,3 +101,6 @@ kindpng.com
 
 flaticon.com (License: https://www.freepikcompany.com/legal/#nav-flaticon-agreement)
 - "Fast Forward free icon" by "Pixel perfect" (https://www.flaticon.com/free-icon/fast-forward_776819)
+
+itch.io
+- "Spire - Tileset 1" by "Baldur", distributed by foozle.io (https://foozlecc.itch.io/spire-tileset-1) licensed under CC0 1.0
