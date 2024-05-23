@@ -4,16 +4,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeAll;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import seng201.team53.game.map.Tile;
+import seng201.team53.game.GameDifficulty;
+import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.items.towers.Tower;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TileTest {
+
+    @BeforeAll
+    void beforeAllTests() {
+        GameEnvironment.init(null, null, 0, GameDifficulty.NORMAL);
+    }
 
     @Test
     void testNotBuildable() {
