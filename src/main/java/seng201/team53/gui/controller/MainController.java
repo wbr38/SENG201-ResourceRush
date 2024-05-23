@@ -1,6 +1,7 @@
 package seng201.team53.gui.controller;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -44,7 +45,7 @@ public class MainController {
      * number of rounds slider.
      */
     public void init() {
-        var difficulties = FXCollections.observableArrayList(GameDifficulty.values());
+        ObservableList<GameDifficulty> difficulties = FXCollections.observableArrayList(GameDifficulty.values());
         difficultyChoiceBox.setItems(difficulties);
         difficultyChoiceBox.setValue(GameDifficulty.NORMAL);
 
@@ -62,8 +63,8 @@ public class MainController {
      */
     @FXML
     void onNameFieldKeyPress(KeyEvent event) {
-        var text = nameTextField.getText() + event.getText();
-        var validName = nameValidatorService.isValid(text);
+        String text = nameTextField.getText() + event.getText();
+        boolean validName = nameValidatorService.isValid(text);
         nameRedCross.setVisible(!validName);
         nameNotValidLabel.setVisible(!validName);
         nameGreenCheckmark.setVisible(validName);
@@ -81,16 +82,16 @@ public class MainController {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
-        var playerName = nameTextField.getText();
+        String playerName = nameTextField.getText();
         if (!nameValidatorService.isValid(playerName)) {
-            var content = "Your name must be of length " + NameValidatorService.MIN_NAME_LENGTH + "-" + NameValidatorService.MAX_NAME_LENGTH + " and not include special characters.";
+            String content = "Your name must be of length " + NameValidatorService.MIN_NAME_LENGTH + "-" + NameValidatorService.MAX_NAME_LENGTH + " and not include special characters.";
             Alert alert = new Alert(Alert.AlertType.ERROR, content, ButtonType.OK);
             alert.showAndWait();
             return;
 
         }
-        var rounds = (int) numberOfRoundsSlider.getValue();
-        var gameDifficulty = difficultyChoiceBox.getSelectionModel().getSelectedItem();
+        int rounds = (int)numberOfRoundsSlider.getValue();
+        GameDifficulty gameDifficulty = difficultyChoiceBox.getSelectionModel().getSelectedItem();
 
         GameController gameController = windowManager.loadGameScreen();
         GameEnvironment gameEnv = GameEnvironment.init(gameController, playerName, rounds, gameDifficulty);

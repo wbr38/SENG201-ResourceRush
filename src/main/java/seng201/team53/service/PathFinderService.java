@@ -27,14 +27,14 @@ public class PathFinderService {
     public Polyline generatePathPolyline() {
         if (!polylinePath.getPoints().isEmpty())
             throw new IllegalStateException("Map already has a polyline path calculated.");
-        var firstPoint = path.get(0);
+        Point firstPoint = path.get(0);
         polylinePath.getPoints().add((double)firstPoint.y * TILE_WIDTH - (TILE_WIDTH / 2));
         polylinePath.getPoints().add((double)firstPoint.x * TILE_HEIGHT + (TILE_HEIGHT / 2));
-        for (var point : path) {
+        for (Point point : path) {
             polylinePath.getPoints().add((double)point.y * TILE_WIDTH + (TILE_WIDTH / 2));
             polylinePath.getPoints().add((double)point.x * TILE_HEIGHT + (TILE_HEIGHT / 2));
         }
-        var lastPoint = path.get(path.size() - 1);
+        Point lastPoint = path.get(path.size() - 1);
         polylinePath.getPoints().add((double)lastPoint.y * TILE_WIDTH + (TILE_WIDTH / 2));
         polylinePath.getPoints().add((double)lastPoint.x * TILE_HEIGHT + ((3 * TILE_HEIGHT) / 2));
         return polylinePath;
@@ -106,10 +106,10 @@ public class PathFinderService {
      */
     private boolean isValidTile(Tile[][] tiles, int[][] discovered, int x, int y) {
         return (x >= 0
-                && y >= 0
-                && x < tiles.length
-                && y < tiles[x].length
-                && tiles[x][y].isPath()
-                && discovered[x][y] == 0);
+            && y >= 0
+            && x < tiles.length
+            && y < tiles[x].length
+            && tiles[x][y].isPath()
+            && discovered[x][y] == 0);
     }
 }

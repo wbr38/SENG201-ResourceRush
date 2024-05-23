@@ -30,8 +30,8 @@ public class TileTemplate {
      */
     public Tile createTile(int x, int y) {
         return new Tile(buildable,
-                path,
-                x,
-                y);
+            path,
+            x,
+            y);
     }
 }

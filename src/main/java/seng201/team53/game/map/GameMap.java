@@ -38,7 +38,7 @@ public class GameMap {
         this.name = name;
         this.tiles = tiles;
 
-        var pathFinderService = new PathFinderService();
+        PathFinderService pathFinderService = new PathFinderService();
         pathFinderService.findPath(tiles, startX, startY, endX, endY);
         this.polylinePath = pathFinderService.generatePathPolyline();
         this.pathLength = pathFinderService.calculatePathLength();

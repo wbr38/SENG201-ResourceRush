@@ -4,11 +4,14 @@ import javafx.animation.Interpolator;
 import javafx.animation.PathTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 import seng201.team53.game.state.CartState;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.items.Cart;
+import seng201.team53.game.map.GameMap;
 
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
@@ -46,7 +49,7 @@ public class FXCart {
         this.imageView = imageView;
         this.capacityLabel = capacityLabel;
 
-        var map = getGameEnvironment().getMap();
+        GameMap map = getGameEnvironment().getMap();
         pathTransition = new PathTransition();
         pathTransition.setNode(wrapper);
         pathTransition.setDuration(map.calculatePathDuration(cart.getVelocity()));
@@ -88,7 +91,7 @@ public class FXCart {
     private void onCapacityUpdate(int capacity) {
         capacityLabel.setText(capacity + "/" + cart.getMaxCapacity());
         if (capacity == cart.getMaxCapacity()) {
-            var fullCartImage = getGameEnvironment().getAssetLoader().getCartImage(cart.getResourceType(), true);
+            Image fullCartImage = getGameEnvironment().getAssetLoader().getCartImage(cart.getResourceType(), true);
             imageView.setImage(fullCartImage);
         }
     }
@@ -104,7 +107,7 @@ public class FXCart {
         switch (cartState) {
             case TRAVERSING_PATH -> pathTransition.play();
             case COMPLETE_PATH -> {
-                var overlay = getGameEnvironment().getController().getOverlay();
+                Pane overlay = getGameEnvironment().getController().getOverlay();
                 overlay.getChildren().remove(wrapper);
                 pathTransition.stop();
                 cart.getCurrentCapacityProperty().removeListener(cartCapacityListener);
@@ -121,10 +124,10 @@ public class FXCart {
      * position it was at before the duration was changed.
      */
     private void onCartVelocityModifierChange() {
-        var totalTime = pathTransition.getDuration();
-        var elapsedTime = pathTransition.getCurrentTime();
+        Duration totalTime = pathTransition.getDuration();
+        Duration elapsedTime = pathTransition.getCurrentTime();
         double percentageCompleted = elapsedTime.toMillis() / totalTime.toMillis();
-        var newDuration = getGameEnvironment().getMap().calculatePathDuration(cart.getVelocity());
+        Duration newDuration = getGameEnvironment().getMap().calculatePathDuration(cart.getVelocity());
         pathTransition.setDuration(newDuration);
         pathTransition.stop();
         pathTransition.jumpTo(newDuration.multiply(percentageCompleted));

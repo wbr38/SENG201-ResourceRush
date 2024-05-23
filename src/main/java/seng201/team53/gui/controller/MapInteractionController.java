@@ -12,6 +12,7 @@ import seng201.team53.game.map.GameMap;
 import seng201.team53.game.map.MapInteraction;
 import seng201.team53.game.map.Tile;
 import seng201.team53.game.state.GameState;
+import seng201.team53.game.items.Cart;
 import seng201.team53.game.items.Item;
 import seng201.team53.game.items.Purchasable;
 import seng201.team53.game.items.Shop;
@@ -111,7 +112,7 @@ public class MapInteractionController {
         overlay.setOnMouseMoved(this::onMouseMove);
         gameController.showSellItemPopup(item);
 
-        var map = getGameEnvironment().getMap();
+        GameMap map = getGameEnvironment().getMap();
         if (item.getPurchasableType() instanceof TowerType) {
             map.setInteraction(MapInteraction.PLACE_TOWER);
         } else {
@@ -156,7 +157,7 @@ public class MapInteractionController {
     /**
      * Start the process of moving the tower on this tile (if there is one).
      * Will remove the tower from the map, and the user wil begin placing it again.
-     * @param tile The tile the user clicked, that may contain a tower. 
+     * @param tile The tile the user clicked, that may contain a tower.
      */
     public void tryMoveTower(Tile tile) {
         if (!tile.canMoveTower())
@@ -175,7 +176,7 @@ public class MapInteractionController {
      * @param tower The tower to remove from the map.
      */
     private void removeTower(Tower tower) {
-        var map = getGameEnvironment().getMap();
+        GameMap map = getGameEnvironment().getMap();
         map.removeTower(tower);
     }
 
@@ -187,7 +188,7 @@ public class MapInteractionController {
      * @param screenY The screen y-coordinate
      */
     private void tryUpgradeCart(int screenX, int screenY) {
-        var cart = getGameEnvironment().getController().getFXWrappers().findCartAtScreen(screenX, screenY);
+        Cart cart = getGameEnvironment().getController().getFXWrappers().findCartAtScreen(screenX, screenY);
         if (cart == null)
             return;
 
@@ -210,7 +211,7 @@ public class MapInteractionController {
      * @param tile The clicked tile
      */
     private void tryUpgradeTower(Tile tile) {
-        var tower = tile.getTower();
+        Tower tower = tile.getTower();
         if (tower == null)
             return;
 
@@ -264,7 +265,7 @@ public class MapInteractionController {
             case PLACE_UPGRADE -> {
                 if (selectedItem instanceof UpgradeItem upgradeItem) {
                     if (upgradeItem.isCartUpgrade())
-                        tryUpgradeCart((int) event.getSceneX(), (int) event.getSceneY());
+                        tryUpgradeCart((int)event.getSceneX(), (int)event.getSceneY());
                     else if (upgradeItem.isTowerUpgrade())
                         tryUpgradeTower(tile);
                 }

@@ -36,7 +36,7 @@ public class Cart implements Upgradeable {
         this.velocity = velocity;
         this.resourceType = acceptedResource;
 
-        // Delay the cart starting to move. See FXCart onCartStateUpdate where the cart will begin following the path. 
+        // Delay the cart starting to move. See FXCart onCartStateUpdate where the cart will begin following the path.
         PauseTransition spawnDelay = new PauseTransition(spawnDelayTime);
         spawnDelay.setOnFinished(event -> setCartState(CartState.TRAVERSING_PATH));
 
@@ -44,7 +44,7 @@ public class Cart implements Upgradeable {
         getGameEnvironment().getStateHandler().getGameStateProperty().addListener(($, oldState, newState) -> {
             if (newState == GameState.ROUND_ACTIVE)
                 spawnDelay.play();
-            else    
+            else
                 spawnDelay.pause();
         });
 

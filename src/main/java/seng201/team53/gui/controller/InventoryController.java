@@ -11,6 +11,7 @@ import seng201.team53.game.items.towers.Tower;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;
@@ -39,10 +40,10 @@ public class InventoryController {
      * This method updates each button to remove the default graphic and tool tip
      */
     public void init() {
-        var inventoryButtons = Arrays.asList(gameController.inventoryButton1,
-                                             gameController.inventoryButton2,
-                                             gameController.inventoryButton3,
-                                             gameController.inventoryButton4);
+        List<Button> inventoryButtons = Arrays.asList(gameController.inventoryButton1,
+                                                      gameController.inventoryButton2,
+                                                      gameController.inventoryButton3,
+                                                      gameController.inventoryButton4);
         inventoryButtons.forEach(button -> {
             button.setOnMouseClicked(event -> onInventoryButtonClick(event, button));
             gameController.updateButton(button, null);

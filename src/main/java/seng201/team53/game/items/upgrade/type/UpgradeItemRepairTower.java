@@ -18,11 +18,7 @@ public class UpgradeItemRepairTower extends UpgradeItem {
      * Constructs a new repair tower upgrade
      */
     public UpgradeItemRepairTower() {
-        super("Repair Tower",
-                "Repair a broken tower",
-                100,
-                false,
-                true);
+        super("Repair Tower", "Repair a broken tower", 100, false, true);
     }
 
     /**
@@ -50,7 +46,7 @@ public class UpgradeItemRepairTower extends UpgradeItem {
      */
     @Override
     public void apply(Upgradeable upgradeable) {
-        var tower = (Tower) upgradeable;
+        Tower tower = (Tower)upgradeable;
         tower.setBroken(false);
     }
 

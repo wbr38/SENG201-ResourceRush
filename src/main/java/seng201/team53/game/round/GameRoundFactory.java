@@ -24,7 +24,7 @@ public class GameRoundFactory {
         float cartVelocity = calculateCartVelocity(difficulty, roundNumber);
         int numCarts = difficulty.getNumberOfCarts(roundNumber);
         for (int i = 0; i < numCarts; i++) {
-            var resourceType = switch (i % 4) {
+            ResourceType resourceType = switch (i % 4) {
                 case 0 -> ResourceType.WOOD;
                 case 1 -> ResourceType.STONE;
                 case 2 -> ResourceType.ORE;

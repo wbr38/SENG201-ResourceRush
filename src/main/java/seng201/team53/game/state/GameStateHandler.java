@@ -3,6 +3,8 @@ package seng201.team53.game.state;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import seng201.team53.game.GameEnvironment;
+import seng201.team53.game.event.type.RandomEvent;
+import seng201.team53.game.items.towers.TowerType;
 
 /**
  * This class manages the game state within the game environment. It keeps track of the current game state
@@ -68,9 +70,9 @@ public class GameStateHandler {
     private boolean handleChangedGameStateRoundActive() {
         GameEnvironment gameEnv = GameEnvironment.getGameEnvironment();
         if (previousState == GameState.ROUND_NOT_STARTED) {
-            var randomEvent = gameEnv.getRandomEvents().requestRandomEvent();
+            RandomEvent randomEvent = gameEnv.getRandomEvents().requestRandomEvent();
             if (randomEvent != null) {
-                var towerType = randomEvent.apply();
+                TowerType towerType = randomEvent.apply();
                 if (towerType != null) {
                     gameEnv.getController().showRandomEventDialog(randomEvent.getDescription(towerType));
                     setState(GameState.RANDOM_EVENT_DIALOG_OPEN);

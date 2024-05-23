@@ -16,6 +16,7 @@ import seng201.team53.game.items.towers.TowerType;
 import seng201.team53.game.items.upgrade.UpgradeItem;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,21 +55,21 @@ public class AssetLoader {
      * Loads a map from a JSON file
      * @param name The name of the map
      * @param path The path to the JSON file resource
-     * @param  mapBackgroundPane The background map pane
+     * @param mapBackgroundPane The background map pane
      * @return The loaded map
      */
     public GameMap loadMap(String name, String path, Pane mapBackgroundPane) {
-        var json = (JSONObject)readJsonResource(path);
-        var backgroundImage = readImage((String)json.get("background"));
-        var startPosition = (JSONObject)json.get("start_position");
-        var startPositionX = (int)(long)startPosition.get("y");
-        var startPositionY = (int)(long)startPosition.get("x");
-        var endPosition = (JSONObject)json.get("end_position");
-        var endPositionX = (int)(long)endPosition.get("y");
-        var endPositionY = (int)(long)endPosition.get("x");
-        var mapMatrix = (JSONArray)json.get("map_matrix");
-        var tiles = readMapMatrix(mapMatrix);
-        var background = new ImageView(backgroundImage);
+        JSONObject json = (JSONObject)readJsonResource(path);
+        Image backgroundImage = readImage((String)json.get("background"));
+        JSONObject startPosition = (JSONObject)json.get("start_position");
+        int startPositionX = (int)(long)startPosition.get("y");
+        int startPositionY = (int)(long)startPosition.get("x");
+        JSONObject endPosition = (JSONObject)json.get("end_position");
+        int endPositionX = (int)(long)endPosition.get("y");
+        int endPositionY = (int)(long)endPosition.get("x");
+        JSONArray mapMatrix = (JSONArray)json.get("map_matrix");
+        Tile[][] tiles = readMapMatrix(mapMatrix);
+        ImageView background = new ImageView(backgroundImage);
         mapBackgroundPane.getChildren().clear();
         background.setFitWidth(mapBackgroundPane.getPrefWidth());
         background.setFitHeight(mapBackgroundPane.getPrefHeight());
@@ -131,7 +132,7 @@ public class AssetLoader {
      * @return The loaded image
      */
     public static Image readImage(String path) {
-        try (var resource = AssetLoader.class.getResourceAsStream(path)) {
+        try (InputStream resource = AssetLoader.class.getResourceAsStream(path)) {
             if (resource == null)
                 throw new RuntimeException("Could not read resource '" + path + "'.");
             return new Image(resource);
@@ -195,9 +196,9 @@ public class AssetLoader {
      */
     private Tile[][] readMapMatrix(JSONArray mapMatrix) {
         int lastRowSize = -1;
-        var tiles = new Tile[mapMatrix.size()][];
+        Tile[][] tiles = new Tile[mapMatrix.size()][];
         for (int y = 0; y < mapMatrix.size(); y++) {
-            var innerArray = (JSONArray)mapMatrix.get(y);
+            JSONArray innerArray = (JSONArray)mapMatrix.get(y);
             // ensure every row has same amount of columns otherwise we get errors later
             if (lastRowSize == -1) {
                 lastRowSize = innerArray.size();
@@ -206,12 +207,12 @@ public class AssetLoader {
             }
             tiles[y] = new Tile[innerArray.size()];
             for (int x = 0; x < innerArray.size(); x++) {
-                var tileId = (int)(long)innerArray.get(x);
-                var tileTemplate = tileTemplates.get(tileId);
+                int tileId = (int)(long)innerArray.get(x);
+                TileTemplate tileTemplate = tileTemplates.get(tileId);
                 if (tileTemplate == null)
                     throw new RuntimeException("Missing tile template for id '" + tileId + "'");
 
-                var tile = tileTemplate.createTile(x, y);
+                Tile tile = tileTemplate.createTile(x, y);
                 tiles[y][x] = tile;
             }
         }
@@ -224,10 +225,10 @@ public class AssetLoader {
      * @return The parsed JSON object
      */
     private Object readJsonResource(String path) {
-        try (var resource = getClass().getResourceAsStream(path)) {
+        try (InputStream resource = getClass().getResourceAsStream(path)) {
             if (resource == null)
                 throw new RuntimeException("Could not read resource '" + path + "'.");
-            var inputStreamReader = new InputStreamReader(resource);
+            InputStreamReader inputStreamReader = new InputStreamReader(resource);
             return jsonParser.parse(inputStreamReader);
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);

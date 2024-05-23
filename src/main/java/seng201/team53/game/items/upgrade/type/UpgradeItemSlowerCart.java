@@ -19,11 +19,7 @@ public class UpgradeItemSlowerCart extends UpgradeItem {
      * Constructs a new slower cart upgrade
      */
     public UpgradeItemSlowerCart() {
-        super("Slower Cart",
-                "Temporality allow a cart to travel slower",
-                100,
-                true,
-                false);
+        super("Slower Cart", "Temporality allow a cart to travel slower", 100, true, false);
     }
 
     /**
@@ -51,7 +47,7 @@ public class UpgradeItemSlowerCart extends UpgradeItem {
      */
     @Override
     public void apply(Upgradeable upgradeable) {
-        var cart = (Cart) upgradeable;
+        Cart cart = (Cart)upgradeable;
         cart.decreaseVelocityModifier();
     }
 

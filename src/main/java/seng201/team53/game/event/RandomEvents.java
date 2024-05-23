@@ -1,5 +1,6 @@
 package seng201.team53.game.event;
 
+import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
 import seng201.team53.game.event.type.RandomEvent;
 import seng201.team53.game.event.type.RandomEventBrokenTower;
@@ -21,12 +22,12 @@ public class RandomEvents {
      * @return a random event if the conditions are met, or null if no event should occur
      */
     public RandomEvent requestRandomEvent() {
-        var difficulty = GameEnvironment.getGameEnvironment().getDifficulty();
+        GameDifficulty difficulty = GameEnvironment.getGameEnvironment().getDifficulty();
         double randomDouble = ThreadLocalRandom.current().nextDouble();
         if (randomDouble > difficulty.getRandomEventOdds())
             return null;
 
-        var availableRandonEvents = randomEvents.stream().filter(RandomEvent::isAvailable).toList();
+        List<RandomEvent> availableRandonEvents = randomEvents.stream().filter(RandomEvent::isAvailable).toList();
         if (availableRandonEvents.isEmpty())
             return null;
 

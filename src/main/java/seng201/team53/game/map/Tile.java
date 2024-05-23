@@ -33,11 +33,9 @@ public class Tile {
      */
     public boolean canPlaceTower() {
         Tower tower = this.getTower();
-        return (
-            this.isBuildable()
+        return (this.isBuildable()
             && !this.isPath()
-            && tower == null
-        );
+            && tower == null);
     }
 
     /**
@@ -46,10 +44,8 @@ public class Tile {
      */
     public boolean canMoveTower() {
         Tower tower = this.getTower();
-        return (
-            tower != null
-            && !tower.isBroken()
-        );
+        return (tower != null
+            && !tower.isBroken());
     }
 
     /**

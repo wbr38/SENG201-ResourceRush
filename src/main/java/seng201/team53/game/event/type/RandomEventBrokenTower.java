@@ -2,8 +2,10 @@ package seng201.team53.game.event.type;
 
 import seng201.team53.game.items.towers.Tower;
 import seng201.team53.game.items.towers.TowerType;
+import seng201.team53.game.map.GameMap;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -13,12 +15,14 @@ import static seng201.team53.game.GameEnvironment.getGameEnvironment;
  * Represents a random event where a tower becomes broken
  */
 public class RandomEventBrokenTower implements RandomEvent {
-    private final Map<TowerType, String> messages = new HashMap<>() {{
-        put(Tower.Type.LUMBER_MILL, "Pests have infested your Lumber Mill. Maintenance is required!");
-        put(Tower.Type.MINE, "A cave-in has occurred in your Mine. It’s time to rebuild!");
-        put(Tower.Type.QUARRY, "A landslide has damaged your Quarry. We need to start repairs!");
-        put(Tower.Type.WINDMILL, "A strong gust has damaged your Windmill. Time for repairs!");
-    }};
+    private final Map<TowerType, String> messages = new HashMap<>() {
+        {
+            put(Tower.Type.LUMBER_MILL, "Pests have infested your Lumber Mill. Maintenance is required!");
+            put(Tower.Type.MINE, "A cave-in has occurred in your Mine. It’s time to rebuild!");
+            put(Tower.Type.QUARRY, "A landslide has damaged your Quarry. We need to start repairs!");
+            put(Tower.Type.WINDMILL, "A strong gust has damaged your Windmill. Time for repairs!");
+        }
+    };
 
     /**
      * Returns a description of the random event based on what tower type it has selected
@@ -35,8 +39,8 @@ public class RandomEventBrokenTower implements RandomEvent {
      */
     @Override
     public boolean isAvailable() {
-        var map = getGameEnvironment().getMap();
-        for (var tower : map.getTowers())
+        GameMap map = getGameEnvironment().getMap();
+        for (Tower tower : map.getTowers())
             if (!tower.isBroken())
                 return true;
         return false;
@@ -47,13 +51,13 @@ public class RandomEventBrokenTower implements RandomEvent {
      */
     @Override
     public TowerType apply() {
-        var map = getGameEnvironment().getMap();
-        var unbrokenTowers = map.getTowers().stream().filter(tower -> !tower.isBroken()).toList();
+        GameMap map = getGameEnvironment().getMap();
+        List<Tower> unbrokenTowers = map.getTowers().stream().filter(tower -> !tower.isBroken()).toList();
         if (unbrokenTowers.isEmpty())
             return null;
 
         int randomInt = ThreadLocalRandom.current().nextInt(0, unbrokenTowers.size());
-        var tower = unbrokenTowers.get(randomInt);
+        Tower tower = unbrokenTowers.get(randomInt);
         tower.setBroken(true);
         return tower.getPurchasableType();
     }

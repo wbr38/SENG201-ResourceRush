@@ -19,11 +19,7 @@ public class UpgradeItemFillCart extends UpgradeItem {
      * Constructs a new fill cart upgrade
      */
     public UpgradeItemFillCart() {
-        super("Fill Cart",
-                "Choose a cart to instantly fill up",
-                100,
-                true,
-                false);
+        super("Fill Cart", "Choose a cart to instantly fill up", 100, true, false);
     }
 
     /**
@@ -50,7 +46,7 @@ public class UpgradeItemFillCart extends UpgradeItem {
      */
     @Override
     public void apply(Upgradeable upgradeable) {
-        var cart = (Cart) upgradeable;
+        Cart cart = (Cart)upgradeable;
         cart.fill();
     }
 

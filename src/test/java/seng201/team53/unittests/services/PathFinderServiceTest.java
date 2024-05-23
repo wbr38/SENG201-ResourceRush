@@ -26,6 +26,7 @@ public class PathFinderServiceTest {
     void testValidShortPaths() {
 
     }
+
     @Test
     void testValidLongPaths() {
 

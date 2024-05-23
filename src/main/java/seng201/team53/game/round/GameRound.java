@@ -61,7 +61,7 @@ public class GameRound {
      * @param spawnDelay The delay before the cart spawns
      */
     public void addCart(int maxCapacity, float velocity, ResourceType resourceType, Duration spawnDelay) {
-        var cart = new Cart(maxCapacity,
+        Cart cart = new Cart(maxCapacity,
             velocity,
             resourceType,
             spawnDelay);

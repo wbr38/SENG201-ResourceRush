@@ -3,6 +3,7 @@ package seng201.team53.gui.controller;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -106,7 +107,7 @@ public class GameController {
         toggleInventoryVisible(false);
         this.showSellItemPopup(null);
 
-        var difficulties = FXCollections.observableArrayList(GameDifficulty.values());
+        ObservableList<GameDifficulty> difficulties = FXCollections.observableArrayList(GameDifficulty.values());
         difficultyChoiceBox.setItems(difficulties);
         difficultyChoiceBox.setValue(getGameEnvironment().getDifficulty());
         difficultyChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue,
@@ -128,7 +129,7 @@ public class GameController {
         music.setCycleCount(MediaPlayer.INDEFINITE);
         music.play();
 
-        var stateHandler = getGameEnvironment().getStateHandler();
+        GameStateHandler stateHandler = getGameEnvironment().getStateHandler();
         stateHandler.getGameStateProperty().addListener(($, oldState, newState) -> {
             switch (newState) {
                 case RANDOM_EVENT_DIALOG_OPEN -> showStartButton();

@@ -98,7 +98,7 @@ public abstract class UpgradeItem implements Purchasable, Item {
      * @return A list of upgradable items that can apply this upgrade
      */
     protected List<Upgradeable> getApplicableItems(Collection<? extends Upgradeable> collection) {
-        return collection.stream().filter(this::canApply).map(x -> (Upgradeable) x).toList();
+        return collection.stream().filter(this::canApply).map(x -> (Upgradeable)x).toList();
     }
 
     /**

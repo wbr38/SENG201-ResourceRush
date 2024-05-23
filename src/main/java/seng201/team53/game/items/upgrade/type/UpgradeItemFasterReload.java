@@ -4,6 +4,7 @@ import seng201.team53.game.items.Purchasable;
 import seng201.team53.game.items.towers.Tower;
 import seng201.team53.game.items.upgrade.UpgradeItem;
 import seng201.team53.game.items.upgrade.Upgradeable;
+import seng201.team53.game.round.GameRound;
 
 import java.util.List;
 
@@ -18,11 +19,7 @@ public class UpgradeItemFasterReload extends UpgradeItem {
      * Constructs a new faster reload tower upgrade
      */
     public UpgradeItemFasterReload() {
-        super("Faster Reload",
-                "Temporality allow a tower to reload faster",
-                100,
-                false,
-                true);
+        super("Faster Reload", "Temporality allow a tower to reload faster", 100, false, true);
     }
 
     /**
@@ -50,8 +47,8 @@ public class UpgradeItemFasterReload extends UpgradeItem {
      */
     @Override
     public void apply(Upgradeable upgradeable) {
-        var round = getGameEnvironment().getRound();
-        var tower = (Tower) upgradeable;
+        GameRound round = getGameEnvironment().getRound();
+        Tower tower = (Tower)upgradeable;
         tower.addReloadSpeedModifier();
         round.addOnRoundEndAction(tower::resetReloadSpeedModifier);
     }

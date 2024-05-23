@@ -1,8 +1,10 @@
 package seng201.team53.gui.wrapper;
 
 import javafx.collections.MapChangeListener;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -16,6 +18,7 @@ import seng201.team53.game.map.Tile;
 import seng201.team53.game.round.GameRound;
 import seng201.team53.game.items.Cart;
 import seng201.team53.game.items.towers.Tower;
+import seng201.team53.game.items.towers.TowerType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +40,7 @@ public class FXWrappers {
         getGameEnvironment().getMap().getTowersProperty().addListener(this::onTowersChange);
 
         // set it up for current round
-        var round = getGameEnvironment().getRound();
+        GameRound round = getGameEnvironment().getRound();
         onGameRoundChange(round);
     }
 
@@ -48,11 +51,11 @@ public class FXWrappers {
      * @return The found cart if a cart was found at the given screen x and y coordinate, null otherwise
      */
     public Cart findCartAtScreen(int screenX, int screenY) {
-        for (var entry : fxCarts.entrySet()) {
-            var cart = entry.getKey();
-            var fxCart = entry.getValue();
-            var imageView = fxCart.getImageView();
-            var pointInScene = imageView.localToScene(imageView.getX(), imageView.getY());
+        for (Map.Entry<Cart, FXCart> entry : fxCarts.entrySet()) {
+            Cart cart = entry.getKey();
+            FXCart fxCart = entry.getValue();
+            ImageView imageView = fxCart.getImageView();
+            Point2D pointInScene = imageView.localToScene(imageView.getX(), imageView.getY());
             double sceneX = pointInScene.getX();
             double sceneY = pointInScene.getY();
             if (sceneX <= screenX &&
@@ -111,18 +114,18 @@ public class FXWrappers {
      * @param change
      */
     private void onTowersChange(MapChangeListener.Change<? extends Tower, ? extends Tile> change) {
-        var tower = change.getKey();
+        Tower tower = change.getKey();
         if (change.wasRemoved()) {
-            var fxTower = fxTowers.get(tower);
+            FXTower fxTower = fxTowers.get(tower);
             fxTower.onTowerRemoved();
             fxTowers.remove(tower);
             return;
         }
 
-        var towerType = tower.getPurchasableType();
-        var tile = change.getValueAdded();
-        var image = getGameEnvironment().getAssetLoader().getTowerTypeImage(towerType, tower.isBroken());
-        var imageView = new ImageView(image);
+        TowerType towerType = tower.getPurchasableType();
+        Tile tile = change.getValueAdded();
+        Image image = getGameEnvironment().getAssetLoader().getTowerTypeImage(towerType, tower.isBroken());
+        ImageView imageView = new ImageView(image);
         imageView.setFitHeight(GameMap.TILE_HEIGHT);
         imageView.setFitWidth(GameMap.TILE_WIDTH);
         fxTowers.put(tower, new FXTower(tower, tile, imageView));

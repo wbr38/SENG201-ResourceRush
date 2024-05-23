@@ -23,7 +23,7 @@ class CartTest {
     final float velocity = 1.0f;
     final ResourceType resourceType = ResourceType.ENERGY;
     final Duration spawnDelay = Duration.seconds(0);
-    
+
     @BeforeAll
     void beforeAllTests() {
         GameEnvironment.init(null, null, 0, GameDifficulty.NORMAL);
