@@ -1,55 +1,84 @@
-# SENG201 Template Project Overview
-Welcome to the template project for SENG201 which you will transform into your own.
-This README file includes some useful information to help you get started.
-However, we expect that this README becomes your own
+# ResourceRush (SENG201 Project Team 53)
+ResourceRush is a classic tower game. You purchase towers that generate resources. These resources are collected by 
+carts as they travel along the path. Your goal is to optimize resource generation to achieve victory.
 
 ## Authors
 - SENG201 Teaching team
 - William Brown
 - Corey Hines
 
-## Prerequisites
+
+## Dependencies
+This application has the following dependencies:
 - JDK >= 17 [click here to get the latest stable OpenJDK release (as of writing this README)](https://jdk.java.net/18/)
-- *(optional)* Gradle [Download](https://gradle.org/releases/) and [Install](https://gradle.org/install/)
+- JavaFX Controls 21.0.2 (https://mvnrepository.com/artifact/org.openjfx/javafx-controls)
+- JavaFX FXML 21.0.2 (https://mvnrepository.com/artifact/org.openjfx/javafx-fxml)
+- JavaFX Media 21.0.2 (https://mvnrepository.com/artifact/org.openjfx/javafx-media)
+- JSON Simple 1.1.1 (https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple)
+- JUnit Jupiter 5.10.2 (https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter)
+- JUnit Jupiter API 5.10.2 (https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api)
+
+The dependencies can be added to `build.gradle` as follows:
+```gradle
+dependencies {
+    implementation "org.openjfx:javafx-controls:${javafxVersion}"
+    implementation "org.openjfx:javafx-fxml:${javafxVersion}"
+    implementation "org.openjfx:javafx-media:${javafxVersion}"
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+}
+```
 
 
-## What's Included
-This project comes with some basic examples of the following (including dependencies in the build.gradle file):
-- JavaFX
-- Junit 5
+# Cloning
+1. Open a terminal window
+2. Use the `git clone` command to clone the repository
+```
+git clone https://eng-git.canterbury.ac.nz/seng201-2024/team-53.git
+```
+This will create a new directory named `team-53` containing the project files.
 
-We have also included a basic setup of the Gradle project and Tasks required for the course including:
-- Required dependencies for the functionality above
-- Test Coverage with JaCoCo
-- Build plugins:
-    - JavaFX Gradle plugin for working with (and packaging) JavaFX applications easily
-
-You are expected to understand the content provided and build your application on top of it. If there is anything you
-would like more information about please reach out to the tutors.
 
 ## Importing Project (Using IntelliJ)
-IntelliJ has built-in support for Gradle. To import your project:
+IntelliJ has built-in support for Gradle. To import the repository:
 
 - Launch IntelliJ and choose `Open` from the start-up window.
-- Select the project and click open
+- Select the `team-53` directory and click open
 - At this point in the bottom right notifications you may be prompted to 'load gradle scripts', If so, click load
 
-**Note:** *If you run into dependency issues when running the app or the Gradle pop up doesn't appear then open the Gradle sidebar and click the Refresh icon.*
 
-## Run Project 
-1. Open a command line interface inside the project directory and run `./gradlew run` to run the app.
-2. The app should then open a new window, this may not be displayed over IntelliJ but can be easily selected from the taskbar
+## Run Project
+1. Open a terminal inside the project directory.
+2. Run the following gcommand
+```
+./gradlew run
+```
+This will build the project and launch the application in a new window.
+
 
 ## Build and Run Jar
-1. Open a command line interface inside the project directory and run `./gradlew jar` to create a packaged Jar. The Jar file is located at build/libs/seng201_team53-1.0-SNAPSHOT.jar
-2. Navigate to the build/libs/ directory (you can do this with `cd build/libs`)
-3. Run the command `java -jar seng201_team53-1.0-SNAPSHOT.jar` to open the application.
+1. Open a command line interface inside the project directory.
+2. Run the following command
+```
+./gradlew jar
+```
+This will create a JAR file in the `build/libs/` directory named `seng201_team53-1.0-SNAPSHOT.jar`
+3. Navigate to the `build/libs/` directory inside the project.
+4. Run the following command to open the application.
+```
+java -jar seng201_team53-1.0-SNAPSHOT.jar
+```
+This will launch the application.
+
 
 ## Run Tests
-1. Open a command line interface inside the project directory and run `./gradlew test` to run the tests.
-2. Test results should be printed to the command line
-
-**Note:** *This Jar is **NOT** cross-platform, so you **must** build the jar you submit on Linux.* 
+1. Open a command line interface inside the project directory.
+2. Run the following command
+```
+./gradlew test
+```
+This will execute all the unit tests for the project and display the results in the terminal.
 
 
 ## Credits 
