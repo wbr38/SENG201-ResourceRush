@@ -43,7 +43,6 @@ public class GameStateHandler {
             if (!handleChangedGameStateRoundActive())
                 return;
         }
-        System.out.println(gameState.name());
         gameStateProperty.setValue(gameState);
 
         switch (gameState) {

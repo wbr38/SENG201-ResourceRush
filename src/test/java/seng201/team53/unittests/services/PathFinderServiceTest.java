@@ -2,12 +2,14 @@ package seng201.team53.unittests.services;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import seng201.team53.game.map.Tile;
 import seng201.team53.service.PathFinderService;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class PathFinderServiceTest {
     private PathFinderService pathFinderService;
 

@@ -70,9 +70,10 @@ public class Tower implements Item, Upgradeable {
         if (!canGenerate())
             return;
 
-        List<Cart> carts = GameEnvironment.getGameEnvironment().getRound().getCarts();
         ResourceType resourceType = this.getPurchasableType().getResourceType();
-        carts.forEach(cart -> cart.addResource(resourceType));
+        GameEnvironment.getGameEnvironment().getRound().getCarts().stream()
+                .filter(cart -> cart.getCartState() == CartState.TRAVERSING_PATH)
+                .forEach(cart -> cart.addResource(resourceType));
         setLastGenerateTime(System.currentTimeMillis());
     }
 
@@ -113,6 +114,7 @@ public class Tower implements Item, Upgradeable {
      */
     public void minusReloadModifier() {
         reloadSpeedModifier -= 0.25;
+        updateGenerateDelay();
     }
 
     /**
