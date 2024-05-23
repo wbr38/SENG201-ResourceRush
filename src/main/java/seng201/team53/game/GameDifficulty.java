@@ -24,7 +24,7 @@ public enum GameDifficulty {
      */
     NORMAL(
            "Normal",
-           50000,
+           500,
            1.0,
            100.0,
            0.75,
