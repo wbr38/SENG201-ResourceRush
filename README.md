@@ -50,3 +50,25 @@ IntelliJ has built-in support for Gradle. To import your project:
 2. Test results should be printed to the command line
 
 **Note:** *This Jar is **NOT** cross-platform, so you **must** build the jar you submit on Linux.* 
+
+
+## Credits 
+The following free to use assets were used in this project:
+
+craftpix.net (License: https://craftpix.net/file-licenses/)
+- "Free Stone Tower Game Assets" - https://craftpix.net/freebies/free-stone-tower-game-assets/  
+- "Free Battle Location Top Down Game Tileset Pack 1" - https://craftpix.net/freebies/free-battle-location-top-down-game-tileset-pack-1/
+- "Free Top-Down Bushes Pixel Art" - https://craftpix.net/freebies/free-top-down-bushes-pixel-art/
+
+freesound.org
+- "piano groove 2.wav" by "timouse" (https://freesound.org/people/timouse/sounds/639565/) licensed under CCBY 4.0
+- "projectile.wav" by "jeckkech" (https://freesound.org/people/jeckkech/sounds/391660/) licensed under CC0 1.0
+
+gamedeveloperstudio.com (License: https://www.gamedeveloperstudio.com/license.php)
+- "Windmill game asset" - https://www.gamedeveloperstudio.com/graphics/viewgraphic.php?item=1x481r9m1c7l9i8j84
+
+kindpng.com
+- "Dollar Pixel Art, HD Png Download" by "Clint Tucker" (https://www.kindpng.com/imgv/iwbTbxm_dollar-pixel-art-hd-png-download) licensed under Personal Use Only
+
+flaticon.com (License: https://www.freepikcompany.com/legal/#nav-flaticon-agreement)
+- "Fast Forward free icon" by "Pixel perfect" (https://www.flaticon.com/free-icon/fast-forward_776819)
