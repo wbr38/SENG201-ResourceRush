@@ -71,8 +71,9 @@ public class GameController {
     @FXML protected Button shopItemButton3;
     @FXML protected Button shopItemButton4;
 
-    // Sell Tower popup
+    // Sell Item popup
     @FXML protected AnchorPane sellItemPane;
+    @FXML protected Button sellItemButton;
     @FXML private Text sellItemText;
 
     // Inventory

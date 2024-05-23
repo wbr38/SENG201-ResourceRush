@@ -48,7 +48,8 @@ public class ShopController {
             button.setOnMouseClicked(event -> onShopButtonClick(event, purchasable));
         });
 
-        gameController.sellItemPane.setOnMousePressed(this::onSellTowerButtonClick);
+        gameController.sellItemButton.setOnMousePressed(this::onSellItemButtonClick);
+        gameController.sellItemPane.setOnMousePressed(this::onSellItemButtonClick);
 
         Shop shop = getGameEnvironment().getShop();
         this.updateGUI(shop.getMoney());
@@ -83,7 +84,7 @@ public class ShopController {
      * This calls the map interaction controller to handle selling a selected item and hides the sell item popup
      * @param event The mouse event
      */
-    private void onSellTowerButtonClick(MouseEvent event) {
+    private void onSellItemButtonClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
