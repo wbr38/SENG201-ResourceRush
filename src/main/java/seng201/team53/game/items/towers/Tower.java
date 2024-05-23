@@ -33,7 +33,6 @@ public class Tower implements Item, Upgradeable {
     private final LongProperty lastGenerateTimeProperty = new SimpleLongProperty(System.currentTimeMillis());
     private final Timeline generateTimeline;
     private double reloadSpeedModifier = 1;
-    // private int xpLevel = 0;
     private IntegerProperty xpLevel = new SimpleIntegerProperty(1);
     private boolean inInventory = false;
 
@@ -51,13 +50,12 @@ public class Tower implements Item, Upgradeable {
         generateTimeline.setCycleCount(Timeline.INDEFINITE);
 
         getGameEnvironment().getStateHandler().getGameStateProperty().addListener(($, oldState, newState) -> {
-            if (newState == GameState.ROUND_ACTIVE)
-                generateTimeline.play();
-            else if (newState == GameState.ROUND_PAUSE)
-                generateTimeline.pause();
-            
-            if (newState == GameState.ROUND_COMPLETE)
-                increaseLevel();
+            switch (newState) {
+                case ROUND_ACTIVE -> generateTimeline.play();
+                case ROUND_PAUSE -> generateTimeline.pause();
+                case ROUND_COMPLETE -> increaseLevel();
+                default -> {}
+            }
         });
     }
 
@@ -206,13 +204,21 @@ public class Tower implements Item, Upgradeable {
         return xpLevel.get();
     }
 
+
+    /**
+     * Retrieves the current XP level property.
+     * This property is observable, meaning it can be watched for changes
+     * @return The current XP level property
+     */
     public IntegerProperty getXpLevelProperty() {
         return xpLevel;
     }
 
+    /**
+     * Increases the XP level of this tower by one.
+     */
     public void increaseLevel() {
         xpLevel.set(getXpLevel() + 1);
-        System.out.println("Tower Level: " + getXpLevel());
     }
 
     /**
