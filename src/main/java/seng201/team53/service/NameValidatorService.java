@@ -6,8 +6,19 @@ import java.util.regex.Pattern;
  * This service validates a given name
  */
 public class NameValidatorService {
+    /**
+     * The valid name regex. This regex accepts any strings which contains only A-Z lowercase or upper case and numbers
+     */
     public static final Pattern VALID_NAME_REGEX = Pattern.compile("^[A-Za-z0-9]*$");
+
+    /**
+     * The minimum length of the name that is valid
+     */
     public static final int MIN_NAME_LENGTH = 3;
+
+    /**
+     * The maximum length of the name that is valid
+     */
     public static final int MAX_NAME_LENGTH = 15;
 
     /**
