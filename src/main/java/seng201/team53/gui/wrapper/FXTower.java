@@ -85,6 +85,7 @@ public class FXTower {
         MediaPlayer soundEffect = new MediaPlayer(soundEffectMedia);
         soundEffect.setCycleCount(1);
         soundEffect.play();
+        soundEffect.setOnEndOfMedia(() -> soundEffect.dispose());
     }
 
     /**

@@ -18,6 +18,7 @@ public class Cart implements Upgradeable {
     private final int maxCapacity;
     private final float velocity;
     private final ResourceType resourceType;
+
     private final Property<CartState> cartStateProperty = new SimpleObjectProperty<>(CartState.WAITING);
     private final IntegerProperty currentCapacityProperty = new SimpleIntegerProperty();
     private final FloatProperty velocityModifier = new SimpleFloatProperty(1f);
