@@ -13,7 +13,16 @@ import static seng201.team53.game.map.GameMap.TILE_WIDTH;
  * This service finds and validates a path in the map given a matrix
  */
 public class PathFinderService {
+    /**
+     * The x value for directions that a path can be connected to.
+     * This takes into account the left and right values
+     */
     public static final int[] X_DIRECTIONS = {-1, 0, 1, 0};
+
+    /**
+     * The y value for directions that a path can be connected to.
+     * This takes into account the top and bottom values
+     */
     public static final int[] Y_DIRECTIONS = {0, 1, 0, -1};
     private final Stack<Point> path = new Stack<>();
     private final Polyline polylinePath = new Polyline();

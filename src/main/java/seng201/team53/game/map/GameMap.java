@@ -16,7 +16,14 @@ import java.util.Collection;
  * A map consists of a 2D array of tiles, where each tile represents a specific location on the map
  */
 public class GameMap {
+    /**
+     * The height of a tile image
+     */
     public static final int TILE_HEIGHT = 40;
+
+    /**
+     * The width of a tile image
+     */
     public static final int TILE_WIDTH = 40;
     private final String name;
     private final Tile[][] tiles;
