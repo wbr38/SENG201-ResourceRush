@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AssetLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">seng201-team53-project</a> &gt; <a href="index.source.html" class="el_package">seng201.team53.game.assets</a> &gt; <span class="el_source">AssetLoader.java</span></div><h1>AssetLoader.java</h1><pre class="source lang-java linenums">package seng201.team53.game.assets;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import seng201.team53.game.map.GameMap;
+import seng201.team53.game.map.Tile;
+import seng201.team53.game.items.Purchasable;
+import seng201.team53.game.items.ResourceType;
+import seng201.team53.game.items.towers.Tower;
+import seng201.team53.game.items.towers.TowerType;
+import seng201.team53.game.items.upgrade.UpgradeItem;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * This class is responsible for loading the tile templates, game maps, and images
+ */
+<span class="fc" id="L27">public class AssetLoader {</span>
+<span class="fc" id="L28">    private final Map&lt;Integer, TileTemplate&gt; tileTemplates = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L29">    private final Map&lt;TowerType, Image&gt; towerImages = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L30">    private final Map&lt;TowerType, Image&gt; brokenTowerImages = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L31">    private final Map&lt;UpgradeItem, Image&gt; upgradeItemImages = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L32">    private final JSONParser jsonParser = new JSONParser();</span>
+    private Image emptyCart;
+    private Image quarryCartImage;
+    private Image stoneCartImage;
+    private Image windCartImage;
+    private Image woodCartImage;
+    private Image fullCartImage;
+
+    /**
+     * Initializes the MapLoader by loading the tiles and images
+     */
+    public void init() {
+        try {
+<span class="nc" id="L45">            loadTiles();</span>
+<span class="nc" id="L46">            loadTowerImages();</span>
+<span class="nc" id="L47">            loadUpgradeItemImages();</span>
+<span class="nc" id="L48">            loadCartImages();</span>
+<span class="nc" id="L49">        } catch (IOException e) {</span>
+<span class="nc" id="L50">            throw new RuntimeException(e);</span>
+<span class="nc" id="L51">        }</span>
+<span class="nc" id="L52">    }</span>
+
+    /**
+     * Loads a map from a JSON file
+     * @param name The name of the map
+     * @param path The path to the JSON file resource
+     * @param mapBackgroundPane The background map pane
+     * @return The loaded map
+     */
+    public GameMap loadMap(String name, String path, Pane mapBackgroundPane) {
+<span class="nc" id="L62">        JSONObject json = (JSONObject)readJsonResource(path);</span>
+<span class="nc" id="L63">        Image backgroundImage = readImage((String)json.get(&quot;background&quot;));</span>
+<span class="nc" id="L64">        JSONObject startPosition = (JSONObject)json.get(&quot;start_position&quot;);</span>
+<span class="nc" id="L65">        int startPositionX = (int)(long)startPosition.get(&quot;y&quot;);</span>
+<span class="nc" id="L66">        int startPositionY = (int)(long)startPosition.get(&quot;x&quot;);</span>
+<span class="nc" id="L67">        JSONObject endPosition = (JSONObject)json.get(&quot;end_position&quot;);</span>
+<span class="nc" id="L68">        int endPositionX = (int)(long)endPosition.get(&quot;y&quot;);</span>
+<span class="nc" id="L69">        int endPositionY = (int)(long)endPosition.get(&quot;x&quot;);</span>
+<span class="nc" id="L70">        JSONArray mapMatrix = (JSONArray)json.get(&quot;map_matrix&quot;);</span>
+<span class="nc" id="L71">        Tile[][] tiles = readMapMatrix(mapMatrix);</span>
+<span class="nc" id="L72">        ImageView background = new ImageView(backgroundImage);</span>
+<span class="nc" id="L73">        mapBackgroundPane.getChildren().clear();</span>
+<span class="nc" id="L74">        background.setFitWidth(mapBackgroundPane.getPrefWidth());</span>
+<span class="nc" id="L75">        background.setFitHeight(mapBackgroundPane.getPrefHeight());</span>
+<span class="nc" id="L76">        mapBackgroundPane.getChildren().add(background);</span>
+<span class="nc" id="L77">        return new GameMap(name, tiles, startPositionX, startPositionY, endPositionX, endPositionY);</span>
+    }
+
+    /**
+     * Retrieves the image associated with a purchasable item
+     * @param item The purchasable item for which the image is to be retrieved
+     * @return The image of the specified item
+     */
+    public Image getItemImage(Purchasable item) {
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        if (item instanceof TowerType towerType)</span>
+<span class="nc" id="L87">            return getTowerTypeImage(towerType, false);</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        if (item instanceof UpgradeItem upgradeItem)</span>
+<span class="nc" id="L89">            return getUpgradeItemImages(upgradeItem);</span>
+<span class="nc" id="L90">        return null;</span>
+    }
+
+    /**
+     * Retrieves the image for a specific type of tower, with an option for a broken state
+     * @param towerType The type of the tower for which the image is to be retrieved
+     * @param broken true if the broken image should be returned
+     * @return The image of the tower
+     */
+    public Image getTowerTypeImage(TowerType towerType, boolean broken) {
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        return (broken ? brokenTowerImages : towerImages).get(towerType);</span>
+    }
+
+    /**
+     * Retrieves the image of the cart, either full or empty
+     * @param full true if the full cart image should be returned
+     * @return The image of the full or empty shopping cart
+     */
+    public Image getCartImage(ResourceType resourceType, boolean full) {
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        if (full)</span>
+<span class="nc" id="L110">            return fullCartImage;</span>
+<span class="nc bnc" id="L111" title="All 5 branches missed.">        return switch (resourceType) {</span>
+<span class="nc" id="L112">            case WOOD -&gt; woodCartImage;</span>
+<span class="nc" id="L113">            case STONE -&gt; stoneCartImage;</span>
+<span class="nc" id="L114">            case ORE -&gt; quarryCartImage;</span>
+<span class="nc" id="L115">            case ENERGY -&gt; windCartImage;</span>
+<span class="nc" id="L116">            default -&gt; emptyCart;</span>
+        };
+    }
+
+    /**
+     * Retrieves the image of an upgrade item
+     * @param upgradeItem The type of upgrade item for which the image is to be retrieved
+     * @return The image of the upgrade item
+     */
+    public Image getUpgradeItemImages(UpgradeItem upgradeItem) {
+<span class="nc" id="L126">        return upgradeItemImages.get(upgradeItem);</span>
+    }
+
+    /**
+     * Reads an image resource from a given path
+     * @param path The path to the image resource
+     * @return The loaded image
+     */
+    public static Image readImage(String path) {
+<span class="nc" id="L135">        try (InputStream resource = AssetLoader.class.getResourceAsStream(path)) {</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">            if (resource == null)</span>
+<span class="nc" id="L137">                throw new RuntimeException(&quot;Could not read resource '&quot; + path + &quot;'.&quot;);</span>
+<span class="nc" id="L138">            return new Image(resource);</span>
+<span class="nc" id="L139">        } catch (IOException e) {</span>
+<span class="nc" id="L140">            throw new RuntimeException(e);</span>
+        }
+    }
+
+    /**
+     * Loads predefined tiles where id 0 represents a buildable tile, id 1 represents a path tile and 2 represents a non
+     * buildable and non path tile
+     * @throws IOException If an I/O error occurs
+     */
+    private void loadTiles() throws IOException {
+<span class="nc" id="L150">        tileTemplates.put(0, new TileTemplate(true, false));</span>
+<span class="nc" id="L151">        tileTemplates.put(1, new TileTemplate(false, true));</span>
+<span class="nc" id="L152">        tileTemplates.put(2, new TileTemplate(false, false));</span>
+<span class="nc" id="L153">    }</span>
+
+    /**
+     * Loads and stores the image for each tower type into a map
+     * The intact and broken images for each tower are loaded
+     */
+    private void loadTowerImages() {
+<span class="nc" id="L160">        towerImages.put(Tower.Type.LUMBER_MILL, readImage(&quot;/assets/items/wood_tower.png&quot;));</span>
+<span class="nc" id="L161">        towerImages.put(Tower.Type.MINE, readImage(&quot;/assets/items/stone_tower.png&quot;));</span>
+<span class="nc" id="L162">        towerImages.put(Tower.Type.QUARRY, readImage(&quot;/assets/items/quarry_tower.png&quot;));</span>
+<span class="nc" id="L163">        towerImages.put(Tower.Type.WINDMILL, readImage(&quot;/assets/items/wind_turbine_tower.png&quot;));</span>
+<span class="nc" id="L164">        brokenTowerImages.put(Tower.Type.LUMBER_MILL, readImage(&quot;/assets/items/wood_tower_broken.png&quot;));</span>
+<span class="nc" id="L165">        brokenTowerImages.put(Tower.Type.MINE, readImage(&quot;/assets/items/stone_tower_broken.png&quot;));</span>
+<span class="nc" id="L166">        brokenTowerImages.put(Tower.Type.QUARRY, readImage(&quot;/assets/items/quarry_tower.png&quot;));</span>
+<span class="nc" id="L167">        brokenTowerImages.put(Tower.Type.WINDMILL, readImage(&quot;/assets/items/quarry_tower_broken.png&quot;));</span>
+<span class="nc" id="L168">    }</span>
+
+    /**
+     * Loads and stores the image for each item upgrade into a map
+     */
+    private void loadUpgradeItemImages() {
+<span class="nc" id="L174">        upgradeItemImages.put((UpgradeItem)UpgradeItem.Type.REPAIR_TOWER, readImage(&quot;/assets/items/repair_tower.png&quot;));</span>
+<span class="nc" id="L175">        upgradeItemImages.put((UpgradeItem)UpgradeItem.Type.TEMP_FASTER_TOWER_RELOAD, readImage(&quot;/assets/items/faster_reload.png&quot;));</span>
+<span class="nc" id="L176">        upgradeItemImages.put((UpgradeItem)UpgradeItem.Type.TEMP_SLOWER_CART, readImage(&quot;/assets/items/slower_cart.png&quot;));</span>
+<span class="nc" id="L177">        upgradeItemImages.put((UpgradeItem)UpgradeItem.Type.FILL_CART, readImage(&quot;/assets/items/cart_full.png&quot;));</span>
+<span class="nc" id="L178">    }</span>
+
+    /**
+     * Loads the cart images
+     * @throws IOException If an I/O error occurs
+     */
+    private void loadCartImages() throws IOException {
+<span class="nc" id="L185">        emptyCart = readImage(&quot;/assets/items/cart.png&quot;);</span>
+<span class="nc" id="L186">        quarryCartImage = readImage(&quot;/assets/items/cart_quarry.png&quot;);</span>
+<span class="nc" id="L187">        stoneCartImage = readImage(&quot;/assets/items/cart_stone.png&quot;);</span>
+<span class="nc" id="L188">        windCartImage = readImage(&quot;/assets/items/cart_wind.png&quot;);</span>
+<span class="nc" id="L189">        woodCartImage = readImage(&quot;/assets/items/cart_wood.png&quot;);</span>
+<span class="nc" id="L190">        fullCartImage = readImage(&quot;/assets/items/cart_full.png&quot;);</span>
+<span class="nc" id="L191">    }</span>
+
+    /**
+     * Reads the map matrix from a JSON array
+     * @param mapMatrix The JSON array holding the map matrix
+     * @return The map matrix represented by tiles
+     */
+    private Tile[][] readMapMatrix(JSONArray mapMatrix) {
+<span class="nc" id="L199">        int lastRowSize = -1;</span>
+<span class="nc" id="L200">        Tile[][] tiles = new Tile[mapMatrix.size()][];</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">        for (int y = 0; y &lt; mapMatrix.size(); y++) {</span>
+<span class="nc" id="L202">            JSONArray innerArray = (JSONArray)mapMatrix.get(y);</span>
+            // ensure every row has same amount of columns otherwise we get errors later
+<span class="nc bnc" id="L204" title="All 2 branches missed.">            if (lastRowSize == -1) {</span>
+<span class="nc" id="L205">                lastRowSize = innerArray.size();</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">            } else if (lastRowSize != innerArray.size()) {</span>
+<span class="nc" id="L207">                throw new RuntimeException(&quot;Map matrix contains rows with different sizes&quot;);</span>
+            }
+<span class="nc" id="L209">            tiles[y] = new Tile[innerArray.size()];</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">            for (int x = 0; x &lt; innerArray.size(); x++) {</span>
+<span class="nc" id="L211">                int tileId = (int)(long)innerArray.get(x);</span>
+<span class="nc" id="L212">                TileTemplate tileTemplate = tileTemplates.get(tileId);</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">                if (tileTemplate == null)</span>
+<span class="nc" id="L214">                    throw new RuntimeException(&quot;Missing tile template for id '&quot; + tileId + &quot;'&quot;);</span>
+
+<span class="nc" id="L216">                Tile tile = tileTemplate.createTile(x, y);</span>
+<span class="nc" id="L217">                tiles[y][x] = tile;</span>
+            }
+        }
+<span class="nc" id="L220">        return tiles;</span>
+    }
+
+    /**
+     * Reads a JSON resource from a given path
+     * @param path The path to the JSON resource
+     * @return The parsed JSON object
+     */
+    private Object readJsonResource(String path) {
+<span class="nc" id="L229">        try (InputStream resource = getClass().getResourceAsStream(path)) {</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">            if (resource == null)</span>
+<span class="nc" id="L231">                throw new RuntimeException(&quot;Could not read resource '&quot; + path + &quot;'.&quot;);</span>
+<span class="nc" id="L232">            InputStreamReader inputStreamReader = new InputStreamReader(resource);</span>
+<span class="nc" id="L233">            return jsonParser.parse(inputStreamReader);</span>
+<span class="nc" id="L234">        } catch (IOException | ParseException e) {</span>
+<span class="nc" id="L235">            throw new RuntimeException(e);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
