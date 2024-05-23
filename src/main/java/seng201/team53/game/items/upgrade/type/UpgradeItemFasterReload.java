@@ -63,7 +63,6 @@ public class UpgradeItemFasterReload extends UpgradeItem {
     }
 
     /**
-     * R
      * Retrieves the type of purchasable upgrade type
      * @return The upgrade item
      */

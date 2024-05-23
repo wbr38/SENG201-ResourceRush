@@ -126,22 +126,25 @@ public abstract class UpgradeItem implements Purchasable, Item {
     public interface Type {
 
         /**
-         * Represents the repair tower upgrade
+         * Represents the repair tower upgrade. This upgrade can be applied to a broken tower and will repair it
          */
         Purchasable REPAIR_TOWER = new UpgradeItemRepairTower();
 
         /**
-         * Represents the faster reload tower upgrade
+         * Represents the faster reload tower upgrade. This upgrade can be applied to a non-broken tower and will
+         * decrease the time it takes for the tower to reload
          */
         Purchasable TEMP_FASTER_TOWER_RELOAD = new UpgradeItemFasterReload();
 
         /**
-         * Represents the slower cart upgrade
+         * Represents the slower cart upgrade. This upgrade can be applied to a cart currently traversing the path and
+         * will slow down the velocity of the cart, making it able to collect more resources while traversing the path
          */
         Purchasable TEMP_SLOWER_CART = new UpgradeItemSlowerCart();
 
         /**
-         * Represents the fill cart upgrade
+         * Represents the fill cart upgrade. This upgrade can be applied to an empty cart currently traversing the path
+         * and will fill the cart up
          */
         Purchasable FILL_CART = new UpgradeItemFillCart();
     }

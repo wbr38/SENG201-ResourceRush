@@ -48,6 +48,7 @@ public class RandomEventBrokenTower implements RandomEvent {
 
     /**
      * Applies the random event to a randomly selected unbroken tower
+     * @return The type of tower that the random event was applied to
      */
     @Override
     public TowerType apply() {

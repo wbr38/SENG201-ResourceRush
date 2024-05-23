@@ -35,7 +35,10 @@ public class Tower implements Item, Upgradeable {
     private boolean inInventory = false;
 
     /**
-     * Constructs a new tower with the given type
+     * Constructs a new tower with the given type. This method also creates a new Timeline with 2 keyframes. This
+     * timeline is responsible for determining the next time a tower will generate. A listener is also added to listen
+     * to the game state property. When the game state changes to active, the generate timeline will play, if the round
+     * is paused then the generate timeline will be paused.
      * @param type The type of the tower
      */
     protected Tower(TowerType type) {
@@ -72,7 +75,8 @@ public class Tower implements Item, Upgradeable {
     }
 
     /**
-     * Checks if the tower is ready to generate a resource
+     * Checks if the tower is ready to generate a resource. The tower can generate if it is not broken, is not in
+     * the inventory, the game state is active and if any of the carts can accept the resource
      * @return true if the tower is ready to generate, false otherwise
      */
     public boolean canGenerate() {
@@ -94,8 +98,10 @@ public class Tower implements Item, Upgradeable {
     }
 
     /**
-     * Adds a reload speed modifier of 0.25. Everytime this method is called, it will generate resources 50% faster,
-     * until the modifier is reset
+     * Adds a reload speed modifier of 0.25. Everytime this method is called, it will generate resources 25% faster,
+     * until the modifier is reset.
+     * The updateGenerateDelay() function is called. This allows the timeline for the generation to be updated with new
+     * reload speed.
      */
     public void addReloadSpeedModifier() {
         reloadSpeedModifier += 0.25;
@@ -103,8 +109,10 @@ public class Tower implements Item, Upgradeable {
     }
 
     /**
-     * Takes away a reload speed modifier of 0.25. Everytime this method is called, it will generate resources 50% faster,
-     * until the modifier is reset
+     * Takes away a reload speed modifier of 0.25. Everytime this method is called, it will generate resources 25%
+     * slower, until the modifier is reset
+     * The updateGenerateDelay() function is called. This allows the timeline for the generation to be updated with new
+     * reload speed.
      */
     public void minusReloadModifier() {
         reloadSpeedModifier -= 0.25;
@@ -113,6 +121,8 @@ public class Tower implements Item, Upgradeable {
 
     /**
      * Resets the reload speed modifier. The tower will generate at its original rate
+     * The updateGenerateDelay() function is called. This allows the timeline for the generation to be updated with new
+     * reload speed.
      */
     public void resetReloadSpeedModifier() {
         reloadSpeedModifier = 1;
@@ -130,7 +140,8 @@ public class Tower implements Item, Upgradeable {
     }
 
     /**
-     * Calculates the reload speed in milliseconds
+     * Calculates the reload speed in milliseconds. This calculation takes into account the difficulty reload speed
+     * modifier as well as the individual tower reload modifier
      * @return The modified reload speed of this tower in milliseconds.
      */
     private long getReloadMS() {
@@ -220,7 +231,7 @@ public class Tower implements Item, Upgradeable {
     public interface Type {
 
         /**
-         * Represents the lumber mill tower type
+         * Represents the lumber mill tower type. This tower generates the WOOD resource
          */
         TowerType LUMBER_MILL = new TowerType("Lumber Mill Tower",
             "A Lumber Mill produces wood",
@@ -229,7 +240,7 @@ public class Tower implements Item, Upgradeable {
             Duration.seconds(1));
 
         /**
-         * Represents the mine tower type
+         * Represents the mine tower type. This tower generates the STONE resource
          */
         TowerType MINE = new TowerType("Mine Tower",
             "A Mine produces ores",
@@ -238,7 +249,7 @@ public class Tower implements Item, Upgradeable {
             Duration.seconds(1));
 
         /**
-         * Represents the quarry tower type
+         * Represents the quarry tower type. This tower generates the ORE resource
          */
         TowerType QUARRY = new TowerType("Quarry Tower",
             "A Quarry produces stone",
@@ -247,7 +258,7 @@ public class Tower implements Item, Upgradeable {
             Duration.seconds(1));
 
         /**
-         * Represents the windmill tower type
+         * Represents the windmill tower type. This tower generates the ENERGY resource
          */
         TowerType WINDMILL = new TowerType("Windmill Tower",
             "A windmill produces energy",

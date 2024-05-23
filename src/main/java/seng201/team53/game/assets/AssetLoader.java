@@ -52,7 +52,9 @@ public class AssetLoader {
     }
 
     /**
-     * Loads a map from a JSON file
+     * Loads a map from a JSON file. This method will read a JSON resource, extract details such as background image
+     * path, start and end positions, the integer matrix. It will then convert the integer matrix into a tile matrix by
+     * calling readMapMatrix(). The background image is set on the map background pane and a new game map is returned.
      * @param name The name of the map
      * @param path The path to the JSON file resource
      * @param mapBackgroundPane The background map pane
@@ -78,7 +80,8 @@ public class AssetLoader {
     }
 
     /**
-     * Retrieves the image associated with a purchasable item
+     * Retrieves the image associated with a purchasable item. If the purchasable item is a tower type, the default
+     * non broken image is returned.
      * @param item The purchasable item for which the image is to be retrieved
      * @return The image of the specified item
      */
@@ -93,7 +96,7 @@ public class AssetLoader {
     /**
      * Retrieves the image for a specific type of tower, with an option for a broken state
      * @param towerType The type of the tower for which the image is to be retrieved
-     * @param broken true if the broken image should be returned
+     * @param broken true if the broken image should be returned, false otherwise
      * @return The image of the tower
      */
     public Image getTowerTypeImage(TowerType towerType, boolean broken) {
@@ -101,7 +104,7 @@ public class AssetLoader {
     }
 
     /**
-     * Retrieves the image of the cart, either full or empty
+     * Retrieves the image of the cart depending on the resource type it accepts, either full or empty
      * @param full true if the full cart image should be returned
      * @return The image of the full or empty shopping cart
      */
@@ -178,7 +181,7 @@ public class AssetLoader {
     }
 
     /**
-     * Loads the cart images
+     * Loads the cart images for each type of resource type
      * @throws IOException If an I/O error occurs
      */
     private void loadCartImages() throws IOException {
@@ -191,7 +194,9 @@ public class AssetLoader {
     }
 
     /**
-     * Reads the map matrix from a JSON array
+     * Reads the map matrix from a JSON array. This method will loop each value in the integer matrix, attempt
+     * to find the tile template from the integer value then create a new tile from that defined tile template. If the
+     * id in the integer matrix is not valid, an error will be thrown
      * @param mapMatrix The JSON array holding the map matrix
      * @return The map matrix represented by tiles
      */
