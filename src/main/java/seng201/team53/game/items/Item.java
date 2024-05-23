@@ -1,6 +1,6 @@
 package seng201.team53.game.items;
 
-/*
+/**
  * Represents an instance of an Item (a Tower or UpgradeItem).
  */
 public interface Item {
