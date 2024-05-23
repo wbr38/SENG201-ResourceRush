@@ -47,6 +47,12 @@ public class Cart implements Upgradeable {
             else    
                 spawnDelay.pause();
         });
+
+        // Increase points when cart becomes full
+        getCurrentCapacityProperty().addListener(($, oldCapacity, newCapacity) -> {
+            if (isFull())
+                GameEnvironment.getGameEnvironment().addPoints(10);
+        });
     }
 
     /**
@@ -88,8 +94,6 @@ public class Cart implements Upgradeable {
      */
     private void addCapacity() {
         currentCapacityProperty.set(getCapacity() + 1);
-        if (isFull())
-            GameEnvironment.getGameEnvironment().addPoints(10);
     }
 
     /**

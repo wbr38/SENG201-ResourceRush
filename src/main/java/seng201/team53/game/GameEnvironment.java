@@ -56,19 +56,26 @@ public class GameEnvironment {
         assetLoader.init();
         randomEvents.init();
         map = assetLoader.loadMap("default", "/assets/maps/map_one.json", controller.getMapBackgroundPane());
-        setRound(roundFactory.getRound(1));
-
-        GameDifficulty difficulty = GameEnvironment.getGameEnvironment().getDifficulty();
-        shop.addMoney(difficulty.getStartingMoney());
+        setupNextRound();
     }
 
     /**
      * Sets up the next round of the game
      */
     public void setupNextRound() {
-        int nextRound = getRound().getRoundNumber() + 1;
-        setRound(roundFactory.getRound(nextRound));
-        shop.addMoney(getRound().getMoneyEarned());
+        GameRound round = getRound();
+        if (round == null) {
+            // set up the first round
+            GameDifficulty difficulty = GameEnvironment.getGameEnvironment().getDifficulty();
+            shop.addMoney(difficulty.getStartingMoney());
+            setRound(roundFactory.getRound(1));
+            return;
+        }
+
+        // get the next round
+        GameRound nextRound = roundFactory.getRound(round.getRoundNumber() + 1);
+        setRound(nextRound);
+        shop.addMoney(nextRound.getMoneyEarned());
     }
 
     /**
