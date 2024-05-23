@@ -34,7 +34,7 @@ class TowerTest {
 
         assertEquals(tower.getPurchasableType(), towerType);
         assertFalse(tower.getBrokenProperty().get());
-        assertEquals(tower.getXpLevel(), 0);
+        assertEquals(tower.getXpLevel(), 1);
     }
 
     @Test
