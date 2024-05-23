@@ -77,7 +77,8 @@ public class TowerType implements Purchasable {
     }
 
     /**
-     * Calculates the sell price for selling the tower type
+     * Calculates the sell price for selling the tower type. The sell price of an item is dependent on the sell modifier
+     * defined by the difficulty of the game
      * @return The sell price
      */
     @Override
@@ -87,7 +88,7 @@ public class TowerType implements Purchasable {
     }
 
     /**
-     * Constructs an instance of a tower with the tower type
+     * Constructs an instance of a tower with this tower type
      * @return The instance of a tower
      */
     public Tower create() {

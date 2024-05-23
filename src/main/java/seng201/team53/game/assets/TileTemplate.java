@@ -3,8 +3,8 @@ package seng201.team53.game.assets;
 import seng201.team53.game.map.Tile;
 
 /**
- * This class represents a template for a tile on a map. It stores information about the tile's properties before
- * the actual map is created.
+ * This class represents a template for a tile on a map. It stores information about the tile's properties when the map
+ * is first read from the file and before the actual map is created.
  */
 public class TileTemplate {
     private final boolean buildable;
