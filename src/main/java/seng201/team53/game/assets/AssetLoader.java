@@ -141,7 +141,8 @@ public class AssetLoader {
     }
 
     /**
-     * Loads a list of tile templates from a JSON file
+     * Loads predefined tiles where id 0 represents a buildable tile, id 1 represents a path tile and 2 represents a non
+     * buildable and non path tile
      * @throws IOException If an I/O error occurs
      */
     private void loadTiles() throws IOException {
