@@ -2,8 +2,11 @@ package seng201.team53.gui.wrapper;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
+import javafx.scene.control.Label;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,6 +29,7 @@ import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 public class FXTower {
     private final Tower tower;
     private final Timeline glowAnimation;
+    private final Label xpLabel;
     private final Media soundEffectMedia;
     private final ImageView imageView;
     private final ChangeListener<Boolean> towerBrokenListener;
@@ -51,6 +55,14 @@ public class FXTower {
         glowAnimation.setCycleCount(1);
         imageView.setEffect(glow);
         getGameEnvironment().getController().getGridPane().add(imageView, tile.getX(), tile.getY());
+
+        // Tower XP Label
+        xpLabel = new Label("XP: " + tower.getXpLevel());
+        xpLabel.setFont(Font.font("System Regular", 14));
+        tower.getXpLevelProperty().addListener(($, oldValue, newValue) -> {
+            xpLabel.setText("XP: " + newValue);
+        });
+        getGameEnvironment().getController().getGridPane().add(xpLabel, tile.getX(), tile.getY() + 1);
 
         String resource = Objects.requireNonNull(getClass().getResource("/assets/sound/projectile.wav")).toString();
         soundEffectMedia = new Media(resource);
@@ -95,5 +107,6 @@ public class FXTower {
         tower.getBrokenProperty().removeListener(towerBrokenListener);
         tower.getLastGenerateTimeProperty().removeListener(lastGenerateTimeListener);
         getGameEnvironment().getController().getGridPane().getChildren().remove(imageView);
+        getGameEnvironment().getController().getGridPane().getChildren().remove(xpLabel);
     }
 }
