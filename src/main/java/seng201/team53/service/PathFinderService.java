@@ -22,6 +22,7 @@ public class PathFinderService {
      * Generates a polyline path representing the movement path for carts on the map
      * This method calculates a series of points that define a path that carts will follow. The first and last point
      * are offset to allow the path to start and end off-screen
+     * @return The generated polyline
      */
     public Polyline generatePathPolyline() {
         if (!polylinePath.getPoints().isEmpty())
@@ -52,6 +53,11 @@ public class PathFinderService {
      * Finds a path from the starting point (startX, startY) to the ending point (endX, endY) on the map
      * This method uses a depth-first search algorithm to explore possible paths on the map
      * It throws an exception if a path cannot be found or if a path has already been calculated for this map
+     * @param tiles The 2D matrix of tiles
+     * @param startX The X coordinate of the start point
+     * @param startY The Y coordinate of the start point
+     * @param endX The X coordinate of the end point
+     * @param endY The Y coordinate of the end point
      */
     public void findPath(Tile[][] tiles, int startX, int startY, int endX, int endY) {
         int[][] discovered = new int[tiles.length][tiles[0].length];

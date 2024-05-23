@@ -13,14 +13,27 @@ import java.util.Map;
 
 import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
+/**
+ * This class is a sub-controller of the GameController and is responsible for handing events in the shop
+ */
 public class ShopController {
     private final GameController gameController;
     private final Map<Button, Purchasable> shopButtons = new HashMap<>();
 
+    /**
+     * Constructs a new shop controller with a reference to the main game controller
+     * @param gameController The game controller
+     */
     public ShopController(GameController gameController) {
         this.gameController = gameController;
     }
 
+    /**
+     * Initialises the shop controller.
+     * This method adds all the shop buttons in the graphical user to a map which maps each button to a specific
+     * purchasable item. Each button is updated and a click event is added.
+     * A change listener is added to the money property which will update the money label.
+     */
     public void init() {
         shopButtons.put(gameController.shopTowerButton1, Tower.Type.LUMBER_MILL);
         shopButtons.put(gameController.shopTowerButton2, Tower.Type.MINE);
@@ -53,6 +66,11 @@ public class ShopController {
         });
     }
 
+    /**
+     * Handles when a shop button is clicked
+     * @param event The mouse event
+     * @param purchasable The purchasable item attached to the clicked button
+     */
     private void onShopButtonClick(MouseEvent event, Purchasable purchasable) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
@@ -60,10 +78,16 @@ public class ShopController {
         gameController.getMapInteractionController().tryPurchaseItem(purchasable);
     }
 
+    /**
+     * Handles when the sell item button is clicked.
+     * This calls the map interaction controller to handle selling a selected item and hides the sell item popup
+     * @param event The mouse event
+     */
     private void onSellTowerButtonClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 
         gameController.showSellItemPopup(null);
+        gameController.getMapInteractionController().sellSelectedItem();
     }
 }

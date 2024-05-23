@@ -13,6 +13,10 @@ import seng201.team53.game.GameEnvironment;
 import seng201.team53.gui.WindowManager;
 import seng201.team53.service.NameValidatorService;
 
+/**
+ * This class is responsible for controlling the main menu graphical interface. It consists
+ * of all the required JavaFX elements and events when interacting with the main menu interface
+ */
 public class MainController {
     @FXML private ChoiceBox<GameDifficulty> difficultyChoiceBox;
     @FXML private TextField nameTextField;
@@ -25,10 +29,20 @@ public class MainController {
     private final WindowManager windowManager;
     private final NameValidatorService nameValidatorService = new NameValidatorService();
 
+    /**
+     * Construct the main controller with an instance of the window manager which is later used to launch the
+     * game interface
+     * @param windowManager The window manager
+     */
     public MainController(WindowManager windowManager) {
         this.windowManager = windowManager;
     }
 
+    /**
+     * Initialises the main controller.
+     * This method will add the difficulty values and add a listener which listens to changes in the value of the
+     * number of rounds slider.
+     */
     public void init() {
         var difficulties = FXCollections.observableArrayList(GameDifficulty.values());
         difficultyChoiceBox.setItems(difficulties);
@@ -39,6 +53,13 @@ public class MainController {
         });
     }
 
+    /**
+     * Handles when a key is pressed while focused on the name field.
+     * Uses the name validator service to check if the text is valid.
+     * If it is not valid, a red cross and not valid label will be shown.
+     * If it is valid, a green check mark will be shown
+     * @param event The key event
+     */
     @FXML
     void onNameFieldKeyPress(KeyEvent event) {
         var text = nameTextField.getText() + event.getText();
@@ -48,8 +69,15 @@ public class MainController {
         nameGreenCheckmark.setVisible(validName);
     }
 
+    /**
+     * Handles when the start button is clicked.
+     * This message checks if the name is valid. If it is not valid, an alert will be shown.
+     * Otherwise, the number of rounds and selected game difficulty is fetched. The game screen is loaded and the
+     * game environment is initialised and loaded.
+     * @param event The mouse event
+     */
     @FXML
-    void onStartButtonMouseClick(MouseEvent event) throws Exception {
+    void onStartButtonMouseClick(MouseEvent event) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
 

@@ -7,6 +7,11 @@ import seng201.team53.game.items.towers.TowerType;
  * Implementing classes will provide the logic to determine if an event is available and to apply the event
  */
 public interface RandomEvent {
+    /**
+     * Retrieves the description of the random event depending on the type of tower
+     * @param towerType The type of tower
+     * @return The description
+     */
     String getDescription(TowerType towerType);
 
     /**
@@ -17,6 +22,7 @@ public interface RandomEvent {
 
     /**
      * Applies the effects of the random event to the game.
+     * @return The type of tower that the random event was applied to
      */
     TowerType apply();
 }

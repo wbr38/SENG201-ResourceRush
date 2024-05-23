@@ -5,7 +5,7 @@ package seng201.team53.game.items;
  */
 public interface Item {
     /**
-     * @return The Purchasable<Item> representation of this class.
+     * @return The Purchasable representation of this class.
      * For Towers, this would return the TowerType.
      */
     Purchasable getPurchasableType();

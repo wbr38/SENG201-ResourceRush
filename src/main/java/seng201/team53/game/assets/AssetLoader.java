@@ -54,6 +54,7 @@ public class AssetLoader {
      * Loads a map from a JSON file
      * @param name The name of the map
      * @param path The path to the JSON file resource
+     * @param  mapBackgroundPane The background map pane
      * @return The loaded map
      */
     public GameMap loadMap(String name, String path, Pane mapBackgroundPane) {

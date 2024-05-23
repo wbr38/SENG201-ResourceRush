@@ -14,6 +14,11 @@ import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
 import java.util.List;
 
+/**
+ * Represents a graphical wrapper for a cart.
+ * This class contains an instance of a cart and all the javafx elements which allows for the cart's graphics.
+ * Change listeners are stored so when the cart is removed, the listeners can also be removed
+ */
 public class FXCart {
     private final Cart cart;
     private final Pane wrapper;
@@ -25,6 +30,16 @@ public class FXCart {
     private final ChangeListener<Number> cartVelocityModifierListener;
     private final ChangeListener<GameState> gameStateListener;
 
+    /**
+     * Constructs a new FX cart instance.
+     * This constructor setups up the path transition for the cart which allows for the cart to traverse
+     * a predefined path. Change listeners are created and added for the carts capacity, state and velocity modifier
+     * properties as well as a game state listener
+     * @param cart The cart the class is wrapping
+     * @param wrapper The pane which encapsulates the carts graphics
+     * @param imageView The image view of the cart
+     * @param capacityLabel The capacity label of the cart
+     */
     public FXCart(Cart cart, Pane wrapper, ImageView imageView, Label capacityLabel) {
         this.cart = cart;
         this.wrapper = wrapper;
@@ -37,9 +52,7 @@ public class FXCart {
         pathTransition.setDuration(map.calculatePathDuration(cart.getVelocity()));
         pathTransition.setPath(map.getPolylinePath());
         pathTransition.setInterpolator(Interpolator.LINEAR);
-        
-        // When this cart reaches the end, update it's state
-        // Check if this was the last cart to reach the end (aka round completed)
+
         pathTransition.setOnFinished(event -> {
             cart.setCartState(CartState.COMPLETE_PATH);
             List<Cart> carts = getGameEnvironment().getRound().getCarts();
@@ -53,17 +66,25 @@ public class FXCart {
         cartCapacityListener = ($, oldCapacity, newCapacity) -> onCapacityUpdate(newCapacity.intValue());
         cartStateListener = ($, oldState, newState) -> onCartStateUpdate(newState);
         gameStateListener = ($, oldState, newState) -> onGameStateUpdate(newState);
-        cartVelocityModifierListener = ($, oldModifier, newModifier) -> onCartVelocityModifierChange(newModifier.floatValue());
+        cartVelocityModifierListener = ($, oldModifier, newModifier) -> onCartVelocityModifierChange();
         cart.getCurrentCapacityProperty().addListener(cartCapacityListener);
         cart.getCartStateProperty().addListener(cartStateListener);
         cart.getVelocityModifierProperty().addListener(cartVelocityModifierListener);
         getGameEnvironment().getStateHandler().getGameStateProperty().addListener(gameStateListener);
     }
 
+    /**
+     * Retrieves the carts image view
+     * @return The carts image view
+     */
     public ImageView getImageView() {
         return imageView;
     }
 
+    /**
+     * Updates the capacity label associated with this
+     * @param capacity The current capacity of the cart
+     */
     private void onCapacityUpdate(int capacity) {
         capacityLabel.setText(capacity + "/" + cart.getMaxCapacity());
         if (capacity == cart.getMaxCapacity()) {
@@ -72,6 +93,13 @@ public class FXCart {
         }
     }
 
+    /**
+     * This method handles when the carts state gets updated.
+     * When the cart state is updated to TRAVERSING_PATH, it will play the path transition.
+     * When the cart state is updated to COMPLETE_PATH, the path transition stops, graphical elements associated to
+     * this cart is removed and listeners are removed
+     * @param cartState The new cart state
+     */
     private void onCartStateUpdate(CartState cartState) {
         switch (cartState) {
             case TRAVERSING_PATH -> pathTransition.play();
@@ -87,7 +115,12 @@ public class FXCart {
         }
     }
 
-    private void onCartVelocityModifierChange(float modifier) {
+    /**
+     * This method handles when the carts velocity modifier gets updated.
+     * The time elapsed and new duration is calculated. The transition must be stopped and jump to the previous
+     * position it was at before the duration was changed.
+     */
+    private void onCartVelocityModifierChange() {
         var totalTime = pathTransition.getDuration();
         var elapsedTime = pathTransition.getCurrentTime();
         double percentageCompleted = elapsedTime.toMillis() / totalTime.toMillis();
@@ -95,10 +128,14 @@ public class FXCart {
         pathTransition.setDuration(newDuration);
         pathTransition.stop();
         pathTransition.jumpTo(newDuration.multiply(percentageCompleted));
-        // pathTransition.pause();
-        // pathTransition.jumpTo(elapsedTime.multiply(ratioCompleted));
     }
 
+    /**
+     * This method handles when the game state is updated. The cart must be currently traversing the path.
+     * If the new game state is ROUND_PAUSE, the cart will stop the path transition.
+     * If the new game state is ROUND_ACTIVE, the cart will play the path transition
+     * @param gameState The new game state
+     */
     private void onGameStateUpdate(GameState gameState) {
         if (cart.getCartState() != CartState.TRAVERSING_PATH)
             return;
