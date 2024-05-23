@@ -27,12 +27,12 @@ public class RandomEvents {
         if (randomDouble > difficulty.getRandomEventOdds())
             return null;
 
-        List<RandomEvent> availableRandonEvents = randomEvents.stream().filter(RandomEvent::isAvailable).toList();
-        if (availableRandonEvents.isEmpty())
+        List<RandomEvent> availableRandomEvents = randomEvents.stream().filter(RandomEvent::isAvailable).toList();
+        if (availableRandomEvents.isEmpty())
             return null;
 
-        int randomInt = ThreadLocalRandom.current().nextInt(0, availableRandonEvents.size());
-        return availableRandonEvents.get(randomInt);
+        int randomInt = ThreadLocalRandom.current().nextInt(0, availableRandomEvents.size());
+        return availableRandomEvents.get(randomInt);
     }
 
     /**
