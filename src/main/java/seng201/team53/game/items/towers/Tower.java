@@ -51,8 +51,6 @@ public class Tower implements Item, Upgradeable {
 
         getGameEnvironment().getStateHandler().getGameStateProperty().addListener(($, oldState, newState) -> {
             switch (newState) {
-                // case ROUND_ACTIVE -> generateTimeline.play();
-                // case ROUND_PAUSE -> generateTimeline.pause();
                 case ROUND_COMPLETE -> increaseLevel();
                 default -> {}
             }
