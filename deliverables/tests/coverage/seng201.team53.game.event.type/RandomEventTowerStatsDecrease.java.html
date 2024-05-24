@@ -48,18 +48,19 @@ import static seng201.team53.game.GameEnvironment.getGameEnvironment;
 
     /**
      * Applies the random event to a randomly selected unbroken and unmodified tower
+     * @return The type of tower that the random event was applied to
      */
     @Override
     public TowerType apply() {
-<span class="nc" id="L54">        GameMap map = getGameEnvironment().getMap();</span>
-<span class="nc bnc" id="L55" title="All 2 branches missed.">        List&lt;Tower&gt; unbrokenTowers = map.getTowers().stream().filter(tower -&gt; !tower.isBroken()).toList();</span>
-<span class="nc bnc" id="L56" title="All 2 branches missed.">        if (unbrokenTowers.isEmpty())</span>
-<span class="nc" id="L57">            return null;</span>
+<span class="nc" id="L55">        GameMap map = getGameEnvironment().getMap();</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        List&lt;Tower&gt; unbrokenTowers = map.getTowers().stream().filter(tower -&gt; !tower.isBroken()).toList();</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        if (unbrokenTowers.isEmpty())</span>
+<span class="nc" id="L58">            return null;</span>
 
-<span class="nc" id="L59">        int randomInt = ThreadLocalRandom.current().nextInt(0, unbrokenTowers.size());</span>
-<span class="nc" id="L60">        Tower tower = unbrokenTowers.get(randomInt);</span>
-<span class="nc" id="L61">        tower.minusReloadModifier();</span>
-<span class="nc" id="L62">        return tower.getPurchasableType();</span>
+<span class="nc" id="L60">        int randomInt = ThreadLocalRandom.current().nextInt(0, unbrokenTowers.size());</span>
+<span class="nc" id="L61">        Tower tower = unbrokenTowers.get(randomInt);</span>
+<span class="nc" id="L62">        tower.minusReloadModifier();</span>
+<span class="nc" id="L63">        return tower.getPurchasableType();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

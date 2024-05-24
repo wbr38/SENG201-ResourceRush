@@ -48,23 +48,24 @@ public class ShopController {
 <span class="nc" id="L48">            button.setOnMouseClicked(event -&gt; onShopButtonClick(event, purchasable));</span>
 <span class="nc" id="L49">        });</span>
 
-<span class="nc" id="L51">        gameController.sellItemPane.setOnMousePressed(this::onSellTowerButtonClick);</span>
+<span class="nc" id="L51">        gameController.sellItemButton.setOnMousePressed(this::onSellItemButtonClick);</span>
+<span class="nc" id="L52">        gameController.sellItemPane.setOnMousePressed(this::onSellItemButtonClick);</span>
 
-<span class="nc" id="L53">        Shop shop = getGameEnvironment().getShop();</span>
-<span class="nc" id="L54">        this.updateGUI(shop.getMoney());</span>
-<span class="nc" id="L55">        shop.getMoneyProperty().addListener(($, oldValue, newValue) -&gt; this.updateGUI(newValue.intValue()));</span>
-<span class="nc" id="L56">    }</span>
+<span class="nc" id="L54">        Shop shop = getGameEnvironment().getShop();</span>
+<span class="nc" id="L55">        this.updateGUI(shop.getMoney());</span>
+<span class="nc" id="L56">        shop.getMoneyProperty().addListener(($, oldValue, newValue) -&gt; this.updateGUI(newValue.intValue()));</span>
+<span class="nc" id="L57">    }</span>
 
     /**
      * Update the GUI labels and shop items for the current value of `money`.
      */
     private void updateGUI(int money) {
-<span class="nc" id="L62">        gameController.moneyLabel.setText(&quot;$&quot; + money);</span>
-<span class="nc" id="L63">        shopButtons.forEach((button, towerType) -&gt; {</span>
-<span class="nc" id="L64">            int cost = towerType.getCostPrice();</span>
-<span class="nc bnc" id="L65" title="All 2 branches missed.">            button.setOpacity(cost &gt; money ? 0.5 : 1.0);</span>
-<span class="nc" id="L66">        });</span>
-<span class="nc" id="L67">    }</span>
+<span class="nc" id="L63">        gameController.moneyLabel.setText(&quot;$&quot; + money);</span>
+<span class="nc" id="L64">        shopButtons.forEach((button, towerType) -&gt; {</span>
+<span class="nc" id="L65">            int cost = towerType.getCostPrice();</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">            button.setOpacity(cost &gt; money ? 0.5 : 1.0);</span>
+<span class="nc" id="L67">        });</span>
+<span class="nc" id="L68">    }</span>
 
     /**
      * Handles when a shop button is clicked
@@ -72,23 +73,23 @@ public class ShopController {
      * @param purchasable The purchasable item attached to the clicked button
      */
     private void onShopButtonClick(MouseEvent event, Purchasable purchasable) {
-<span class="nc bnc" id="L75" title="All 2 branches missed.">        if (event.getButton() != MouseButton.PRIMARY)</span>
-<span class="nc" id="L76">            return;</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (event.getButton() != MouseButton.PRIMARY)</span>
+<span class="nc" id="L77">            return;</span>
 
-<span class="nc" id="L78">        gameController.getMapInteractionController().tryPurchaseItem(purchasable);</span>
-<span class="nc" id="L79">    }</span>
+<span class="nc" id="L79">        gameController.getMapInteractionController().tryPurchaseItem(purchasable);</span>
+<span class="nc" id="L80">    }</span>
 
     /**
      * Handles when the sell item button is clicked.
      * This calls the map interaction controller to handle selling a selected item and hides the sell item popup
      * @param event The mouse event
      */
-    private void onSellTowerButtonClick(MouseEvent event) {
-<span class="nc bnc" id="L87" title="All 2 branches missed.">        if (event.getButton() != MouseButton.PRIMARY)</span>
-<span class="nc" id="L88">            return;</span>
+    private void onSellItemButtonClick(MouseEvent event) {
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        if (event.getButton() != MouseButton.PRIMARY)</span>
+<span class="nc" id="L89">            return;</span>
 
-<span class="nc" id="L90">        gameController.showSellItemPopup(null);</span>
-<span class="nc" id="L91">        gameController.getMapInteractionController().sellSelectedItem();</span>
-<span class="nc" id="L92">    }</span>
+<span class="nc" id="L91">        gameController.showSellItemPopup(null);</span>
+<span class="nc" id="L92">        gameController.getMapInteractionController().sellSelectedItem();</span>
+<span class="nc" id="L93">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

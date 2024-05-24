@@ -6,8 +6,19 @@ import java.util.regex.Pattern;
  * This service validates a given name
  */
 <span class="fc" id="L8">public class NameValidatorService {</span>
-<span class="fc" id="L9">    public static final Pattern VALID_NAME_REGEX = Pattern.compile(&quot;^[A-Za-z0-9]*$&quot;);</span>
+    /**
+     * The valid name regex. This regex accepts any strings which contains only A-Z lowercase or upper case and numbers
+     */
+<span class="fc" id="L12">    public static final Pattern VALID_NAME_REGEX = Pattern.compile(&quot;^[A-Za-z0-9]*$&quot;);</span>
+
+    /**
+     * The minimum length of the name that is valid
+     */
     public static final int MIN_NAME_LENGTH = 3;
+
+    /**
+     * The maximum length of the name that is valid
+     */
     public static final int MAX_NAME_LENGTH = 15;
 
     /**
@@ -16,11 +27,11 @@ import java.util.regex.Pattern;
      * @return true if the name is valid, false otherwise
      */
     public boolean isValid(String name) {
-<span class="fc bfc" id="L19" title="All 2 branches covered.">        if (name.length() &lt; MIN_NAME_LENGTH)</span>
-<span class="fc" id="L20">            return false;</span>
-<span class="fc bfc" id="L21" title="All 2 branches covered.">        if (name.length() &gt; MAX_NAME_LENGTH)</span>
-<span class="fc" id="L22">            return false;</span>
-<span class="fc" id="L23">        return VALID_NAME_REGEX.matcher(name).matches();</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (name.length() &lt; MIN_NAME_LENGTH)</span>
+<span class="fc" id="L31">            return false;</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        if (name.length() &gt; MAX_NAME_LENGTH)</span>
+<span class="fc" id="L33">            return false;</span>
+<span class="fc" id="L34">        return VALID_NAME_REGEX.matcher(name).matches();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

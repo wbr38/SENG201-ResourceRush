@@ -71,8 +71,9 @@ import static seng201.team53.game.GameEnvironment.getGameEnvironment;
     @FXML protected Button shopItemButton3;
     @FXML protected Button shopItemButton4;
 
-    // Sell Tower popup
+    // Sell Item popup
     @FXML protected AnchorPane sellItemPane;
+    @FXML protected Button sellItemButton;
     @FXML private Text sellItemText;
 
     // Inventory
@@ -93,10 +94,10 @@ import static seng201.team53.game.GameEnvironment.getGameEnvironment;
     @FXML private Button gameEnd_ExitButton;
 
     // sub-controllers
-<span class="nc" id="L96">    private final MapInteractionController mapInteractionController = new MapInteractionController(this);</span>
-<span class="nc" id="L97">    private final InventoryController inventoryController = new InventoryController(this, mapInteractionController);</span>
-<span class="nc" id="L98">    private final ShopController shopController = new ShopController(this);</span>
-<span class="nc" id="L99">    private final FXWrappers fxWrappers = new FXWrappers();</span>
+<span class="nc" id="L97">    private final MapInteractionController mapInteractionController = new MapInteractionController(this);</span>
+<span class="nc" id="L98">    private final InventoryController inventoryController = new InventoryController(this, mapInteractionController);</span>
+<span class="nc" id="L99">    private final ShopController shopController = new ShopController(this);</span>
+<span class="nc" id="L100">    private final FXWrappers fxWrappers = new FXWrappers();</span>
 
     /**
      * Initialises the game controller.
@@ -104,90 +105,90 @@ import static seng201.team53.game.GameEnvironment.getGameEnvironment;
      * change listeners for handling round number, point number and state property changes.
      */
     public void init() {
-<span class="nc" id="L107">        toggleInventoryVisible(false);</span>
-<span class="nc" id="L108">        this.showSellItemPopup(null);</span>
+<span class="nc" id="L108">        toggleInventoryVisible(false);</span>
+<span class="nc" id="L109">        this.showSellItemPopup(null);</span>
 
-<span class="nc" id="L110">        ObservableList&lt;GameDifficulty&gt; difficulties = FXCollections.observableArrayList(GameDifficulty.values());</span>
-<span class="nc" id="L111">        difficultyChoiceBox.setItems(difficulties);</span>
-<span class="nc" id="L112">        difficultyChoiceBox.setValue(getGameEnvironment().getDifficulty());</span>
-<span class="nc" id="L113">        difficultyChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue,</span>
-<span class="nc" id="L114">                                                                                    newValue) -&gt; getGameEnvironment().setDifficulty(newValue));</span>
+<span class="nc" id="L111">        ObservableList&lt;GameDifficulty&gt; difficulties = FXCollections.observableArrayList(GameDifficulty.values());</span>
+<span class="nc" id="L112">        difficultyChoiceBox.setItems(difficulties);</span>
+<span class="nc" id="L113">        difficultyChoiceBox.setValue(getGameEnvironment().getDifficulty());</span>
+<span class="nc" id="L114">        difficultyChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue,</span>
+<span class="nc" id="L115">                                                                                    newValue) -&gt; getGameEnvironment().setDifficulty(newValue));</span>
 
         // Update round number
-<span class="nc" id="L117">        getGameEnvironment().getRoundProperty().addListener(($, oldRound, newRound) -&gt; updateRoundCounter(newRound.getRoundNumber()));</span>
+<span class="nc" id="L118">        getGameEnvironment().getRoundProperty().addListener(($, oldRound, newRound) -&gt; updateRoundCounter(newRound.getRoundNumber()));</span>
         // Update point count
-<span class="nc" id="L119">        getGameEnvironment().getPointsProperty().addListener(($, oldPoints, newPoints) -&gt; updatePointsLabel(newPoints.intValue()));</span>
+<span class="nc" id="L120">        getGameEnvironment().getPointsProperty().addListener(($, oldPoints, newPoints) -&gt; updatePointsLabel(newPoints.intValue()));</span>
 
         // The following labels need to be updated here, as GameEnvironment.load() is called before these listeners are added.
         // So the labels aren't up to date when the game loads.
-<span class="nc" id="L123">        updateRoundCounter(1);</span>
-<span class="nc" id="L124">        updatePointsLabel(0);</span>
+<span class="nc" id="L124">        updateRoundCounter(1);</span>
+<span class="nc" id="L125">        updatePointsLabel(0);</span>
 
         // Background music loop
-<span class="nc" id="L127">        String resource = getClass().getResource(&quot;/assets/sound/piano-groove-2.wav&quot;).toString();</span>
-<span class="nc" id="L128">        MediaPlayer music = new MediaPlayer(new Media(resource));</span>
-<span class="nc" id="L129">        music.setCycleCount(MediaPlayer.INDEFINITE);</span>
-<span class="nc" id="L130">        music.play();</span>
+<span class="nc" id="L128">        String resource = getClass().getResource(&quot;/assets/sound/piano-groove-2.wav&quot;).toString();</span>
+<span class="nc" id="L129">        MediaPlayer music = new MediaPlayer(new Media(resource));</span>
+<span class="nc" id="L130">        music.setCycleCount(MediaPlayer.INDEFINITE);</span>
+<span class="nc" id="L131">        music.play();</span>
 
-<span class="nc" id="L132">        GameStateHandler stateHandler = getGameEnvironment().getStateHandler();</span>
-<span class="nc" id="L133">        stateHandler.getGameStateProperty().addListener(($, oldState, newState) -&gt; {</span>
-<span class="nc bnc" id="L134" title="All 7 branches missed.">            switch (newState) {</span>
-<span class="nc" id="L135">                case RANDOM_EVENT_DIALOG_OPEN -&gt; showStartButton();</span>
-<span class="nc" id="L136">                case ROUND_ACTIVE -&gt; showPauseButton();</span>
-<span class="nc" id="L137">                case ROUND_PAUSE -&gt; showResumeButton();</span>
+<span class="nc" id="L133">        GameStateHandler stateHandler = getGameEnvironment().getStateHandler();</span>
+<span class="nc" id="L134">        stateHandler.getGameStateProperty().addListener(($, oldState, newState) -&gt; {</span>
+<span class="nc bnc" id="L135" title="All 7 branches missed.">            switch (newState) {</span>
+<span class="nc" id="L136">                case RANDOM_EVENT_DIALOG_OPEN -&gt; showStartButton();</span>
+<span class="nc" id="L137">                case ROUND_ACTIVE -&gt; showPauseButton();</span>
+<span class="nc" id="L138">                case ROUND_PAUSE -&gt; showResumeButton();</span>
                 case ROUND_NOT_STARTED -&gt; {
-<span class="nc" id="L139">                    showStartButton();</span>
-<span class="nc" id="L140">                    hide(roundCompletePane);</span>
-<span class="nc" id="L141">                }</span>
+<span class="nc" id="L140">                    showStartButton();</span>
+<span class="nc" id="L141">                    hide(roundCompletePane);</span>
+<span class="nc" id="L142">                }</span>
                 case ROUND_COMPLETE -&gt; {
-<span class="nc" id="L143">                    boolean roundWon = getGameEnvironment().getRound().roundWon();</span>
-<span class="nc bnc" id="L144" title="All 2 branches missed.">                    if (!roundWon) {</span>
-<span class="nc" id="L145">                        showGameEndPopup();</span>
-<span class="nc" id="L146">                        return;</span>
+<span class="nc" id="L144">                    boolean roundWon = getGameEnvironment().getRound().roundWon();</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">                    if (!roundWon) {</span>
+<span class="nc" id="L146">                        showGameEndPopup();</span>
+<span class="nc" id="L147">                        return;</span>
                     }
 
-<span class="nc" id="L149">                    showRoundCompletePopup();</span>
-<span class="nc" id="L150">                }</span>
+<span class="nc" id="L150">                    showRoundCompletePopup();</span>
+<span class="nc" id="L151">                }</span>
                 case GAME_COMPLETE -&gt; {
-<span class="nc" id="L152">                    showGameEndPopup();</span>
+<span class="nc" id="L153">                    showGameEndPopup();</span>
                 }
             }
-<span class="nc bnc" id="L155" title="All 2 branches missed.">            if (oldState == GameState.RANDOM_EVENT_DIALOG_OPEN)</span>
-<span class="nc" id="L156">                hide(randomEventPane);</span>
-<span class="nc" id="L157">        });</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">            if (oldState == GameState.RANDOM_EVENT_DIALOG_OPEN)</span>
+<span class="nc" id="L157">                hide(randomEventPane);</span>
+<span class="nc" id="L158">        });</span>
 
-<span class="nc" id="L159">        shopController.init();</span>
-<span class="nc" id="L160">        mapInteractionController.init();</span>
-<span class="nc" id="L161">        inventoryController.init();</span>
-<span class="nc" id="L162">        fxWrappers.init();</span>
-<span class="nc" id="L163">    }</span>
+<span class="nc" id="L160">        shopController.init();</span>
+<span class="nc" id="L161">        mapInteractionController.init();</span>
+<span class="nc" id="L162">        inventoryController.init();</span>
+<span class="nc" id="L163">        fxWrappers.init();</span>
+<span class="nc" id="L164">    }</span>
 
     /**
      * @return The pane responsible for holding the map image
      */
     public Pane getMapBackgroundPane() {
-<span class="nc" id="L169">        return mapBackgroundPane;</span>
+<span class="nc" id="L170">        return mapBackgroundPane;</span>
     }
 
     /**
      * @return The pane responsible for displaying carts and watching for mouse clicks
      */
     public Pane getOverlay() {
-<span class="nc" id="L176">        return overlay;</span>
+<span class="nc" id="L177">        return overlay;</span>
     }
 
     /**
      * @return The grid pane responsible for displaying tower images
      */
     public GridPane getGridPane() {
-<span class="nc" id="L183">        return gridPane;</span>
+<span class="nc" id="L184">        return gridPane;</span>
     }
 
     /**
      * @return The FX wrappers instance
      */
     public FXWrappers getFXWrappers() {
-<span class="nc" id="L190">        return fxWrappers;</span>
+<span class="nc" id="L191">        return fxWrappers;</span>
     }
 
     /**
@@ -197,17 +198,17 @@ import static seng201.team53.game.GameEnvironment.getGameEnvironment;
      */
     @FXML
     private void onStartButtonMouseClick(MouseEvent event) {
-<span class="nc bnc" id="L200" title="All 2 branches missed.">        if (event.getButton() != MouseButton.PRIMARY)</span>
-<span class="nc" id="L201">            return;</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">        if (event.getButton() != MouseButton.PRIMARY)</span>
+<span class="nc" id="L202">            return;</span>
 
-<span class="nc" id="L203">        GameStateHandler stateHandler = getGameEnvironment().getStateHandler();</span>
-<span class="nc bnc" id="L204" title="All 2 branches missed.">        if (stateHandler.getState() != GameState.ROUND_NOT_STARTED)</span>
-<span class="nc" id="L205">            return;</span>
+<span class="nc" id="L204">        GameStateHandler stateHandler = getGameEnvironment().getStateHandler();</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">        if (stateHandler.getState() != GameState.ROUND_NOT_STARTED)</span>
+<span class="nc" id="L206">            return;</span>
 
-<span class="nc" id="L207">        stateHandler.setState(GameState.ROUND_ACTIVE);</span>
-<span class="nc" id="L208">        toggleInventoryVisible(false);</span>
-<span class="nc" id="L209">        this.showSellItemPopup(null);</span>
-<span class="nc" id="L210">    }</span>
+<span class="nc" id="L208">        stateHandler.setState(GameState.ROUND_ACTIVE);</span>
+<span class="nc" id="L209">        toggleInventoryVisible(false);</span>
+<span class="nc" id="L210">        this.showSellItemPopup(null);</span>
+<span class="nc" id="L211">    }</span>
 
     /**
      * Handles when the pause button is clicked.
@@ -216,15 +217,15 @@ import static seng201.team53.game.GameEnvironment.getGameEnvironment;
      */
     @FXML
     private void onPauseButtonMouseClick(MouseEvent event) {
-<span class="nc bnc" id="L219" title="All 2 branches missed.">        if (event.getButton() != MouseButton.PRIMARY)</span>
-<span class="nc" id="L220">            return;</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">        if (event.getButton() != MouseButton.PRIMARY)</span>
+<span class="nc" id="L221">            return;</span>
 
-<span class="nc" id="L222">        GameStateHandler stateHandler = getGameEnvironment().getStateHandler();</span>
-<span class="nc bnc" id="L223" title="All 2 branches missed.">        if (stateHandler.getState() != GameState.ROUND_ACTIVE)</span>
-<span class="nc" id="L224">            return;</span>
+<span class="nc" id="L223">        GameStateHandler stateHandler = getGameEnvironment().getStateHandler();</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">        if (stateHandler.getState() != GameState.ROUND_ACTIVE)</span>
+<span class="nc" id="L225">            return;</span>
 
-<span class="nc" id="L226">        stateHandler.setState(GameState.ROUND_PAUSE);</span>
-<span class="nc" id="L227">    }</span>
+<span class="nc" id="L227">        stateHandler.setState(GameState.ROUND_PAUSE);</span>
+<span class="nc" id="L228">    }</span>
 
     /**
      * Handles when the resume button is clicked.
@@ -233,15 +234,15 @@ import static seng201.team53.game.GameEnvironment.getGameEnvironment;
      */
     @FXML
     private void onResumeButtonMouseClick(MouseEvent event) {
-<span class="nc bnc" id="L236" title="All 2 branches missed.">        if (event.getButton() != MouseButton.PRIMARY)</span>
-<span class="nc" id="L237">            return;</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">        if (event.getButton() != MouseButton.PRIMARY)</span>
+<span class="nc" id="L238">            return;</span>
 
-<span class="nc" id="L239">        GameStateHandler stateHandler = getGameEnvironment().getStateHandler();</span>
-<span class="nc bnc" id="L240" title="All 2 branches missed.">        if (stateHandler.getState() != GameState.ROUND_PAUSE)</span>
-<span class="nc" id="L241">            return;</span>
+<span class="nc" id="L240">        GameStateHandler stateHandler = getGameEnvironment().getStateHandler();</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">        if (stateHandler.getState() != GameState.ROUND_PAUSE)</span>
+<span class="nc" id="L242">            return;</span>
 
-<span class="nc" id="L243">        stateHandler.setState(GameState.ROUND_ACTIVE);</span>
-<span class="nc" id="L244">    }</span>
+<span class="nc" id="L244">        stateHandler.setState(GameState.ROUND_ACTIVE);</span>
+<span class="nc" id="L245">    }</span>
 
     /**
      * Handles when the inventory button is clicked.
@@ -250,11 +251,11 @@ import static seng201.team53.game.GameEnvironment.getGameEnvironment;
      */
     @FXML
     private void onInventoryButtonMouseClick(MouseEvent event) {
-<span class="nc bnc" id="L253" title="All 2 branches missed.">        if (event.getButton() != MouseButton.PRIMARY)</span>
-<span class="nc" id="L254">            return;</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">        if (event.getButton() != MouseButton.PRIMARY)</span>
+<span class="nc" id="L255">            return;</span>
 
-<span class="nc" id="L256">        toggleInventoryVisible();</span>
-<span class="nc" id="L257">    }</span>
+<span class="nc" id="L257">        toggleInventoryVisible();</span>
+<span class="nc" id="L258">    }</span>
 
     /**
      * Handles when the exit random event dialog button is clicked
@@ -263,15 +264,15 @@ import static seng201.team53.game.GameEnvironment.getGameEnvironment;
      */
     @FXML
     private void onRandomEventDialogExistClick(MouseEvent event) {
-<span class="nc bnc" id="L266" title="All 2 branches missed.">        if (event.getButton() != MouseButton.PRIMARY)</span>
-<span class="nc" id="L267">            return;</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">        if (event.getButton() != MouseButton.PRIMARY)</span>
+<span class="nc" id="L268">            return;</span>
 
-<span class="nc" id="L269">        GameStateHandler stateHandler = getGameEnvironment().getStateHandler();</span>
-<span class="nc bnc" id="L270" title="All 2 branches missed.">        if (stateHandler.getState() != GameState.RANDOM_EVENT_DIALOG_OPEN)</span>
-<span class="nc" id="L271">            return;</span>
+<span class="nc" id="L270">        GameStateHandler stateHandler = getGameEnvironment().getStateHandler();</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">        if (stateHandler.getState() != GameState.RANDOM_EVENT_DIALOG_OPEN)</span>
+<span class="nc" id="L272">            return;</span>
 
-<span class="nc" id="L273">        stateHandler.setState(GameState.ROUND_ACTIVE);</span>
-<span class="nc" id="L274">    }</span>
+<span class="nc" id="L274">        stateHandler.setState(GameState.ROUND_ACTIVE);</span>
+<span class="nc" id="L275">    }</span>
 
     /**
      * Handles when the exit round complete button is clicked
@@ -280,15 +281,15 @@ import static seng201.team53.game.GameEnvironment.getGameEnvironment;
      */
     @FXML
     private void onRoundCompleteDialogExistClick(MouseEvent event) {
-<span class="nc bnc" id="L283" title="All 2 branches missed.">        if (event.getButton() != MouseButton.PRIMARY)</span>
-<span class="nc" id="L284">            return;</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">        if (event.getButton() != MouseButton.PRIMARY)</span>
+<span class="nc" id="L285">            return;</span>
 
-<span class="nc" id="L286">        GameStateHandler stateHandler = getGameEnvironment().getStateHandler();</span>
-<span class="nc bnc" id="L287" title="All 2 branches missed.">        if (stateHandler.getState() != GameState.ROUND_COMPLETE)</span>
-<span class="nc" id="L288">            return;</span>
+<span class="nc" id="L287">        GameStateHandler stateHandler = getGameEnvironment().getStateHandler();</span>
+<span class="nc bnc" id="L288" title="All 2 branches missed.">        if (stateHandler.getState() != GameState.ROUND_COMPLETE)</span>
+<span class="nc" id="L289">            return;</span>
 
-<span class="nc" id="L290">        stateHandler.setState(GameState.ROUND_NOT_STARTED);</span>
-<span class="nc" id="L291">    }</span>
+<span class="nc" id="L291">        stateHandler.setState(GameState.ROUND_NOT_STARTED);</span>
+<span class="nc" id="L292">    }</span>
 
     /**
      * Shows a notification for a given duration and with the given text
@@ -296,116 +297,116 @@ import static seng201.team53.game.GameEnvironment.getGameEnvironment;
      * @param duration The duration the notification should shown
      */
     public void showNotification(String text, double duration) {
-<span class="nc" id="L299">        notificationLabel.setText(text);</span>
-<span class="nc" id="L300">        show(notificationLabel);</span>
+<span class="nc" id="L300">        notificationLabel.setText(text);</span>
+<span class="nc" id="L301">        show(notificationLabel);</span>
 
         // Pause previous delay (otherwise the previous will hide the label prematurely)
-<span class="nc bnc" id="L303" title="All 2 branches missed.">        if (notificationPause != null)</span>
-<span class="nc" id="L304">            notificationPause.stop();</span>
+<span class="nc bnc" id="L304" title="All 2 branches missed.">        if (notificationPause != null)</span>
+<span class="nc" id="L305">            notificationPause.stop();</span>
 
         // Hide the label after x seconds
-<span class="nc" id="L307">        notificationPause = new PauseTransition(Duration.seconds(duration));</span>
-<span class="nc" id="L308">        notificationPause.setOnFinished(event -&gt; hide(notificationLabel));</span>
-<span class="nc" id="L309">        notificationPause.play();</span>
-<span class="nc" id="L310">    }</span>
+<span class="nc" id="L308">        notificationPause = new PauseTransition(Duration.seconds(duration));</span>
+<span class="nc" id="L309">        notificationPause.setOnFinished(event -&gt; hide(notificationLabel));</span>
+<span class="nc" id="L310">        notificationPause.play();</span>
+<span class="nc" id="L311">    }</span>
 
     /**
      * Toggle the visibility of the inventory pane
      */
     private void toggleInventoryVisible() {
-<span class="nc bnc" id="L316" title="All 2 branches missed.">        toggleInventoryVisible(!inventoryPane.isVisible());</span>
-<span class="nc" id="L317">    }</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">        toggleInventoryVisible(!inventoryPane.isVisible());</span>
+<span class="nc" id="L318">    }</span>
 
     /**
      * Set the visibility of the inventory pane
      */
     private void toggleInventoryVisible(boolean visible) {
-<span class="nc bnc" id="L323" title="All 2 branches missed.">        if (visible)</span>
-<span class="nc" id="L324">            show(inventoryPane);</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">        if (visible)</span>
+<span class="nc" id="L325">            show(inventoryPane);</span>
         else
-<span class="nc" id="L326">            hide(inventoryPane);</span>
-<span class="nc" id="L327">    }</span>
+<span class="nc" id="L327">            hide(inventoryPane);</span>
+<span class="nc" id="L328">    }</span>
 
     /**
      * Update the appropriate elements to allow the user to sell an item.
      * @param item The item to sell. Set to `null` to hide this popup
      */
     public void showSellItemPopup(Item item) {
-<span class="nc bnc" id="L334" title="All 2 branches missed.">        if (item == null) {</span>
-<span class="nc" id="L335">            hide(sellItemPane);</span>
-<span class="nc" id="L336">            return;</span>
+<span class="nc bnc" id="L335" title="All 2 branches missed.">        if (item == null) {</span>
+<span class="nc" id="L336">            hide(sellItemPane);</span>
+<span class="nc" id="L337">            return;</span>
         }
 
-<span class="nc" id="L339">        sellItemText.setText(&quot;Sell ($&quot; + item.getPurchasableType().getSellPrice() + &quot;)&quot;);</span>
-<span class="nc" id="L340">        sellItemPane.toFront();</span>
-<span class="nc" id="L341">        show(sellItemPane);</span>
-<span class="nc" id="L342">    }</span>
+<span class="nc" id="L340">        sellItemText.setText(&quot;Sell ($&quot; + item.getPurchasableType().getSellPrice() + &quot;)&quot;);</span>
+<span class="nc" id="L341">        sellItemPane.toFront();</span>
+<span class="nc" id="L342">        show(sellItemPane);</span>
+<span class="nc" id="L343">    }</span>
 
     /**
      * Updates the round label to the given current round number
      * @param currentRound The current round number
      */
     private void updateRoundCounter(int currentRound) {
-<span class="nc" id="L349">        int totalRounds = getGameEnvironment().getRounds();</span>
-<span class="nc" id="L350">        roundCounterLabel.setText(currentRound + &quot;/&quot; + totalRounds);</span>
-<span class="nc" id="L351">    }</span>
+<span class="nc" id="L350">        int totalRounds = getGameEnvironment().getRounds();</span>
+<span class="nc" id="L351">        roundCounterLabel.setText(currentRound + &quot;/&quot; + totalRounds);</span>
+<span class="nc" id="L352">    }</span>
 
     /**
      * Updates the point label to the given points number
      * @param points The current points
      */
     private void updatePointsLabel(int points) {
-<span class="nc" id="L358">        pointsLabel.setText(&quot;&quot; + points);</span>
-<span class="nc" id="L359">    }</span>
+<span class="nc" id="L359">        pointsLabel.setText(&quot;&quot; + points);</span>
+<span class="nc" id="L360">    }</span>
 
     /**
      * Show the start button and hide the pause and resume button
      */
     private void showStartButton() {
-<span class="nc" id="L365">        show(startButton);</span>
-<span class="nc" id="L366">        hide(pauseButton);</span>
-<span class="nc" id="L367">        hide(resumeButton);</span>
-<span class="nc" id="L368">    }</span>
+<span class="nc" id="L366">        show(startButton);</span>
+<span class="nc" id="L367">        hide(pauseButton);</span>
+<span class="nc" id="L368">        hide(resumeButton);</span>
+<span class="nc" id="L369">    }</span>
 
     /**
      * Show the pause button and hide the start and resume button
      */
     private void showPauseButton() {
-<span class="nc" id="L374">        hide(startButton);</span>
-<span class="nc" id="L375">        show(pauseButton);</span>
-<span class="nc" id="L376">        hide(resumeButton);</span>
-<span class="nc" id="L377">    }</span>
+<span class="nc" id="L375">        hide(startButton);</span>
+<span class="nc" id="L376">        show(pauseButton);</span>
+<span class="nc" id="L377">        hide(resumeButton);</span>
+<span class="nc" id="L378">    }</span>
 
     /**
      * Show the resume button and hide the pause and start button
      */
     private void showResumeButton() {
-<span class="nc" id="L383">        hide(startButton);</span>
-<span class="nc" id="L384">        hide(pauseButton);</span>
-<span class="nc" id="L385">        show(resumeButton);</span>
-<span class="nc" id="L386">    }</span>
+<span class="nc" id="L384">        hide(startButton);</span>
+<span class="nc" id="L385">        hide(pauseButton);</span>
+<span class="nc" id="L386">        show(resumeButton);</span>
+<span class="nc" id="L387">    }</span>
 
     /**
      * Show the random event dialog with a given text message
      * @param text The text to be displayed in the dialog
      */
     public void showRandomEventDialog(String text) {
-<span class="nc" id="L393">        randomEventTest.setText(text);</span>
-<span class="nc" id="L394">        show(randomEventPane);</span>
-<span class="nc" id="L395">    }</span>
+<span class="nc" id="L394">        randomEventTest.setText(text);</span>
+<span class="nc" id="L395">        show(randomEventPane);</span>
+<span class="nc" id="L396">    }</span>
 
     /**
      * Show the round complete dialog.
      * The dialog contains information about how many points were earned throughout the round
      */
     private void showRoundCompletePopup() {
-<span class="nc" id="L402">        showStartButton();</span>
-<span class="nc" id="L403">        show(roundCompletePane);</span>
+<span class="nc" id="L403">        showStartButton();</span>
+<span class="nc" id="L404">        show(roundCompletePane);</span>
 
-<span class="nc" id="L405">        int pointsEarned = getGameEnvironment().getPoints() - previousPoints;</span>
-<span class="nc" id="L406">        roundCompleteInfoLabel.setText(&quot;Points Earned: &quot; + pointsEarned);</span>
-<span class="nc" id="L407">        previousPoints = getGameEnvironment().getPoints();</span>
-<span class="nc" id="L408">    }</span>
+<span class="nc" id="L406">        int pointsEarned = getGameEnvironment().getPoints() - previousPoints;</span>
+<span class="nc" id="L407">        roundCompleteInfoLabel.setText(&quot;Points Earned: &quot; + pointsEarned);</span>
+<span class="nc" id="L408">        previousPoints = getGameEnvironment().getPoints();</span>
+<span class="nc" id="L409">    }</span>
 
     /**
      * Show the game end dialog.
@@ -413,32 +414,32 @@ import static seng201.team53.game.GameEnvironment.getGameEnvironment;
      * max rounds, money and points earned throughout the game
      */
     private void showGameEndPopup() {
-<span class="nc" id="L416">        show(gameEndPane);</span>
+<span class="nc" id="L417">        show(gameEndPane);</span>
 
-<span class="nc" id="L418">        GameEnvironment gameEnv = getGameEnvironment();</span>
-<span class="nc" id="L419">        boolean gameWon = gameEnv.getRound().roundWon();</span>
-<span class="nc" id="L420">        String playerName = gameEnv.getPlayerName();</span>
-<span class="nc" id="L421">        int currentRound = gameEnv.getRound().getRoundNumber();</span>
-<span class="nc" id="L422">        int maxRounds = gameEnv.getRounds();</span>
-<span class="nc" id="L423">        int money = gameEnv.getShop().getMoney();</span>
-<span class="nc" id="L424">        int points = gameEnv.getPoints();</span>
+<span class="nc" id="L419">        GameEnvironment gameEnv = getGameEnvironment();</span>
+<span class="nc" id="L420">        boolean gameWon = gameEnv.getRound().roundWon();</span>
+<span class="nc" id="L421">        String playerName = gameEnv.getPlayerName();</span>
+<span class="nc" id="L422">        int currentRound = gameEnv.getRound().getRoundNumber();</span>
+<span class="nc" id="L423">        int maxRounds = gameEnv.getRounds();</span>
+<span class="nc" id="L424">        int money = gameEnv.getShop().getMoney();</span>
+<span class="nc" id="L425">        int points = gameEnv.getPoints();</span>
 
-<span class="nc bnc" id="L426" title="All 2 branches missed.">        gameEnd_WinLoseText.setText(gameWon ? &quot;You Won!&quot; : &quot;You Lost :(&quot;);</span>
-<span class="nc" id="L427">        gameEnd_NameText.setText(&quot;Name: &quot; + playerName);</span>
-<span class="nc" id="L428">        gameEnd_RoundsText.setText(&quot;Rounds Completed: &quot; + currentRound + &quot;/&quot; + maxRounds);</span>
-<span class="nc" id="L429">        gameEnd_MoneyEarnt.setText(&quot;Money Earnt: $&quot; + money);</span>
-<span class="nc" id="L430">        gameEnd_Points.setText(&quot;Points: &quot; + points);</span>
+<span class="nc bnc" id="L427" title="All 2 branches missed.">        gameEnd_WinLoseText.setText(gameWon ? &quot;You Won!&quot; : &quot;You Lost :(&quot;);</span>
+<span class="nc" id="L428">        gameEnd_NameText.setText(&quot;Name: &quot; + playerName);</span>
+<span class="nc" id="L429">        gameEnd_RoundsText.setText(&quot;Rounds Completed: &quot; + currentRound + &quot;/&quot; + maxRounds);</span>
+<span class="nc" id="L430">        gameEnd_MoneyEarnt.setText(&quot;Money Earnt: $&quot; + money);</span>
+<span class="nc" id="L431">        gameEnd_Points.setText(&quot;Points: &quot; + points);</span>
 
         // Hide some elements
-<span class="nc" id="L433">        hide(startButton);</span>
-<span class="nc" id="L434">        hide(pauseButton);</span>
-<span class="nc" id="L435">        hide(startButton);</span>
-<span class="nc" id="L436">        hide(resumeButton);</span>
+<span class="nc" id="L434">        hide(startButton);</span>
+<span class="nc" id="L435">        hide(pauseButton);</span>
+<span class="nc" id="L436">        hide(startButton);</span>
+<span class="nc" id="L437">        hide(resumeButton);</span>
 
-<span class="nc" id="L438">        hide(toggleInventoryButton);</span>
-<span class="nc" id="L439">        hide(inventoryPane);</span>
-<span class="nc" id="L440">        shopPane.setDisable(true);</span>
-<span class="nc" id="L441">    }</span>
+<span class="nc" id="L439">        hide(toggleInventoryButton);</span>
+<span class="nc" id="L440">        hide(inventoryPane);</span>
+<span class="nc" id="L441">        shopPane.setDisable(true);</span>
+<span class="nc" id="L442">    }</span>
 
     /**
      * Handles when the quit button is clicked.
@@ -447,30 +448,30 @@ import static seng201.team53.game.GameEnvironment.getGameEnvironment;
      */
     @FXML
     private void onGameEnd_QuitButtonMouseClick(MouseEvent event) {
-<span class="nc bnc" id="L450" title="All 2 branches missed.">        if (event.getButton() != MouseButton.PRIMARY)</span>
-<span class="nc" id="L451">            return;</span>
+<span class="nc bnc" id="L451" title="All 2 branches missed.">        if (event.getButton() != MouseButton.PRIMARY)</span>
+<span class="nc" id="L452">            return;</span>
 
-<span class="nc" id="L453">        Platform.exit();</span>
-<span class="nc" id="L454">        System.exit(0);</span>
-<span class="nc" id="L455">    }</span>
+<span class="nc" id="L454">        Platform.exit();</span>
+<span class="nc" id="L455">        System.exit(0);</span>
+<span class="nc" id="L456">    }</span>
 
     /**
      * This method will show a given javafx node
      * @param node The node to be shown
      */
     private void show(Node node) {
-<span class="nc" id="L462">        node.setVisible(true);</span>
-<span class="nc" id="L463">        node.setDisable(false);</span>
-<span class="nc" id="L464">    }</span>
+<span class="nc" id="L463">        node.setVisible(true);</span>
+<span class="nc" id="L464">        node.setDisable(false);</span>
+<span class="nc" id="L465">    }</span>
 
     /**
      * This method will hide a given javafx node
      * @param node The node to be hidden
      */
     private void hide(Node node) {
-<span class="nc" id="L471">        node.setVisible(false);</span>
-<span class="nc" id="L472">        node.setDisable(true);</span>
-<span class="nc" id="L473">    }</span>
+<span class="nc" id="L472">        node.setVisible(false);</span>
+<span class="nc" id="L473">        node.setDisable(true);</span>
+<span class="nc" id="L474">    }</span>
 
     /**
      * Updates a shop or inventory button, given the button and purchasable object.
@@ -480,27 +481,27 @@ import static seng201.team53.game.GameEnvironment.getGameEnvironment;
      * @param purchasable
      */
     public void updateButton(Button button, Purchasable purchasable) {
-<span class="nc bnc" id="L483" title="All 2 branches missed.">        if (purchasable == null) {</span>
-<span class="nc" id="L484">            button.setGraphic(null);</span>
-<span class="nc" id="L485">            button.getTooltip().setText(null);</span>
-<span class="nc" id="L486">            button.setText(&quot;Add Tower&quot;);</span>
-<span class="nc" id="L487">            return;</span>
+<span class="nc bnc" id="L484" title="All 2 branches missed.">        if (purchasable == null) {</span>
+<span class="nc" id="L485">            button.setGraphic(null);</span>
+<span class="nc" id="L486">            button.getTooltip().setText(null);</span>
+<span class="nc" id="L487">            button.setText(&quot;Add Tower&quot;);</span>
+<span class="nc" id="L488">            return;</span>
         }
-<span class="nc" id="L489">        Image image = getGameEnvironment().getAssetLoader().getItemImage(purchasable);</span>
-<span class="nc" id="L490">        ImageView imageView = new ImageView(image);</span>
-<span class="nc" id="L491">        imageView.setFitWidth(60);</span>
-<span class="nc" id="L492">        imageView.setFitHeight(60);</span>
-<span class="nc" id="L493">        button.getTooltip().setText(&quot;Cost $&quot; + purchasable.getCostPrice());</span>
-<span class="nc" id="L494">        button.setGraphic(imageView);</span>
-<span class="nc" id="L495">        button.setText(purchasable.getName());</span>
-<span class="nc" id="L496">    }</span>
+<span class="nc" id="L490">        Image image = getGameEnvironment().getAssetLoader().getItemImage(purchasable);</span>
+<span class="nc" id="L491">        ImageView imageView = new ImageView(image);</span>
+<span class="nc" id="L492">        imageView.setFitWidth(60);</span>
+<span class="nc" id="L493">        imageView.setFitHeight(60);</span>
+<span class="nc" id="L494">        button.getTooltip().setText(&quot;Cost $&quot; + purchasable.getCostPrice());</span>
+<span class="nc" id="L495">        button.setGraphic(imageView);</span>
+<span class="nc" id="L496">        button.setText(purchasable.getName());</span>
+<span class="nc" id="L497">    }</span>
 
     /**
      * Retrieves the instance of the map interaction controller class
      * @return The map interaction controller
      */
     public MapInteractionController getMapInteractionController() {
-<span class="nc" id="L503">        return mapInteractionController;</span>
+<span class="nc" id="L504">        return mapInteractionController;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -25,14 +25,14 @@ import java.util.concurrent.ThreadLocalRandom;
 <span class="fc" id="L25">        GameDifficulty difficulty = GameEnvironment.getGameEnvironment().getDifficulty();</span>
 <span class="fc" id="L26">        double randomDouble = ThreadLocalRandom.current().nextDouble();</span>
 <span class="pc bpc" id="L27" title="1 of 2 branches missed.">        if (randomDouble &gt; difficulty.getRandomEventOdds())</span>
-<span class="nc" id="L28">            return null;</span>
+<span class="fc" id="L28">            return null;</span>
 
-<span class="fc" id="L30">        List&lt;RandomEvent&gt; availableRandonEvents = randomEvents.stream().filter(RandomEvent::isAvailable).toList();</span>
-<span class="pc bpc" id="L31" title="1 of 2 branches missed.">        if (availableRandonEvents.isEmpty())</span>
-<span class="fc" id="L32">            return null;</span>
+<span class="nc" id="L30">        List&lt;RandomEvent&gt; availableRandomEvents = randomEvents.stream().filter(RandomEvent::isAvailable).toList();</span>
+<span class="nc bnc" id="L31" title="All 2 branches missed.">        if (availableRandomEvents.isEmpty())</span>
+<span class="nc" id="L32">            return null;</span>
 
-<span class="nc" id="L34">        int randomInt = ThreadLocalRandom.current().nextInt(0, availableRandonEvents.size());</span>
-<span class="nc" id="L35">        return availableRandonEvents.get(randomInt);</span>
+<span class="nc" id="L34">        int randomInt = ThreadLocalRandom.current().nextInt(0, availableRandomEvents.size());</span>
+<span class="nc" id="L35">        return availableRandomEvents.get(randomInt);</span>
     }
 
     /**

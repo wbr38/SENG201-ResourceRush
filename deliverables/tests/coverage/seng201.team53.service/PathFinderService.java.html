@@ -13,10 +13,19 @@ import static seng201.team53.game.map.GameMap.TILE_WIDTH;
  * This service finds and validates a path in the map given a matrix
  */
 <span class="fc" id="L15">public class PathFinderService {</span>
-<span class="fc" id="L16">    public static final int[] X_DIRECTIONS = {-1, 0, 1, 0};</span>
-<span class="fc" id="L17">    public static final int[] Y_DIRECTIONS = {0, 1, 0, -1};</span>
-<span class="fc" id="L18">    private final Stack&lt;Point&gt; path = new Stack&lt;&gt;();</span>
-<span class="fc" id="L19">    private final Polyline polylinePath = new Polyline();</span>
+    /**
+     * The x value for directions that a path can be connected to.
+     * This takes into account the left and right values
+     */
+<span class="fc" id="L20">    public static final int[] X_DIRECTIONS = {-1, 0, 1, 0};</span>
+
+    /**
+     * The y value for directions that a path can be connected to.
+     * This takes into account the top and bottom values
+     */
+<span class="fc" id="L26">    public static final int[] Y_DIRECTIONS = {0, 1, 0, -1};</span>
+<span class="fc" id="L27">    private final Stack&lt;Point&gt; path = new Stack&lt;&gt;();</span>
+<span class="fc" id="L28">    private final Polyline polylinePath = new Polyline();</span>
 
     /**
      * Generates a polyline path representing the movement path for carts on the map
@@ -25,19 +34,19 @@ import static seng201.team53.game.map.GameMap.TILE_WIDTH;
      * @return The generated polyline
      */
     public Polyline generatePathPolyline() {
-<span class="nc bnc" id="L28" title="All 2 branches missed.">        if (!polylinePath.getPoints().isEmpty())</span>
-<span class="nc" id="L29">            throw new IllegalStateException(&quot;Map already has a polyline path calculated.&quot;);</span>
-<span class="nc" id="L30">        Point firstPoint = path.get(0);</span>
-<span class="nc" id="L31">        polylinePath.getPoints().add((double)firstPoint.y * TILE_WIDTH - (TILE_WIDTH / 2));</span>
-<span class="nc" id="L32">        polylinePath.getPoints().add((double)firstPoint.x * TILE_HEIGHT + (TILE_HEIGHT / 2));</span>
-<span class="nc bnc" id="L33" title="All 2 branches missed.">        for (Point point : path) {</span>
-<span class="nc" id="L34">            polylinePath.getPoints().add((double)point.y * TILE_WIDTH + (TILE_WIDTH / 2));</span>
-<span class="nc" id="L35">            polylinePath.getPoints().add((double)point.x * TILE_HEIGHT + (TILE_HEIGHT / 2));</span>
-<span class="nc" id="L36">        }</span>
-<span class="nc" id="L37">        Point lastPoint = path.get(path.size() - 1);</span>
-<span class="nc" id="L38">        polylinePath.getPoints().add((double)lastPoint.y * TILE_WIDTH + (TILE_WIDTH / 2));</span>
-<span class="nc" id="L39">        polylinePath.getPoints().add((double)lastPoint.x * TILE_HEIGHT + ((3 * TILE_HEIGHT) / 2));</span>
-<span class="nc" id="L40">        return polylinePath;</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">        if (!polylinePath.getPoints().isEmpty())</span>
+<span class="nc" id="L38">            throw new IllegalStateException(&quot;Map already has a polyline path calculated.&quot;);</span>
+<span class="nc" id="L39">        Point firstPoint = path.get(0);</span>
+<span class="nc" id="L40">        polylinePath.getPoints().add((double)firstPoint.y * TILE_WIDTH - (TILE_WIDTH / 2));</span>
+<span class="nc" id="L41">        polylinePath.getPoints().add((double)firstPoint.x * TILE_HEIGHT + (TILE_HEIGHT / 2));</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        for (Point point : path) {</span>
+<span class="nc" id="L43">            polylinePath.getPoints().add((double)point.y * TILE_WIDTH + (TILE_WIDTH / 2));</span>
+<span class="nc" id="L44">            polylinePath.getPoints().add((double)point.x * TILE_HEIGHT + (TILE_HEIGHT / 2));</span>
+<span class="nc" id="L45">        }</span>
+<span class="nc" id="L46">        Point lastPoint = path.get(path.size() - 1);</span>
+<span class="nc" id="L47">        polylinePath.getPoints().add((double)lastPoint.y * TILE_WIDTH + (TILE_WIDTH / 2));</span>
+<span class="nc" id="L48">        polylinePath.getPoints().add((double)lastPoint.x * TILE_HEIGHT + ((3 * TILE_HEIGHT) / 2));</span>
+<span class="nc" id="L49">        return polylinePath;</span>
     }
 
     /**
@@ -46,7 +55,7 @@ import static seng201.team53.game.map.GameMap.TILE_WIDTH;
      * @return The calculated path length
      */
     public int calculatePathLength() {
-<span class="nc" id="L49">        return path.size() + 2;</span>
+<span class="nc" id="L58">        return path.size() + 2;</span>
     }
 
     /**
@@ -60,10 +69,10 @@ import static seng201.team53.game.map.GameMap.TILE_WIDTH;
      * @param endY The Y coordinate of the end point
      */
     public void findPath(Tile[][] tiles, int startX, int startY, int endX, int endY) {
-<span class="fc" id="L63">        int[][] discovered = new int[tiles.length][tiles[0].length];</span>
-<span class="fc bfc" id="L64" title="All 2 branches covered.">        if (!depthFirstSearch(tiles, discovered, startX, startY, endX, endY))</span>
-<span class="fc" id="L65">            throw new RuntimeException(&quot;Invalid map, does not contain a path&quot;);</span>
-<span class="fc" id="L66">    }</span>
+<span class="fc" id="L72">        int[][] discovered = new int[tiles.length][tiles[0].length];</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        if (!depthFirstSearch(tiles, discovered, startX, startY, endX, endY))</span>
+<span class="fc" id="L74">            throw new RuntimeException(&quot;Invalid map, does not contain a path&quot;);</span>
+<span class="fc" id="L75">    }</span>
 
     /**
      * Recursive helper method for the findPath algorithm that implements a depth-first search.
@@ -78,22 +87,22 @@ import static seng201.team53.game.map.GameMap.TILE_WIDTH;
      * @return True if a path is found, false otherwise
      */
     private boolean depthFirstSearch(Tile[][] tiles, int[][] discovered, int x, int y, int endX, int endY) {
-<span class="fc" id="L81">        discovered[x][y] = 2;</span>
-<span class="fc bfc" id="L82" title="All 4 branches covered.">        if (x == endX &amp;&amp; y == endY) {</span>
-<span class="fc" id="L83">            path.push(new Point(x, y));</span>
-<span class="fc" id="L84">            return true;</span>
+<span class="fc" id="L90">        discovered[x][y] = 2;</span>
+<span class="fc bfc" id="L91" title="All 4 branches covered.">        if (x == endX &amp;&amp; y == endY) {</span>
+<span class="fc" id="L92">            path.push(new Point(x, y));</span>
+<span class="fc" id="L93">            return true;</span>
         }
-<span class="fc bfc" id="L86" title="All 2 branches covered.">        for (int i = 0; i &lt; X_DIRECTIONS.length; i++) {</span>
-<span class="fc" id="L87">            int newX = x + X_DIRECTIONS[i];</span>
-<span class="fc" id="L88">            int newY = y + Y_DIRECTIONS[i];</span>
-<span class="fc bfc" id="L89" title="All 2 branches covered.">            if (!isValidTile(tiles, discovered, newX, newY))</span>
-<span class="fc" id="L90">                continue;</span>
-<span class="fc" id="L91">            path.push(new Point(x, y));</span>
-<span class="fc bfc" id="L92" title="All 2 branches covered.">            if (depthFirstSearch(tiles, discovered, newX, newY, endX, endY))</span>
-<span class="fc" id="L93">                return true;</span>
-<span class="fc" id="L94">            path.pop();</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        for (int i = 0; i &lt; X_DIRECTIONS.length; i++) {</span>
+<span class="fc" id="L96">            int newX = x + X_DIRECTIONS[i];</span>
+<span class="fc" id="L97">            int newY = y + Y_DIRECTIONS[i];</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">            if (!isValidTile(tiles, discovered, newX, newY))</span>
+<span class="fc" id="L99">                continue;</span>
+<span class="fc" id="L100">            path.push(new Point(x, y));</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">            if (depthFirstSearch(tiles, discovered, newX, newY, endX, endY))</span>
+<span class="fc" id="L102">                return true;</span>
+<span class="fc" id="L103">            path.pop();</span>
         }
-<span class="fc" id="L96">        return false;</span>
+<span class="fc" id="L105">        return false;</span>
     }
 
     /**
@@ -105,11 +114,11 @@ import static seng201.team53.game.map.GameMap.TILE_WIDTH;
      * @return True if the tile is a valid candidate, false otherwise
      */
     private boolean isValidTile(Tile[][] tiles, int[][] discovered, int x, int y) {
-<span class="pc bpc" id="L108" title="1 of 8 branches missed.">        return (x &gt;= 0</span>
+<span class="pc bpc" id="L117" title="1 of 8 branches missed.">        return (x &gt;= 0</span>
             &amp;&amp; y &gt;= 0
             &amp;&amp; x &lt; tiles.length
             &amp;&amp; y &lt; tiles[x].length
-<span class="fc bfc" id="L112" title="All 4 branches covered.">            &amp;&amp; tiles[x][y].isPath()</span>
+<span class="fc bfc" id="L121" title="All 4 branches covered.">            &amp;&amp; tiles[x][y].isPath()</span>
             &amp;&amp; discovered[x][y] == 0);
     }
 }

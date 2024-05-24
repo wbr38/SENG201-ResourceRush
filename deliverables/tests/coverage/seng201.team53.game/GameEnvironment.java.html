@@ -6,32 +6,30 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import seng201.team53.game.assets.AssetLoader;
 import seng201.team53.game.event.RandomEvents;
-import seng201.team53.game.event.type.RandomEvent;
+import seng201.team53.game.items.Shop;
 import seng201.team53.game.map.GameMap;
 import seng201.team53.game.round.GameRound;
 import seng201.team53.game.round.GameRoundFactory;
 import seng201.team53.game.state.GameState;
 import seng201.team53.game.state.GameStateHandler;
 import seng201.team53.gui.controller.GameController;
-import seng201.team53.game.items.Shop;
-import seng201.team53.game.items.towers.TowerType;
 
 /**
  * The overarching, main class of the game
  * This class is a Singleton; use .getGameEnvironment() to get the instance of this class and all its subcomponents;
  */
 public class GameEnvironment {
-<span class="fc" id="L24">    private final GameStateHandler stateHandler = new GameStateHandler();</span>
+<span class="fc" id="L22">    private final GameStateHandler stateHandler = new GameStateHandler();</span>
     private final GameController controller;
-<span class="fc" id="L26">    private final AssetLoader assetLoader = new AssetLoader();</span>
-<span class="fc" id="L27">    private final RandomEvents randomEvents = new RandomEvents();</span>
-<span class="fc" id="L28">    private final GameRoundFactory roundFactory = new GameRoundFactory();</span>
-<span class="fc" id="L29">    private final Shop shop = new Shop();</span>
+<span class="fc" id="L24">    private final AssetLoader assetLoader = new AssetLoader();</span>
+<span class="fc" id="L25">    private final RandomEvents randomEvents = new RandomEvents();</span>
+<span class="fc" id="L26">    private final GameRoundFactory roundFactory = new GameRoundFactory();</span>
+<span class="fc" id="L27">    private final Shop shop = new Shop();</span>
     private final String playerName;
     private final int rounds;
     private GameDifficulty difficulty;
-<span class="fc" id="L33">    private final IntegerProperty pointsProperty = new SimpleIntegerProperty(0);</span>
-<span class="fc" id="L34">    private final Property&lt;GameRound&gt; gameRoundProperty = new SimpleObjectProperty&lt;&gt;();</span>
+<span class="fc" id="L31">    private final IntegerProperty pointsProperty = new SimpleIntegerProperty(0);</span>
+<span class="fc" id="L32">    private final Property&lt;GameRound&gt; gameRoundProperty = new SimpleObjectProperty&lt;&gt;();</span>
     private GameMap map;
 
     private static GameEnvironment instance;
@@ -43,67 +41,53 @@ public class GameEnvironment {
      * @param rounds The number of rounds to be played
      * @param difficulty The initial difficulty of the game
      */
-<span class="fc" id="L46">    private GameEnvironment(GameController controller, String playerName, int rounds, GameDifficulty difficulty) {</span>
-<span class="fc" id="L47">        this.controller = controller;</span>
-<span class="fc" id="L48">        this.playerName = playerName;</span>
-<span class="fc" id="L49">        this.rounds = rounds;</span>
-<span class="fc" id="L50">        this.difficulty = difficulty;</span>
-<span class="fc" id="L51">    }</span>
+<span class="fc" id="L44">    private GameEnvironment(GameController controller, String playerName, int rounds, GameDifficulty difficulty) {</span>
+<span class="fc" id="L45">        this.controller = controller;</span>
+<span class="fc" id="L46">        this.playerName = playerName;</span>
+<span class="fc" id="L47">        this.rounds = rounds;</span>
+<span class="fc" id="L48">        this.difficulty = difficulty;</span>
+<span class="fc" id="L49">    }</span>
 
     /**
      * Loads the game environment. This includes initialising the asset loader, random events, map and creating
      * the first round
      */
     public void load() {
-<span class="nc" id="L58">        assetLoader.init();</span>
-<span class="nc" id="L59">        randomEvents.init();</span>
-<span class="nc" id="L60">        map = assetLoader.loadMap(&quot;default&quot;, &quot;/assets/maps/map_one.json&quot;, controller.getMapBackgroundPane());</span>
-<span class="nc" id="L61">        setupNextRound();</span>
-<span class="nc" id="L62">    }</span>
+<span class="nc" id="L56">        assetLoader.init();</span>
+<span class="nc" id="L57">        randomEvents.init();</span>
+<span class="nc" id="L58">        map = assetLoader.loadMap(&quot;default&quot;, &quot;/assets/maps/map_one.json&quot;, controller.getMapBackgroundPane());</span>
+<span class="nc" id="L59">        setupNextRound();</span>
+<span class="nc" id="L60">    }</span>
 
     /**
      * Sets up the next round of the game
      */
     public void setupNextRound() {
-<span class="fc" id="L68">        GameRound round = getRound();</span>
-<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if (round == null) {</span>
+<span class="fc" id="L66">        GameRound round = getRound();</span>
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">        if (round == null) {</span>
             // set up the first round
-<span class="fc" id="L71">            GameDifficulty difficulty = GameEnvironment.getGameEnvironment().getDifficulty();</span>
-<span class="fc" id="L72">            shop.addMoney(difficulty.getStartingMoney());</span>
-<span class="fc" id="L73">            setRound(roundFactory.getRound(1));</span>
-<span class="fc" id="L74">            return;</span>
+<span class="fc" id="L69">            GameDifficulty difficulty = GameEnvironment.getGameEnvironment().getDifficulty();</span>
+<span class="fc" id="L70">            shop.addMoney(difficulty.getStartingMoney());</span>
+<span class="fc" id="L71">            setRound(roundFactory.getRound(1));</span>
+<span class="fc" id="L72">            return;</span>
         }
 
         // get the next round
-<span class="nc" id="L78">        GameRound nextRound = roundFactory.getRound(round.getRoundNumber() + 1);</span>
-<span class="nc" id="L79">        setRound(nextRound);</span>
-<span class="nc" id="L80">        shop.addMoney(nextRound.getMoneyEarned());</span>
-<span class="nc" id="L81">    }</span>
-
-    /**
-     * Begins the current round
-     */
-    public void beginRound() {
-<span class="nc" id="L87">        RandomEvent randomEvent = randomEvents.requestRandomEvent();</span>
-<span class="nc bnc" id="L88" title="All 2 branches missed.">        if (randomEvent != null) {</span>
-<span class="nc" id="L89">            TowerType towerType = randomEvent.apply();</span>
-<span class="nc bnc" id="L90" title="All 2 branches missed.">            if (towerType != null) {</span>
-<span class="nc" id="L91">                stateHandler.setState(GameState.RANDOM_EVENT_DIALOG_OPEN);</span>
-<span class="nc" id="L92">                controller.showRandomEventDialog(randomEvent.getDescription(towerType));</span>
-            }
-        }
-<span class="nc" id="L95">    }</span>
+<span class="nc" id="L76">        GameRound nextRound = roundFactory.getRound(round.getRoundNumber() + 1);</span>
+<span class="nc" id="L77">        setRound(nextRound);</span>
+<span class="nc" id="L78">        shop.addMoney(nextRound.getMoneyEarned());</span>
+<span class="nc" id="L79">    }</span>
 
     /**
      * Completes the current round.
      * This method will run the current rounds end actions
      */
     public void completeRound() {
-<span class="nc" id="L102">        getRound().runRoundEndActions();</span>
-<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (getRound().getRoundNumber() == rounds) {</span>
-<span class="nc" id="L104">            stateHandler.setState(GameState.GAME_COMPLETE);</span>
+<span class="nc" id="L86">        getRound().runRoundEndActions();</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        if (getRound().getRoundNumber() == rounds) {</span>
+<span class="nc" id="L88">            stateHandler.setState(GameState.GAME_COMPLETE);</span>
         }
-<span class="nc" id="L106">    }</span>
+<span class="nc" id="L90">    }</span>
 
     /**
      * Constructs a new game environment and initialises the singleton
@@ -115,8 +99,8 @@ public class GameEnvironment {
      * @return The game environment
      */
     public static GameEnvironment init(GameController controller, String playerName, int rounds, GameDifficulty difficulty) {
-<span class="fc" id="L118">        instance = new GameEnvironment(controller, playerName, rounds, difficulty);</span>
-<span class="fc" id="L119">        return instance;</span>
+<span class="fc" id="L102">        instance = new GameEnvironment(controller, playerName, rounds, difficulty);</span>
+<span class="fc" id="L103">        return instance;</span>
     }
 
     /**
@@ -124,10 +108,10 @@ public class GameEnvironment {
      * @return The instance of the game environment singleton
      */
     public static GameEnvironment getGameEnvironment() {
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">        if (instance == null) {</span>
-<span class="nc" id="L128">            throw new RuntimeException(&quot;GameEnvironment has not been initialized!&quot;);</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">        if (instance == null) {</span>
+<span class="nc" id="L112">            throw new RuntimeException(&quot;GameEnvironment has not been initialized!&quot;);</span>
         }
-<span class="fc" id="L130">        return instance;</span>
+<span class="fc" id="L114">        return instance;</span>
     }
 
     /**
@@ -135,7 +119,7 @@ public class GameEnvironment {
      * @return The state handler
      */
     public GameStateHandler getStateHandler() {
-<span class="fc" id="L138">        return this.stateHandler;</span>
+<span class="fc" id="L122">        return this.stateHandler;</span>
     }
 
     /**
@@ -143,7 +127,7 @@ public class GameEnvironment {
      * @return The game controller
      */
     public GameController getController() {
-<span class="nc" id="L146">        return controller;</span>
+<span class="nc" id="L130">        return controller;</span>
     }
 
     /**
@@ -151,7 +135,7 @@ public class GameEnvironment {
      * @return The random events
      */
     public RandomEvents getRandomEvents() {
-<span class="fc" id="L154">        return randomEvents;</span>
+<span class="fc" id="L138">        return randomEvents;</span>
     }
 
     /**
@@ -159,7 +143,7 @@ public class GameEnvironment {
      * @return The asset loader
      */
     public AssetLoader getAssetLoader() {
-<span class="nc" id="L162">        return assetLoader;</span>
+<span class="nc" id="L146">        return assetLoader;</span>
     }
 
     /**
@@ -167,7 +151,7 @@ public class GameEnvironment {
      * @return The shop
      */
     public Shop getShop() {
-<span class="nc" id="L170">        return shop;</span>
+<span class="nc" id="L154">        return shop;</span>
     }
 
     /**
@@ -176,7 +160,7 @@ public class GameEnvironment {
      * @return The observable game round property
      */
     public Property&lt;GameRound&gt; getRoundProperty() {
-<span class="nc" id="L179">        return gameRoundProperty;</span>
+<span class="nc" id="L163">        return gameRoundProperty;</span>
     }
 
     /**
@@ -184,7 +168,7 @@ public class GameEnvironment {
      * @return The current game round
      */
     public GameRound getRound() {
-<span class="fc" id="L187">        return gameRoundProperty.getValue();</span>
+<span class="fc" id="L171">        return gameRoundProperty.getValue();</span>
     }
 
     /**
@@ -192,15 +176,15 @@ public class GameEnvironment {
      * @param round The new game round
      */
     private void setRound(GameRound round) {
-<span class="fc" id="L195">        gameRoundProperty.setValue(round);</span>
-<span class="fc" id="L196">    }</span>
+<span class="fc" id="L179">        gameRoundProperty.setValue(round);</span>
+<span class="fc" id="L180">    }</span>
 
     /**
      * Retrieves the current game difficulty
      * @return The game difficulty
      */
     public GameDifficulty getDifficulty() {
-<span class="fc" id="L203">        return difficulty;</span>
+<span class="fc" id="L187">        return difficulty;</span>
     }
 
     /**
@@ -208,15 +192,15 @@ public class GameEnvironment {
      * @param difficulty The new game difficulty
      */
     public void setDifficulty(GameDifficulty difficulty) {
-<span class="nc" id="L211">        this.difficulty = difficulty;</span>
-<span class="nc" id="L212">    }</span>
+<span class="nc" id="L195">        this.difficulty = difficulty;</span>
+<span class="nc" id="L196">    }</span>
 
     /**
      * Retrieves the number of rounds to be played
      * @return The number of total rounds
      */
     public int getRounds() {
-<span class="nc" id="L219">        return rounds;</span>
+<span class="nc" id="L203">        return rounds;</span>
     }
 
     /**
@@ -224,7 +208,7 @@ public class GameEnvironment {
      * @return The game map
      */
     public GameMap getMap() {
-<span class="nc" id="L227">        return map;</span>
+<span class="nc" id="L211">        return map;</span>
     }
 
     /**
@@ -233,7 +217,7 @@ public class GameEnvironment {
      * @return The observable points property
      */
     public IntegerProperty getPointsProperty() {
-<span class="nc" id="L236">        return pointsProperty;</span>
+<span class="nc" id="L220">        return pointsProperty;</span>
     }
 
     /**
@@ -241,7 +225,7 @@ public class GameEnvironment {
      * @return The number of points
      */
     public int getPoints() {
-<span class="fc" id="L244">        return pointsProperty.get();</span>
+<span class="fc" id="L228">        return pointsProperty.get();</span>
     }
 
     /**
@@ -249,15 +233,15 @@ public class GameEnvironment {
      * @param points The points to be added
      */
     public void addPoints(int points) {
-<span class="fc" id="L252">        pointsProperty.set(pointsProperty.get() + points);</span>
-<span class="fc" id="L253">    }</span>
+<span class="fc" id="L236">        pointsProperty.set(pointsProperty.get() + points);</span>
+<span class="fc" id="L237">    }</span>
 
     /**
      * Retrieves the players name
      * @return The players name
      */
     public String getPlayerName() {
-<span class="nc" id="L260">        return playerName;</span>
+<span class="nc" id="L244">        return playerName;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
