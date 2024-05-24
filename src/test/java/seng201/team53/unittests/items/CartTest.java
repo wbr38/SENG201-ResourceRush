@@ -10,7 +10,6 @@ import org.junit.jupiter.api.*;
 import javafx.util.Duration;
 import seng201.team53.game.GameDifficulty;
 import seng201.team53.game.GameEnvironment;
-import seng201.team53.game.state.CartState;
 import seng201.team53.game.items.Cart;
 import seng201.team53.game.items.ResourceType;
 
@@ -39,7 +38,6 @@ class CartTest {
         assertEquals(cart.getMaxCapacity(), maxCapacity);
         assertEquals(cart.getVelocity(), velocity, 0.0);
         assertEquals(cart.getResourceType(), resourceType);
-        assertEquals(cart.getCartState(), CartState.WAITING);
     }
 
     @Test

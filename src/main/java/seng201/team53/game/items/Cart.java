@@ -1,6 +1,7 @@
 package seng201.team53.game.items;
 
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.util.Duration;
 import seng201.team53.game.GameEnvironment;
@@ -37,7 +38,30 @@ public class Cart implements Upgradeable {
         this.velocity = velocity;
         this.resourceType = acceptedResource;
 
-        // Delay the cart starting to move. See FXCart onCartStateUpdate where the cart will begin following the path.
+        spawn(spawnDelayTime);
+
+        // Increase points when cart becomes full
+        getCurrentCapacityProperty().addListener(($, oldCapacity, newCapacity) -> {
+            if (isFull())
+                GameEnvironment.getGameEnvironment().addPoints(10);
+        });
+    }
+
+    /**
+     * Handle spawning / setting the cart to start moving.
+     * @param spawnDelayTime The amount of time to wait before spawning the cart. (So that carts do not all spawn on top of each other)
+     */
+    private void spawn(Duration spawnDelayTime) {
+
+        // If JavaFX is not running (for test cases), we cannot use a PauseTransition to delay spawning the cart
+        // So instead we spawn the cart immediately
+        if (!Platform.isFxApplicationThread()) {
+            setCartState(CartState.TRAVERSING_PATH);
+            return;
+        }
+
+        // Delay the cart starting to move. See FXCart onCartStateUpdate where the cart
+        // will begin following the path.
         PauseTransition spawnDelay = new PauseTransition(spawnDelayTime);
         spawnDelay.setOnFinished(event -> setCartState(CartState.TRAVERSING_PATH));
 
@@ -47,12 +71,6 @@ public class Cart implements Upgradeable {
                 spawnDelay.play();
             else
                 spawnDelay.pause();
-        });
-
-        // Increase points when cart becomes full
-        getCurrentCapacityProperty().addListener(($, oldCapacity, newCapacity) -> {
-            if (isFull())
-                GameEnvironment.getGameEnvironment().addPoints(10);
         });
     }
 

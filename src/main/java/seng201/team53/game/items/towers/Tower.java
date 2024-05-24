@@ -6,6 +6,7 @@ import java.util.List;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.LongProperty;
@@ -31,7 +32,7 @@ public class Tower implements Item, Upgradeable {
     private final TowerType type;
     private final BooleanProperty brokenProperty = new SimpleBooleanProperty(false);
     private final LongProperty lastGenerateTimeProperty = new SimpleLongProperty(System.currentTimeMillis());
-    private final Timeline generateTimeline;
+    private Timeline generateTimeline;
     private double reloadSpeedModifier = 1;
     private IntegerProperty xpLevel = new SimpleIntegerProperty(1);
     private boolean inInventory = false;
@@ -46,20 +47,42 @@ public class Tower implements Item, Upgradeable {
     protected Tower(TowerType type) {
         this.type = type;
 
+        createGenerateLoop();
+
+        getGameEnvironment().getStateHandler().getGameStateProperty().addListener(($, oldState, newState) -> {
+            switch (newState) {
+                // case ROUND_ACTIVE -> generateTimeline.play();
+                // case ROUND_PAUSE -> generateTimeline.pause();
+                case ROUND_COMPLETE -> increaseLevel();
+                default -> {}
+            }
+        });
+    }
+
+    /**
+     * Handle creating the Timeline to repeatedly call generate(), and wait for however long this tower needs to reload. 
+     * @return Whether the timeline was successfully created. If JavaFX is not running (for unit tests), this function will do nothing and return false.
+     */
+    private boolean createGenerateLoop() {
+        // Unfortunately cannot use a Timeline without JavaFX running.
+        if (!Platform.isFxApplicationThread())
+            return false;
+
         generateTimeline = new Timeline(
             new KeyFrame(Duration.ZERO, event -> generate()),
             new KeyFrame(Duration.millis(getReloadMS()))
         );
         generateTimeline.setCycleCount(Timeline.INDEFINITE);
 
+        // Pause the tower generating in line with the game state
         getGameEnvironment().getStateHandler().getGameStateProperty().addListener(($, oldState, newState) -> {
             switch (newState) {
                 case ROUND_ACTIVE -> generateTimeline.play();
                 case ROUND_PAUSE -> generateTimeline.pause();
-                case ROUND_COMPLETE -> increaseLevel();
                 default -> {}
             }
         });
+        return true;
     }
 
     /**
