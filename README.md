@@ -1,4 +1,6 @@
 # ResourceRush (SENG201 Project Team 53)
+![Game play image](./deliverables/game-play.png)
+
 ResourceRush is a classic tower game. You purchase towers that generate resources. These resources are collected by 
 carts as they travel along the path. Your goal is to optimize resource generation to achieve victory.
 
